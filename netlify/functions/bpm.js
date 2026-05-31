@@ -1,28 +1,47 @@
 exports.handler = async function(event) {
-  const API_KEY = "01d95501999cadb1d1c2f45f7f843072";
-  const BASE = "https://api.getsongbpm.com";
+  const { bpm, genre } = event.queryStringParameters || {};
+  if (!bpm) return { statusCode: 400, body: JSON.stringify({ error: "bpm required" }) };
 
-  const { endpoint, bpm, id, limit } = event.queryStringParameters || {};
-
-  let url;
-  if (endpoint === "tempo") {
-    url = `${BASE}/tempo/?api_key=${API_KEY}&bpm=${bpm}&limit=${limit || 40}`;
-  } else if (endpoint === "song") {
-    url = `${BASE}/song/?api_key=${API_KEY}&id=${id}`;
-  } else {
-    return { statusCode: 400, body: JSON.stringify({ error: "Invalid endpoint" }) };
-  }
+  const slug = genre && genre !== "all"
+    ? `https://getsongbpm.com/tempo/${bpm}-bpm-${genre}`
+    : `https://getsongbpm.com/tempo/${bpm}-bpm`;
 
   try {
-    const res = await fetch(url);
-    const data = await res.json();
+    const res = await fetch(slug, {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (compatible; RhythmRun/1.0)",
+        "Accept": "text/html",
+      }
+    });
+
+    if (!res.ok) return { statusCode: res.status, body: JSON.stringify({ error: "fetch failed", status: res.status }) };
+
+    const html = await res.text();
+
+    // Parse song list: pattern is "SONG_TITLE\nARTIST_NAME" inside list items
+    const songs = [];
+    // Match <a href="/song/...">TITLE</a> and nearby artist text
+    const songRe = /<a[^>]+href="\/song\/[^"]*"[^>]*>([^<]+)<\/a>/g;
+    const artistRe = /<a[^>]+href="\/artist\/[^"]*"[^>]*>([^<]+)<\/a>/g;
+
+    let sm, titles = [], artists = [];
+    while ((sm = songRe.exec(html)) !== null) titles.push(sm[1].trim());
+    let am;
+    while ((am = artistRe.exec(html)) !== null) artists.push(am[1].trim());
+
+    for (let i = 0; i < Math.min(titles.length, artists.length, 30); i++) {
+      if (titles[i] && artists[i]) {
+        songs.push({ title: titles[i], artist: artists[i], bpm: parseInt(bpm) });
+      }
+    }
+
     return {
       statusCode: 200,
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ songs, source: slug }),
     };
   } catch (e) {
     return {
