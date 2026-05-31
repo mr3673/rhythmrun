@@ -39,31 +39,36 @@
     .start-btn{width:100%;background:linear-gradient(135deg,#a855f7,#6366f1);color:white;border:none;border-radius:16px;padding:16px 0;font-size:16px;font-weight:700;font-family:inherit;cursor:pointer;transition:all 0.2s}
     .start-btn:hover:not(:disabled){opacity:.88;transform:translateY(-2px)}
     .start-btn:disabled{opacity:.4;cursor:not-allowed}
-    .wk-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;margin-top:8px}
+    .wk-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;margin-top:8px}
     .live{display:flex;align-items:center;gap:7px;color:#22c55e;font-size:12px;font-weight:700;letter-spacing:1px}
     .ldot{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 8px #22c55e;animation:blink 1s infinite}
     .el{color:#888;font-size:13px;font-family:'Space Mono',monospace}
     .stop-btn{background:none;border:1px solid #333;color:#888;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit}
-    .bpm-c{display:flex;flex-direction:column;align-items:center;margin-bottom:12px}
-    .zlbl{margin-top:6px;font-size:13px;font-weight:700}
-    .song-card{background:#12122a;border:1px solid #2a2a4a;border-radius:18px;padding:16px;transition:border-color .4s;margin-bottom:10px}
-    .song-card.warn{border-color:var(--zc)!important}
-    .zbadge{display:inline-flex;align-items:center;padding:4px 12px;border-radius:8px;font-size:12px;font-weight:700;letter-spacing:1px;margin-bottom:12px}
+    /* YouTube Player */
+    .yt-wrap{position:relative;width:100%;border-radius:14px;overflow:hidden;margin-bottom:12px;background:#000;aspect-ratio:16/9}
+    .yt-wrap iframe{width:100%;height:100%;border:none;display:block}
+    .yt-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;background:#12122a;color:#666;font-size:13px}
+    .yt-spinner{width:28px;height:28px;border:2px solid #2a2a4a;border-top-color:#a855f7;border-radius:50%;animation:spin .7s linear infinite}
+    /* Song card */
+    .bpm-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .zbadge{display:inline-flex;align-items:center;padding:4px 12px;border-radius:8px;font-size:12px;font-weight:700;letter-spacing:1px}
     .wlbl{font-size:12px;font-weight:700;animation:pulse .8s infinite}
-    .srow{display:flex;align-items:center;gap:12px;margin-bottom:14px}
-    .art{width:52px;height:52px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
-    .stitle{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .sartist{font-size:12px;color:#aaa;margin-top:2px}
+    .song-info{background:#12122a;border:1px solid #2a2a4a;border-radius:14px;padding:14px;margin-bottom:10px;transition:border-color .4s}
+    .song-info.warn{border-color:var(--zc)!important}
+    .stitle{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
+    .sartist{font-size:12px;color:#aaa;margin-bottom:10px}
+    .sbpm-row{display:flex;justify-content:space-between;align-items:center}
     .sbpm{font-size:13px;font-weight:700;font-family:'Space Mono',monospace}
-    .prog-t{height:5px;background:#1a1a2e;border-radius:3px;overflow:hidden;margin-bottom:8px}
-    .prog-f{height:100%;border-radius:3px;transition:width 1s linear,background .4s}
-    .cfooter{display:flex;justify-content:space-between;align-items:center}
+    .prog-t{height:4px;background:#1a1a2e;border-radius:2px;overflow:hidden;flex:1;margin:0 12px}
+    .prog-f{height:100%;border-radius:2px;transition:width 1s linear,background .4s}
     .tleft{color:#666;font-size:12px;font-family:'Space Mono',monospace}
     .skip-btn{background:none;border:1px solid #333;color:#888;border-radius:8px;padding:4px 10px;font-size:11px;cursor:pointer;font-family:inherit}
-    .upnext{background:#0a0a1a;border:1px solid #1e1e38;border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:10px;margin-bottom:14px}
+    /* Up next */
+    .upnext{background:#0a0a1a;border:1px solid #1e1e38;border-radius:14px;padding:10px 14px;display:none;align-items:center;gap:10px;margin-bottom:14px}
     .unl{color:#555;font-size:12px;white-space:nowrap}
     .untitle{flex:1;color:#bbb;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .zpill{border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;white-space:nowrap}
+    /* Timeline */
     .tl-wrap{margin-bottom:14px}
     .tl-meta{color:#555;font-size:11px;margin-bottom:6px}
     .tl{display:flex;gap:3px;height:7px;border-radius:4px;overflow:hidden}
@@ -75,10 +80,12 @@
     .credit a{color:#333;font-size:11px;text-decoration:none}
     @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+    @keyframes spin{to{transform:rotate(360deg)}}
   </style>
 </head>
 <body>
 
+<!-- SETUP -->
 <div class="screen active" id="s-setup">
   <div class="logo">◈ <span>rhythmrun</span></div>
   <div class="tagline">Şarkı bitmeden geçiş yok.</div>
@@ -123,342 +130,200 @@
   <button class="start-btn" id="start-btn" onclick="startWorkout()" disabled>▶ Antrenmanı Başlat</button>
 </div>
 
+<!-- WORKOUT -->
 <div class="screen" id="s-workout">
   <div class="wk-hdr">
     <div class="live"><div class="ldot"></div>CANLI</div>
     <div class="el" id="elapsed">⏱ 0:00</div>
     <button class="stop-btn" onclick="stopWorkout()">⏹ Bitir</button>
   </div>
-  <div class="bpm-c">
-    <svg width="136" height="136" viewBox="0 0 136 136">
-      <circle cx="68" cy="68" r="52" fill="none" stroke="#1e1e3a" stroke-width="10"/>
-      <circle id="arc" cx="68" cy="68" r="52" fill="none" stroke="#22c55e" stroke-width="10"
-        stroke-dasharray="0 326.7" stroke-dashoffset="81.7" stroke-linecap="round"
-        style="transition:stroke-dasharray .7s ease,stroke .5s ease"/>
-      <text id="bnum" x="68" y="63" text-anchor="middle" fill="white" font-size="27" font-weight="700" font-family="'Space Mono',monospace">—</text>
-      <text x="68" y="80" text-anchor="middle" fill="#888" font-size="11" font-family="'DM Sans',sans-serif">BPM</text>
-    </svg>
-    <div class="zlbl" id="zlbl">—</div>
+
+  <!-- YouTube Player -->
+  <div class="yt-wrap" id="yt-wrap">
+    <div class="yt-overlay" id="yt-overlay">
+      <div class="yt-spinner"></div>
+      <span>Şarkı aranıyor...</span>
+    </div>
+    <div id="yt-player"></div>
   </div>
-  <div class="song-card" id="scard">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-      <div class="zbadge" id="zbadge">—</div>
+
+  <!-- Zone badge + warning -->
+  <div class="bpm-row">
+    <div class="zbadge" id="zbadge">—</div>
+    <div style="display:flex;align-items:center;gap:10px">
       <div class="wlbl" id="wlbl" style="display:none">⚠ Hazır ol!</div>
-    </div>
-    <div class="srow">
-      <div class="art" id="sart">♪</div>
-      <div style="flex:1;min-width:0">
-        <div class="stitle" id="stitle">—</div>
-        <div class="sartist" id="sartist">—</div>
-      </div>
-      <div style="text-align:right;flex-shrink:0"><div class="sbpm" id="sbpm">—</div></div>
-    </div>
-    <div class="prog-t"><div class="prog-f" id="pfill" style="width:0%"></div></div>
-    <div class="cfooter">
-      <span class="tleft" id="tleft">—</span>
-      <button class="skip-btn" onclick="skipNext()">sıradaki ⏭</button>
+      <span id="bpm-badge" style="font-family:'Space Mono',monospace;font-size:13px;font-weight:700">—</span>
     </div>
   </div>
-  <div class="upnext" id="upnext" style="display:none">
+
+  <!-- Song info + progress -->
+  <div class="song-info" id="song-info">
+    <div class="stitle" id="stitle">—</div>
+    <div class="sartist" id="sartist">—</div>
+    <div class="sbpm-row">
+      <span class="tleft" id="tleft">—</span>
+      <div class="prog-t"><div class="prog-f" id="pfill" style="width:0%"></div></div>
+      <button class="skip-btn" onclick="skipNext()">⏭ sıradaki</button>
+    </div>
+  </div>
+
+  <!-- Up next -->
+  <div class="upnext" id="upnext">
     <span class="unl">Sıradaki</span>
-    <div class="art" id="nart" style="width:32px;height:32px;font-size:14px">♪</div>
     <span class="untitle" id="ntitle">—</span>
     <div class="zpill" id="npill">—</div>
   </div>
+
+  <!-- Timeline -->
   <div class="tl-wrap">
-    <div class="tl-meta" id="tlmeta">0 / 0</div>
+    <div class="tl-meta" id="tlmeta">0 / 0 şarkı</div>
     <div class="tl" id="tl"></div>
   </div>
+
   <div class="stats" id="stats"></div>
   <div class="credit"><a href="https://getsongbpm.com" target="_blank" rel="noopener">BPM data by getsongbpm.com</a></div>
 </div>
 
 <script>
+const YT_KEY = "AIzaSyCFjmRYw_tkCKSMlSOf7CfGv29L99tWYK4";
+
 // ── SONG DATABASE ──────────────────────────────────────────────
-// Sources: getsongbpm.com, chosic.com, songbpm.com
-// Zones: walk 85-125 | run 135-165 | sprint 168-185
 const DB = {
   walk: {
     all: [
-      {t:"Hips Don't Lie",a:"Shakira ft. Wyclef Jean",bpm:100},
-      {t:"Crazy In Love",a:"Beyoncé ft. Jay-Z",bpm:100},
-      {t:"Levitating",a:"Dua Lipa ft. DaBaby",bpm:103},
-      {t:"Stronger",a:"Kanye West",bpm:104},
-      {t:"Eye of the Tiger",a:"Survivor",bpm:109},
-      {t:"Can't Stop the Feeling",a:"Justin Timberlake",bpm:113},
-      {t:"Uptown Funk",a:"Bruno Mars",bpm:115},
-      {t:"Physical",a:"Dua Lipa",bpm:123},
-      {t:"Run the World (Girls)",a:"Beyoncé",bpm:127},
-      {t:"Gold Digger",a:"Kanye West",bpm:130},
-      {t:"Rockabye",a:"Clean Bandit",bpm:100},
-      {t:"We Don't Talk Anymore",a:"Charlie Puth",bpm:100},
-      {t:"Power Trip",a:"J. Cole ft. Miguel",bpm:100},
-      {t:"Chantaje",a:"Shakira ft. Maluma",bpm:100},
-      {t:"Feels",a:"Calvin Harris ft. Katy Perry",bpm:100},
-      {t:"Stay With Me",a:"Sam Smith",bpm:86},
-      {t:"Thinking Out Loud",a:"Ed Sheeran",bpm:79},
-      {t:"Shape of You",a:"Ed Sheeran",bpm:96},
-      {t:"Blurred Lines",a:"Robin Thicke",bpm:120},
-      {t:"Happy",a:"Pharrell Williams",bpm:160},
-      {t:"Riptide",a:"Vance Joy",bpm:102},
-      {t:"Señorita",a:"Shawn Mendes & Camila Cabello",bpm:117},
-      {t:"Bad Guy",a:"Billie Eilish",bpm:135},
-      {t:"Watermelon Sugar",a:"Harry Styles",bpm:95},
-      {t:"Dynamite",a:"BTS",bpm:114},
+      {t:"Hips Don't Lie",a:"Shakira",bpm:100},{t:"Crazy In Love",a:"Beyoncé",bpm:100},
+      {t:"Levitating",a:"Dua Lipa",bpm:103},{t:"Stronger",a:"Kanye West",bpm:104},
+      {t:"Eye of the Tiger",a:"Survivor",bpm:109},{t:"Can't Stop the Feeling",a:"Justin Timberlake",bpm:113},
+      {t:"Uptown Funk",a:"Bruno Mars",bpm:115},{t:"Physical",a:"Dua Lipa",bpm:123},
+      {t:"Run the World",a:"Beyoncé",bpm:127},{t:"Gold Digger",a:"Kanye West",bpm:130},
+      {t:"Rockabye",a:"Clean Bandit",bpm:100},{t:"Shape of You",a:"Ed Sheeran",bpm:96},
+      {t:"Señorita",a:"Shawn Mendes",bpm:117},{t:"Dynamite",a:"BTS",bpm:114},
+      {t:"Watermelon Sugar",a:"Harry Styles",bpm:95},{t:"As It Was",a:"Harry Styles",bpm:124},
+      {t:"Blurred Lines",a:"Robin Thicke",bpm:120},{t:"Stay With Me",a:"Sam Smith",bpm:86},
     ],
-    pop: [
-      {t:"Hips Don't Lie",a:"Shakira ft. Wyclef Jean",bpm:100},
-      {t:"Crazy In Love",a:"Beyoncé ft. Jay-Z",bpm:100},
-      {t:"Levitating",a:"Dua Lipa ft. DaBaby",bpm:103},
-      {t:"Can't Stop the Feeling",a:"Justin Timberlake",bpm:113},
-      {t:"Uptown Funk",a:"Bruno Mars",bpm:115},
-      {t:"Physical",a:"Dua Lipa",bpm:123},
-      {t:"Run the World (Girls)",a:"Beyoncé",bpm:127},
-      {t:"Rockabye",a:"Clean Bandit",bpm:100},
-      {t:"Señorita",a:"Shawn Mendes & Camila Cabello",bpm:117},
-      {t:"Dynamite",a:"BTS",bpm:114},
-      {t:"Watermelon Sugar",a:"Harry Styles",bpm:95},
-      {t:"Shape of You",a:"Ed Sheeran",bpm:96},
-      {t:"Blurred Lines",a:"Robin Thicke",bpm:120},
-      {t:"Stay With Me",a:"Sam Smith",bpm:86},
-      {t:"As It Was",a:"Harry Styles",bpm:124},
+    pop:[
+      {t:"Hips Don't Lie",a:"Shakira",bpm:100},{t:"Levitating",a:"Dua Lipa",bpm:103},
+      {t:"Can't Stop the Feeling",a:"Justin Timberlake",bpm:113},{t:"Uptown Funk",a:"Bruno Mars",bpm:115},
+      {t:"Physical",a:"Dua Lipa",bpm:123},{t:"Rockabye",a:"Clean Bandit",bpm:100},
+      {t:"Señorita",a:"Shawn Mendes",bpm:117},{t:"Dynamite",a:"BTS",bpm:114},
+      {t:"As It Was",a:"Harry Styles",bpm:124},{t:"Shape of You",a:"Ed Sheeran",bpm:96},
     ],
-    hiphop: [
-      {t:"Gold Digger",a:"Kanye West",bpm:130},
-      {t:"Stronger",a:"Kanye West",bpm:104},
-      {t:"Power Trip",a:"J. Cole ft. Miguel",bpm:100},
-      {t:"Chantaje",a:"Shakira ft. Maluma",bpm:100},
-      {t:"HUMBLE.",a:"Kendrick Lamar",bpm:150},
-      {t:"Sicko Mode",a:"Travis Scott",bpm:98},
-      {t:"God's Plan",a:"Drake",bpm:77},
-      {t:"In My Feelings",a:"Drake",bpm:91},
-      {t:"Rockstar",a:"Post Malone",bpm:160},
-      {t:"Sunflower",a:"Post Malone",bpm:90},
-      {t:"Old Town Road",a:"Lil Nas X",bpm:136},
-      {t:"Hotline Bling",a:"Drake",bpm:81},
+    hiphop:[
+      {t:"Gold Digger",a:"Kanye West",bpm:130},{t:"Stronger",a:"Kanye West",bpm:104},
+      {t:"Sicko Mode",a:"Travis Scott",bpm:98},{t:"God's Plan",a:"Drake",bpm:77},
+      {t:"Sunflower",a:"Post Malone",bpm:90},{t:"Hotline Bling",a:"Drake",bpm:81},
+      {t:"In My Feelings",a:"Drake",bpm:91},{t:"Old Town Road",a:"Lil Nas X",bpm:136},
     ],
-    rock: [
-      {t:"Eye of the Tiger",a:"Survivor",bpm:109},
-      {t:"Come as You Are",a:"Nirvana",bpm:117},
-      {t:"Yellow",a:"Coldplay",bpm:86},
-      {t:"Californication",a:"Red Hot Chili Peppers",bpm:96},
-      {t:"Can't Stop",a:"Red Hot Chili Peppers",bpm:92},
-      {t:"Zombie",a:"The Cranberries",bpm:84},
-      {t:"Sweet Child O' Mine",a:"Guns N' Roses",bpm:123},
-      {t:"Come Together",a:"The Beatles",bpm:83},
-      {t:"Under the Bridge",a:"Red Hot Chili Peppers",bpm:87},
-      {t:"Wonderwall",a:"Oasis",bpm:87},
+    rock:[
+      {t:"Eye of the Tiger",a:"Survivor",bpm:109},{t:"Come as You Are",a:"Nirvana",bpm:117},
+      {t:"Yellow",a:"Coldplay",bpm:86},{t:"Californication",a:"Red Hot Chili Peppers",bpm:96},
+      {t:"Sweet Child O' Mine",a:"Guns N' Roses",bpm:123},{t:"Wonderwall",a:"Oasis",bpm:87},
+      {t:"Under the Bridge",a:"Red Hot Chili Peppers",bpm:87},{t:"Come Together",a:"The Beatles",bpm:83},
     ],
-    electronic: [
-      {t:"Levitating",a:"Dua Lipa ft. DaBaby",bpm:103},
-      {t:"Physical",a:"Dua Lipa",bpm:123},
-      {t:"Feels",a:"Calvin Harris ft. Katy Perry",bpm:100},
-      {t:"One More Time",a:"Daft Punk",bpm:123},
-      {t:"Get Lucky",a:"Daft Punk ft. Pharrell",bpm:116},
-      {t:"Cheap Thrills",a:"Sia",bpm:93},
-      {t:"Lean On",a:"Major Lazer & DJ Snake",bpm:98},
-      {t:"Roses",a:"SAINt JHN",bpm:93},
-      {t:"Titanium",a:"David Guetta ft. Sia",bpm:126},
-      {t:"Animals",a:"Martin Garrix",bpm:128},
+    electronic:[
+      {t:"One More Time",a:"Daft Punk",bpm:123},{t:"Get Lucky",a:"Daft Punk",bpm:116},
+      {t:"Cheap Thrills",a:"Sia",bpm:93},{t:"Lean On",a:"Major Lazer",bpm:98},
+      {t:"Titanium",a:"David Guetta ft. Sia",bpm:126},{t:"Animals",a:"Martin Garrix",bpm:128},
+      {t:"Roses",a:"SAINt JHN",bpm:93},{t:"Levels",a:"Avicii",bpm:126},
     ],
-    rnb: [
-      {t:"Crazy In Love",a:"Beyoncé ft. Jay-Z",bpm:100},
-      {t:"Hips Don't Lie",a:"Shakira ft. Wyclef Jean",bpm:100},
-      {t:"Power Trip",a:"J. Cole ft. Miguel",bpm:100},
-      {t:"Stay With Me",a:"Sam Smith",bpm:86},
-      {t:"Thinking Out Loud",a:"Ed Sheeran",bpm:79},
-      {t:"No Scrubs",a:"TLC",bpm:100},
-      {t:"Waterfalls",a:"TLC",bpm:88},
-      {t:"I Will Always Love You",a:"Whitney Houston",bpm:66},
-      {t:"Irreplaceable",a:"Beyoncé",bpm:101},
-      {t:"Single Ladies",a:"Beyoncé",bpm:97},
+    rnb:[
+      {t:"Crazy In Love",a:"Beyoncé",bpm:100},{t:"Stay With Me",a:"Sam Smith",bpm:86},
+      {t:"No Scrubs",a:"TLC",bpm:100},{t:"Irreplaceable",a:"Beyoncé",bpm:101},
+      {t:"Single Ladies",a:"Beyoncé",bpm:97},{t:"Waterfalls",a:"TLC",bpm:88},
     ],
   },
   run: {
-    all: [
-      {t:"Pump It",a:"Black Eyed Peas",bpm:140},
-      {t:"HUMBLE.",a:"Kendrick Lamar",bpm:150},
-      {t:"Don't Stop Me Now",a:"Queen",bpm:156},
-      {t:"Lose Yourself",a:"Eminem",bpm:171},
-      {t:"Till I Collapse",a:"Eminem",bpm:171},
-      {t:"Numb/Encore",a:"Jay-Z & Linkin Park",bpm:140},
-      {t:"Seek & Destroy",a:"Metallica",bpm:140},
-      {t:"Rosanna",a:"Toto",bpm:160},
-      {t:"Everlong",a:"Foo Fighters",bpm:156},
-      {t:"Mr. Brightside",a:"The Killers",bpm:148},
-      {t:"Seven Nation Army",a:"White Stripes",bpm:124},
-      {t:"Smells Like Teen Spirit",a:"Nirvana",bpm:117},
-      {t:"In the End",a:"Linkin Park",bpm:105},
-      {t:"Numb",a:"Linkin Park",bpm:105},
-      {t:"Wake Me Up",a:"Avicii",bpm:124},
-      {t:"Animals",a:"Martin Garrix",bpm:128},
-      {t:"Levels",a:"Avicii",bpm:126},
-      {t:"Bangarang",a:"Skrillex",bpm:110},
-      {t:"Thunderstruck",a:"AC/DC",bpm:133},
-      {t:"Back in Black",a:"AC/DC",bpm:92},
-      {t:"Crazy Train",a:"Ozzy Osbourne",bpm:138},
+    all:[
+      {t:"Pump It",a:"Black Eyed Peas",bpm:140},{t:"HUMBLE.",a:"Kendrick Lamar",bpm:150},
+      {t:"Don't Stop Me Now",a:"Queen",bpm:156},{t:"Mr. Brightside",a:"The Killers",bpm:148},
+      {t:"Everlong",a:"Foo Fighters",bpm:156},{t:"Seek & Destroy",a:"Metallica",bpm:140},
+      {t:"Thunderstruck",a:"AC/DC",bpm:133},{t:"Crazy Train",a:"Ozzy Osbourne",bpm:138},
+      {t:"Shake It Off",a:"Taylor Swift",bpm:160},{t:"Happy",a:"Pharrell Williams",bpm:160},
+      {t:"Roar",a:"Katy Perry",bpm:180},{t:"Can't Hold Us",a:"Macklemore",bpm:146},
+      {t:"Good as Hell",a:"Lizzo",bpm:148},{t:"Juice",a:"Lizzo",bpm:150},
+      {t:"Shivers",a:"Ed Sheeran",bpm:141},{t:"Formation",a:"Beyoncé",bpm:155},
     ],
-    pop: [
-      {t:"Pump It",a:"Black Eyed Peas",bpm:140},
-      {t:"Mr. Brightside",a:"The Killers",bpm:148},
-      {t:"Don't Stop Me Now",a:"Queen",bpm:156},
-      {t:"Wake Me Up",a:"Avicii",bpm:124},
-      {t:"Happy",a:"Pharrell Williams",bpm:160},
-      {t:"Roar",a:"Katy Perry",bpm:180},
-      {t:"Shake It Off",a:"Taylor Swift",bpm:160},
-      {t:"Can't Hold Us",a:"Macklemore",bpm:146},
-      {t:"Good as Hell",a:"Lizzo",bpm:148},
-      {t:"Juice",a:"Lizzo",bpm:150},
-      {t:"About Damn Time",a:"Lizzo",bpm:110},
-      {t:"Levitating",a:"Dua Lipa",bpm:103},
-      {t:"Shivers",a:"Ed Sheeran",bpm:141},
-      {t:"Blinding Lights",a:"The Weeknd",bpm:171},
-      {t:"Save Your Tears",a:"The Weeknd",bpm:118},
+    pop:[
+      {t:"Pump It",a:"Black Eyed Peas",bpm:140},{t:"Mr. Brightside",a:"The Killers",bpm:148},
+      {t:"Don't Stop Me Now",a:"Queen",bpm:156},{t:"Shake It Off",a:"Taylor Swift",bpm:160},
+      {t:"Happy",a:"Pharrell Williams",bpm:160},{t:"Can't Hold Us",a:"Macklemore",bpm:146},
+      {t:"Good as Hell",a:"Lizzo",bpm:148},{t:"Shivers",a:"Ed Sheeran",bpm:141},
+      {t:"Juice",a:"Lizzo",bpm:150},{t:"Blinding Lights",a:"The Weeknd",bpm:171},
     ],
-    hiphop: [
-      {t:"HUMBLE.",a:"Kendrick Lamar",bpm:150},
-      {t:"Lose Yourself",a:"Eminem",bpm:171},
-      {t:"Till I Collapse",a:"Eminem",bpm:171},
-      {t:"Not Afraid",a:"Eminem",bpm:86},
-      {t:"Can't Hold Us",a:"Macklemore",bpm:146},
-      {t:"Numb/Encore",a:"Jay-Z & Linkin Park",bpm:140},
-      {t:"Pump It",a:"Black Eyed Peas",bpm:140},
-      {t:"Good Feeling",a:"Flo Rida",bpm:128},
-      {t:"Wild Ones",a:"Flo Rida",bpm:140},
-      {t:"Run the World (Girls)",a:"Beyoncé",bpm:127},
-      {t:"Formation",a:"Beyoncé",bpm:155},
-      {t:"Power",a:"Kanye West",bpm:89},
+    hiphop:[
+      {t:"HUMBLE.",a:"Kendrick Lamar",bpm:150},{t:"Lose Yourself",a:"Eminem",bpm:171},
+      {t:"Till I Collapse",a:"Eminem",bpm:171},{t:"Can't Hold Us",a:"Macklemore",bpm:146},
+      {t:"Pump It",a:"Black Eyed Peas",bpm:140},{t:"Formation",a:"Beyoncé",bpm:155},
+      {t:"Good Feeling",a:"Flo Rida",bpm:128},{t:"Wild Ones",a:"Flo Rida",bpm:140},
     ],
-    rock: [
-      {t:"Don't Stop Me Now",a:"Queen",bpm:156},
-      {t:"Everlong",a:"Foo Fighters",bpm:156},
-      {t:"Seek & Destroy",a:"Metallica",bpm:140},
-      {t:"Master of Puppets",a:"Metallica",bpm:220},
-      {t:"Enter Sandman",a:"Metallica",bpm:123},
-      {t:"Thunderstruck",a:"AC/DC",bpm:133},
-      {t:"Crazy Train",a:"Ozzy Osbourne",bpm:138},
-      {t:"Jump",a:"Van Halen",bpm:131},
-      {t:"We Will Rock You",a:"Queen",bpm:81},
-      {t:"Welcome to the Jungle",a:"Guns N' Roses",bpm:123},
-      {t:"Run to the Hills",a:"Iron Maiden",bpm:172},
-      {t:"Back in Black",a:"AC/DC",bpm:92},
+    rock:[
+      {t:"Don't Stop Me Now",a:"Queen",bpm:156},{t:"Everlong",a:"Foo Fighters",bpm:156},
+      {t:"Seek & Destroy",a:"Metallica",bpm:140},{t:"Thunderstruck",a:"AC/DC",bpm:133},
+      {t:"Crazy Train",a:"Ozzy Osbourne",bpm:138},{t:"Jump",a:"Van Halen",bpm:131},
+      {t:"Welcome to the Jungle",a:"Guns N' Roses",bpm:123},{t:"Back in Black",a:"AC/DC",bpm:92},
     ],
-    electronic: [
-      {t:"Wake Me Up",a:"Avicii",bpm:124},
-      {t:"Animals",a:"Martin Garrix",bpm:128},
-      {t:"Levels",a:"Avicii",bpm:126},
-      {t:"Bangarang",a:"Skrillex",bpm:110},
-      {t:"Clarity",a:"Zedd",bpm:128},
-      {t:"Beautiful Now",a:"Zedd",bpm:128},
-      {t:"Lean On",a:"Major Lazer & DJ Snake",bpm:98},
-      {t:"Turn Down for What",a:"DJ Snake & Lil Jon",bpm:100},
-      {t:"Titanium",a:"David Guetta ft. Sia",bpm:126},
-      {t:"She Wolf (Falling to Pieces)",a:"David Guetta ft. Sia",bpm:130},
-      {t:"I Gotta Feeling",a:"Black Eyed Peas",bpm:128},
+    electronic:[
+      {t:"Wake Me Up",a:"Avicii",bpm:124},{t:"Animals",a:"Martin Garrix",bpm:128},
+      {t:"Clarity",a:"Zedd",bpm:128},{t:"Bangarang",a:"Skrillex",bpm:110},
+      {t:"Titanium",a:"David Guetta ft. Sia",bpm:126},{t:"I Gotta Feeling",a:"Black Eyed Peas",bpm:128},
+      {t:"She Wolf",a:"David Guetta ft. Sia",bpm:130},{t:"Beautiful Now",a:"Zedd",bpm:128},
     ],
-    rnb: [
-      {t:"Formation",a:"Beyoncé",bpm:155},
-      {t:"Run the World (Girls)",a:"Beyoncé",bpm:127},
-      {t:"HUMBLE.",a:"Kendrick Lamar",bpm:150},
-      {t:"Good as Hell",a:"Lizzo",bpm:148},
-      {t:"Juice",a:"Lizzo",bpm:150},
-      {t:"The Way You Make Me Feel",a:"Michael Jackson",bpm:114},
-      {t:"Don't Stop 'Til You Get Enough",a:"Michael Jackson",bpm:112},
-      {t:"P.Y.T.",a:"Michael Jackson",bpm:116},
-      {t:"Kiss",a:"Prince",bpm:109},
-      {t:"Let's Go Crazy",a:"Prince",bpm:167},
+    rnb:[
+      {t:"Formation",a:"Beyoncé",bpm:155},{t:"HUMBLE.",a:"Kendrick Lamar",bpm:150},
+      {t:"Good as Hell",a:"Lizzo",bpm:148},{t:"Juice",a:"Lizzo",bpm:150},
+      {t:"Let's Go Crazy",a:"Prince",bpm:167},{t:"Run the World",a:"Beyoncé",bpm:127},
     ],
   },
   sprint: {
-    all: [
-      {t:"Blinding Lights",a:"The Weeknd",bpm:171},
-      {t:"Lose Yourself",a:"Eminem",bpm:171},
-      {t:"Till I Collapse",a:"Eminem",bpm:171},
-      {t:"Good 4 U",a:"Olivia Rodrigo",bpm:166},
-      {t:"Roar",a:"Katy Perry",bpm:180},
-      {t:"Run to the Hills",a:"Iron Maiden",bpm:172},
-      {t:"Master of Puppets",a:"Metallica",bpm:212},
-      {t:"Killing in the Name",a:"Rage Against the Machine",bpm:168},
-      {t:"Bulls on Parade",a:"Rage Against the Machine",bpm:168},
-      {t:"Bombtrack",a:"Rage Against the Machine",bpm:168},
-      {t:"Sabotage",a:"Beastie Boys",bpm:168},
-      {t:"Intergalactic",a:"Beastie Boys",bpm:96},
-      {t:"Jump Around",a:"House of Pain",bpm:180},
-      {t:"All I Do Is Win",a:"DJ Khaled",bpm:90},
-      {t:"Power",a:"Kanye West",bpm:89},
+    all:[
+      {t:"Blinding Lights",a:"The Weeknd",bpm:171},{t:"Lose Yourself",a:"Eminem",bpm:171},
+      {t:"Till I Collapse",a:"Eminem",bpm:171},{t:"Good 4 U",a:"Olivia Rodrigo",bpm:166},
+      {t:"Roar",a:"Katy Perry",bpm:180},{t:"Run to the Hills",a:"Iron Maiden",bpm:172},
+      {t:"Killing in the Name",a:"Rage Against the Machine",bpm:168},{t:"Sabotage",a:"Beastie Boys",bpm:168},
+      {t:"Jump Around",a:"House of Pain",bpm:180},{t:"Basket Case",a:"Green Day",bpm:179},
+      {t:"American Idiot",a:"Green Day",bpm:186},{t:"I Write Sins Not Tragedies",a:"Panic! At The Disco",bpm:175},
     ],
-    pop: [
-      {t:"Blinding Lights",a:"The Weeknd",bpm:171},
-      {t:"Good 4 U",a:"Olivia Rodrigo",bpm:166},
-      {t:"Roar",a:"Katy Perry",bpm:180},
-      {t:"Shake It Off",a:"Taylor Swift",bpm:160},
-      {t:"22",a:"Taylor Swift",bpm:104},
-      {t:"drivers license",a:"Olivia Rodrigo",bpm:94},
-      {t:"Traitor",a:"Olivia Rodrigo",bpm:92},
-      {t:"Brutal",a:"Olivia Rodrigo",bpm:170},
-      {t:"brutal",a:"Olivia Rodrigo",bpm:170},
-      {t:"Save Your Tears",a:"The Weeknd",bpm:118},
-      {t:"Starboy",a:"The Weeknd",bpm:186},
+    pop:[
+      {t:"Blinding Lights",a:"The Weeknd",bpm:171},{t:"Good 4 U",a:"Olivia Rodrigo",bpm:166},
+      {t:"Roar",a:"Katy Perry",bpm:180},{t:"Brutal",a:"Olivia Rodrigo",bpm:170},
+      {t:"Starboy",a:"The Weeknd",bpm:186},{t:"Shake It Off",a:"Taylor Swift",bpm:160},
     ],
-    hiphop: [
-      {t:"Lose Yourself",a:"Eminem",bpm:171},
-      {t:"Till I Collapse",a:"Eminem",bpm:171},
-      {t:"Rap God",a:"Eminem",bpm:155},
-      {t:"Without Me",a:"Eminem",bpm:141},
-      {t:"Sabotage",a:"Beastie Boys",bpm:168},
-      {t:"Jump Around",a:"House of Pain",bpm:180},
-      {t:"Run-D.M.C. vs. Jason Nevins",a:"Run-D.M.C.",bpm:125},
-      {t:"It's Like That",a:"Run-D.M.C.",bpm:112},
-      {t:"Killing in the Name",a:"Rage Against the Machine",bpm:168},
+    hiphop:[
+      {t:"Lose Yourself",a:"Eminem",bpm:171},{t:"Till I Collapse",a:"Eminem",bpm:171},
+      {t:"Sabotage",a:"Beastie Boys",bpm:168},{t:"Jump Around",a:"House of Pain",bpm:180},
+      {t:"Killing in the Name",a:"Rage Against the Machine",bpm:168},{t:"Rap God",a:"Eminem",bpm:155},
     ],
-    rock: [
-      {t:"Run to the Hills",a:"Iron Maiden",bpm:172},
-      {t:"Master of Puppets",a:"Metallica",bpm:212},
-      {t:"Killing in the Name",a:"Rage Against the Machine",bpm:168},
-      {t:"Bulls on Parade",a:"Rage Against the Machine",bpm:168},
-      {t:"Holiday",a:"Green Day",bpm:152},
-      {t:"Basket Case",a:"Green Day",bpm:179},
-      {t:"American Idiot",a:"Green Day",bpm:186},
-      {t:"Welcome to the Black Parade",a:"My Chemical Romance",bpm:99},
-      {t:"Helena",a:"My Chemical Romance",bpm:101},
-      {t:"I Write Sins Not Tragedies",a:"Panic! At The Disco",bpm:175},
+    rock:[
+      {t:"Run to the Hills",a:"Iron Maiden",bpm:172},{t:"Killing in the Name",a:"Rage Against the Machine",bpm:168},
+      {t:"Basket Case",a:"Green Day",bpm:179},{t:"American Idiot",a:"Green Day",bpm:186},
+      {t:"I Write Sins Not Tragedies",a:"Panic! At The Disco",bpm:175},{t:"Bulls on Parade",a:"Rage Against the Machine",bpm:168},
     ],
-    electronic: [
-      {t:"Levels",a:"Avicii",bpm:126},
-      {t:"Titanium",a:"David Guetta ft. Sia",bpm:126},
-      {t:"Clarity",a:"Zedd",bpm:128},
-      {t:"Bangarang",a:"Skrillex",bpm:110},
-      {t:"Scary Monsters and Nice Sprites",a:"Skrillex",bpm:140},
-      {t:"Turn Down for What",a:"DJ Snake & Lil Jon",bpm:100},
-      {t:"Twerk",a:"DJ Snake",bpm:95},
-      {t:"Harlem Shake",a:"Baauer",bpm:100},
-      {t:"Pursuit of Happiness",a:"Steve Aoki",bpm:128},
+    electronic:[
+      {t:"Scary Monsters and Nice Sprites",a:"Skrillex",bpm:140},{t:"Bangarang",a:"Skrillex",bpm:110},
+      {t:"Turn Down for What",a:"DJ Snake",bpm:100},{t:"Harlem Shake",a:"Baauer",bpm:100},
+      {t:"Pursuit of Happiness",a:"Steve Aoki",bpm:128},{t:"Clarity",a:"Zedd",bpm:128},
     ],
-    rnb: [
-      {t:"Blinding Lights",a:"The Weeknd",bpm:171},
-      {t:"Starboy",a:"The Weeknd",bpm:186},
-      {t:"Good 4 U",a:"Olivia Rodrigo",bpm:166},
-      {t:"Let's Go Crazy",a:"Prince",bpm:167},
-      {t:"Kiss",a:"Prince",bpm:109},
+    rnb:[
+      {t:"Blinding Lights",a:"The Weeknd",bpm:171},{t:"Starboy",a:"The Weeknd",bpm:186},
+      {t:"Good 4 U",a:"Olivia Rodrigo",bpm:166},{t:"Let's Go Crazy",a:"Prince",bpm:167},
       {t:"Super Freak",a:"Rick James",bpm:111},
-      {t:"Give It to Me Baby",a:"Rick James",bpm:105},
     ],
   }
 };
 
-const ZONES = {
-  walk:   {min:85, max:135,label:"Yürüyüş",color:"#22c55e",emoji:"🚶"},
-  run:    {min:135,max:165,label:"Koşu",    color:"#f97316",emoji:"🏃"},
-  sprint: {min:165,max:230,label:"Sprint",  color:"#ef4444",emoji:"⚡"},
+const ZONES={
+  walk:  {label:"Yürüyüş",color:"#22c55e",emoji:"🚶"},
+  run:   {label:"Koşu",   color:"#f97316",emoji:"🏃"},
+  sprint:{label:"Sprint", color:"#ef4444",emoji:"⚡"},
 };
 
-let selMode_=null, selGenre_=null, selRatio_=null;
+let selMode_=null,selGenre_=null,selRatio_=null;
 let queue=[],curIdx=0,secLeft=0,totTime=0,elapsed=0,running=false,timer=null;
+let ytPlayer=null,ytReady=false,ytCache={};
 const WARN=15;
-const SONG_DUR=()=>180+Math.floor(Math.random()*120);
+const SONG_DUR=()=>200+Math.floor(Math.random()*100);
 
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
-
 function selMode(m){
   selMode_=m;
   document.getElementById('btn-run').className='mode-btn'+(m==='run'?' sel-run':'');
@@ -467,27 +332,38 @@ function selMode(m){
   ['d11','d12a','d12b','d13a','d13b','d13c'].forEach(id=>{const el=document.getElementById(id);if(el)el.className=cls;});
   checkReady();
 }
-
-function selGenre(btn,g){
-  selGenre_=g;
-  document.querySelectorAll('.genre-btn').forEach(b=>b.classList.remove('sel'));
-  btn.classList.add('sel');
-  checkReady();
-}
-
-function selRatio(btn,id,w,a){
-  selRatio_={id,walk:w,active:a};
-  document.querySelectorAll('.ratio-btn').forEach(b=>b.classList.remove('sel'));
-  btn.classList.add('sel');
-  checkReady();
-}
-
+function selGenre(btn,g){selGenre_=g;document.querySelectorAll('.genre-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');checkReady();}
+function selRatio(btn,id,w,a){selRatio_={id,walk:w,active:a};document.querySelectorAll('.ratio-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');checkReady();}
 function checkReady(){document.getElementById('start-btn').disabled=!(selMode_&&selGenre_&&selRatio_);}
 
-function getSongs(zone){
-  const g = selGenre_||'all';
-  const pool = DB[zone][g] || DB[zone]['all'];
-  return [...pool].sort(()=>Math.random()-.5);
+// YouTube IFrame API
+window.onYouTubeIframeAPIReady=function(){
+  ytPlayer=new YT.Player('yt-player',{
+    height:'100%',width:'100%',
+    playerVars:{autoplay:1,controls:1,rel:0,modestbranding:1,playsinline:1},
+    events:{
+      onReady:()=>{ytReady=true;},
+      onStateChange:(e)=>{
+        // YT.PlayerState.ENDED = 0
+        if(e.data===0) skipNext();
+      }
+    }
+  });
+};
+// Load YouTube API
+(function(){const s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';document.head.appendChild(s);})();
+
+async function searchYT(title,artist){
+  const q=encodeURIComponent(`${title} ${artist} official`);
+  const key=q;
+  if(ytCache[key]) return ytCache[key];
+  try{
+    const res=await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${q}&type=video&videoCategoryId=10&maxResults=1&key=${YT_KEY}`);
+    const data=await res.json();
+    const vid=data.items?.[0]?.id?.videoId||null;
+    ytCache[key]=vid;
+    return vid;
+  }catch{return null;}
 }
 
 function pick(pool,count,usedTs){
@@ -496,19 +372,50 @@ function pick(pool,count,usedTs){
   return [...src].sort(()=>Math.random()-.5).slice(0,count);
 }
 
+function getSongs(zone){
+  const g=selGenre_||'all';
+  return [...(DB[zone][g]||DB[zone].all)].sort(()=>Math.random()-.5);
+}
+
 function startWorkout(){
   const walkSongs=getSongs('walk');
   const activeSongs=getSongs(selMode_);
-  if(!walkSongs.length||!activeSongs.length){
-    const eb=document.getElementById('err');eb.style.display='block';eb.textContent='⚠ Şarkı bulunamadı.';return;
-  }
   queue=[];const usedTs=[];
   for(let r=0;r<6;r++){
     pick(walkSongs,selRatio_.walk,usedTs).forEach(s=>{queue.push({zone:'walk',song:s,dur:SONG_DUR()});usedTs.push(s.t);});
     pick(activeSongs,selRatio_.active,usedTs).forEach(s=>{queue.push({zone:selMode_,song:s,dur:SONG_DUR()});usedTs.push(s.t);});
   }
   curIdx=0;secLeft=queue[0].dur;totTime=queue[0].dur;elapsed=0;running=true;
-  render();startTimer();show('s-workout');
+  show('s-workout');
+  loadAndPlay(0);
+  startTimer();
+}
+
+async function loadAndPlay(idx){
+  if(idx>=queue.length) return;
+  const {song}=queue[idx];
+  showYTOverlay(true,'Şarkı aranıyor...');
+  const vid=await searchYT(song.t,song.a);
+  if(vid){
+    showYTOverlay(false);
+    if(ytReady&&ytPlayer){
+      ytPlayer.loadVideoById(vid);
+    }
+  } else {
+    showYTOverlay(true,'Video bulunamadı');
+  }
+  render();
+  // Prefetch next
+  if(queue[idx+1]){
+    const ns=queue[idx+1].song;
+    searchYT(ns.t,ns.a);
+  }
+}
+
+function showYTOverlay(show,msg=''){
+  const ov=document.getElementById('yt-overlay');
+  ov.style.display=show?'flex':'none';
+  if(msg) ov.querySelector('span').textContent=msg;
 }
 
 function startTimer(){
@@ -519,17 +426,25 @@ function startTimer(){
       curIdx++;
       if(curIdx>=queue.length){stopWorkout();return;}
       secLeft=queue[curIdx].dur;totTime=queue[curIdx].dur;
+      loadAndPlay(curIdx);
     }
     render();
   },1000);
 }
 
-function stopWorkout(){clearInterval(timer);running=false;show('s-setup');}
+function stopWorkout(){
+  clearInterval(timer);running=false;
+  if(ytPlayer&&ytReady) ytPlayer.stopVideo();
+  show('s-setup');
+}
 
 function skipNext(){
+  clearInterval(timer);
   curIdx++;
   if(curIdx>=queue.length){stopWorkout();return;}
-  secLeft=queue[curIdx].dur;totTime=queue[curIdx].dur;render();
+  secLeft=queue[curIdx].dur;totTime=queue[curIdx].dur;
+  loadAndPlay(curIdx);
+  startTimer();
 }
 
 function render(){
@@ -537,31 +452,23 @@ function render(){
   const {zone,song}=slot;
   const z=ZONES[zone];
   const warn=secLeft<=WARN;
-  const circ=2*Math.PI*52,pct=Math.min(song.bpm/210,1);
-
-  document.getElementById('arc').setAttribute('stroke-dasharray',`${circ*pct} ${circ*(1-pct)}`);
-  document.getElementById('arc').setAttribute('stroke',z.color);
-  document.getElementById('bnum').textContent=song.bpm;
-  document.getElementById('zlbl').textContent=z.emoji+' '+z.label;
-  document.getElementById('zlbl').style.color=z.color;
-
-  const sc=document.getElementById('scard');
-  sc.style.setProperty('--zc',z.color);
-  sc.classList.toggle('warn',warn);
 
   const badge=document.getElementById('zbadge');
   badge.textContent=z.emoji+' '+z.label.toUpperCase();
-  badge.style.cssText=`background:${z.color}22;color:${z.color};display:inline-flex;align-items:center;padding:4px 12px;border-radius:8px;font-size:12px;font-weight:700;letter-spacing:1px;margin-bottom:12px`;
+  badge.style.cssText=`background:${z.color}22;color:${z.color};display:inline-flex;align-items:center;padding:4px 12px;border-radius:8px;font-size:12px;font-weight:700;letter-spacing:1px`;
+
+  document.getElementById('bpm-badge').textContent=song.bpm+' BPM';
+  document.getElementById('bpm-badge').style.color=z.color;
 
   const wl=document.getElementById('wlbl');
   wl.style.display=warn?'block':'none';wl.style.color=z.color;
 
-  document.getElementById('sart').style.cssText=`width:52px;height:52px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;background:${z.color}22;color:${z.color}`;
-  document.getElementById('sart').textContent='♪';
+  const si=document.getElementById('song-info');
+  si.style.setProperty('--zc',z.color);
+  si.classList.toggle('warn',warn);
+
   document.getElementById('stitle').textContent=song.t;
   document.getElementById('sartist').textContent=song.a;
-  document.getElementById('sbpm').textContent=song.bpm+' BPM';
-  document.getElementById('sbpm').style.color=z.color;
 
   const prog=1-secLeft/totTime;
   const pf=document.getElementById('pfill');
@@ -574,17 +481,16 @@ function render(){
   document.getElementById('elapsed').textContent=`⏱ ${em}:${String(es).padStart(2,'0')}`;
 
   const next=queue[curIdx+1];
+  const un=document.getElementById('upnext');
   if(next){
     const nz=ZONES[next.zone];
-    document.getElementById('nart').style.cssText=`width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;background:${nz.color}22;color:${nz.color}`;
-    document.getElementById('nart').textContent='♪';
     document.getElementById('ntitle').innerHTML=`${next.song.t} <span style="color:#555">· ${next.song.a}</span>`;
     const np=document.getElementById('npill');
     np.textContent=nz.emoji+' '+nz.label;
     np.style.cssText=`background:${nz.color}22;color:${nz.color};border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;white-space:nowrap`;
-    document.getElementById('upnext').style.display='flex';
+    un.style.display='flex';
   } else {
-    document.getElementById('upnext').style.display='none';
+    un.style.display='none';
   }
 
   document.getElementById('tlmeta').textContent=`${curIdx+1} / ${queue.length} şarkı`;
