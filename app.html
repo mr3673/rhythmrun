@@ -220,8 +220,7 @@
 </div>
 
 <script>
-const API_KEY = "01d95501999cadb1d1c2f45f7f843072";
-const API_BASE = "https://api.getsongbpm.com";
+const PROXY = "/.netlify/functions/bpm";
 
 const ZONES = {
   walk:   { min:85,  max:115, label:"Yürüyüş", color:"#22c55e", emoji:"🚶", targets:[100,105,95] },
@@ -275,7 +274,7 @@ function checkReady() {
 // --- API ---
 async function fetchByBpm(bpm) {
   if (songCache[bpm]) return songCache[bpm];
-  const res = await fetch(`${API_BASE}/tempo/?api_key=${API_KEY}&bpm=${bpm}&limit=40`);
+  const res = await fetch(`${PROXY}?endpoint=tempo&bpm=${bpm}&limit=40`);
   const data = await res.json();
   const songs = (data.tempo || []).map(s => ({
     id: s.song_id,
