@@ -33,6 +33,10 @@
     .dw{width:14px;height:14px;border-radius:3px;background:#22c55e33;border:1.5px solid #22c55e}
     .da-run{width:14px;height:14px;border-radius:3px;background:#f9731633;border:1.5px solid #f97316}
     .da-sprint{width:14px;height:14px;border-radius:3px;background:#ef444433;border:1.5px solid #ef4444}
+    .genre-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:24px}
+    .genre-btn{background:#12122a;border:1px solid #2a2a4a;border-radius:10px;padding:10px 8px;cursor:pointer;text-align:center;color:#bbb;font-size:13px;font-family:inherit;transition:all 0.2s}
+    .genre-btn:hover{transform:translateY(-1px)}
+    .genre-btn.sel{border-color:#a855f7;background:#a855f720;color:white;font-weight:700}
     .info-box{background:#12122a;border:1px solid #2a2a4a;border-radius:12px;padding:12px 14px;margin-bottom:20px;display:flex;gap:10px;font-size:12px;color:#888;line-height:1.6}
     .err-box{background:#ef444415;border:1px solid #ef444440;border-radius:10px;padding:10px 14px;margin-bottom:16px;color:#ef4444;font-size:13px;display:none}
     .start-btn{width:100%;background:linear-gradient(135deg,#a855f7,#6366f1);color:white;border:none;border-radius:16px;padding:16px 0;font-size:16px;font-weight:700;font-family:inherit;cursor:pointer;transition:all 0.2s}
@@ -53,7 +57,6 @@
     .wlbl{font-size:12px;font-weight:700;animation:pulse .8s infinite}
     .srow{display:flex;align-items:center;gap:12px;margin-bottom:14px}
     .art{width:52px;height:52px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;overflow:hidden}
-    .art img{width:100%;height:100%;object-fit:cover}
     .stitle{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .sartist{font-size:12px;color:#aaa;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .sbpm{font-size:13px;font-weight:700;font-family:'Space Mono',monospace;white-space:nowrap}
@@ -75,7 +78,6 @@
     .scnt{font-size:11px;font-family:'Space Mono',monospace;color:#888;margin-top:2px}
     .credit{text-align:center;margin-top:4px}
     .credit a{color:#333;font-size:11px;text-decoration:none}
-    .credit a:hover{color:#666}
     @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
     @keyframes spin{to{transform:rotate(360deg)}}
@@ -97,6 +99,16 @@
     </button>
   </div>
 
+  <div class="sec">Müzik türü</div>
+  <div class="genre-grid">
+    <button class="genre-btn" onclick="selGenre('all')">🎵 Hepsi</button>
+    <button class="genre-btn" onclick="selGenre('pop')">💫 Pop</button>
+    <button class="genre-btn" onclick="selGenre('hip-hop')">🎤 Hip-Hop</button>
+    <button class="genre-btn" onclick="selGenre('rock')">🎸 Rock</button>
+    <button class="genre-btn" onclick="selGenre('electronic')">🎧 Electronic</button>
+    <button class="genre-btn" onclick="selGenre('r-b')">🎷 R&B</button>
+  </div>
+
   <div class="sec">Yürüyüş / Aktif oran</div>
   <div class="ratio-list">
     <button class="ratio-btn" onclick="selRatio('1-1',1,1)">
@@ -113,10 +125,6 @@
     </button>
   </div>
 
-  <div class="info-box">
-    <span>💡</span>
-    <span>Şarkılar <strong style="color:#bbb">MusicBrainz</strong>'den çekiliyor. Her şarkı sonuna kadar çalınır, <strong style="color:#bbb">15 sn önce</strong> uyarı gelir.</span>
-  </div>
   <div class="err-box" id="err"></div>
   <button class="start-btn" id="start-btn" onclick="startWorkout()" disabled>▶ Antrenmanı Başlat</button>
 </div>
@@ -149,7 +157,7 @@
       <div class="wlbl" id="wlbl" style="display:none">⚠ Hazır ol!</div>
     </div>
     <div class="srow">
-      <div class="art" id="sart">♪</div>
+      <div class="art" id="sart" style="background:#a855f722;color:#a855f7">♪</div>
       <div style="flex:1;min-width:0">
         <div class="stitle" id="stitle">—</div>
         <div class="sartist" id="sartist">—</div>
@@ -164,9 +172,9 @@
       <button class="skip-btn" onclick="skipNext()">sıradaki ⏭</button>
     </div>
   </div>
-  <div class="upnext" id="upnext">
+  <div class="upnext" id="upnext" style="display:none">
     <span class="unl">Sıradaki</span>
-    <div class="art" id="nart" style="width:32px;height:32px;font-size:14px">♪</div>
+    <div class="art" id="nart" style="width:32px;height:32px;font-size:14px;background:#a855f722;color:#a855f7">♪</div>
     <span class="untitle" id="ntitle">—</span>
     <div class="zpill" id="npill">—</div>
   </div>
@@ -179,36 +187,35 @@
 </div>
 
 <script>
-const MB = "https://musicbrainz.org/ws/2";
-const AB = "https://acousticbrainz.org/api/v1";
-const UA = "RhythmRun/1.0 (https://rhythmrun-app.netlify.app)";
-
+const PROXY = "/.netlify/functions/bpm";
 const ZONES = {
-  walk:   {min:85, max:125, label:"Yürüyüş", color:"#22c55e", emoji:"🚶"},
-  run:    {min:135,max:165, label:"Koşu",     color:"#f97316", emoji:"🏃"},
-  sprint: {min:168,max:190, label:"Sprint",   color:"#ef4444", emoji:"⚡"},
+  walk:   {min:85, max:125,label:"Yürüyüş",color:"#22c55e",emoji:"🚶",bpms:[100,105,95,110,90]},
+  run:    {min:135,max:165,label:"Koşu",    color:"#f97316",emoji:"🏃",bpms:[150,155,145,160,140]},
+  sprint: {min:168,max:190,label:"Sprint",  color:"#ef4444",emoji:"⚡",bpms:[175,170,180,165,185]},
 };
 
-// Popular artists per zone for search queries
-const WALK_ARTISTS   = ["dua lipa","bruno mars","justin timberlake","pharrell williams","mark ronson","lizzo","harry styles","ed sheeran"];
-const RUN_ARTISTS    = ["kendrick lamar","eminem","queen","black eyed peas","kanye west","lady gaga","david guetta","calvin harris"];
-const SPRINT_ARTISTS = ["the weeknd","olivia rodrigo","billie eilish","post malone","drake","ariana grande","taylor swift","twenty one pilots"];
-
-let selMode_ = null, selRatio_ = null;
-let queue = [], curIdx = 0, secLeft = 0, totTime = 0, elapsed = 0;
-let running = false, timer = null;
-const WARN = 15;
-const SONG_DUR = () => 180 + Math.floor(Math.random()*120);
-const mbCache = {}, abCache = {};
+let selMode_=null, selGenre_=null, selRatio_=null;
+let queue=[],curIdx=0,secLeft=0,totTime=0,elapsed=0,running=false,timer=null;
+const WARN=15;
+const SONG_DUR=()=>180+Math.floor(Math.random()*120);
+const cache={};
 
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function setMsg(t){document.getElementById('load-msg').textContent=t;}
 
 function selMode(m){
   selMode_=m;
-  document.getElementById('btn-run').className   ='mode-btn'+(m==='run'?' sel-run':'');
+  document.getElementById('btn-run').className='mode-btn'+(m==='run'?' sel-run':'');
   document.getElementById('btn-sprint').className='mode-btn'+(m==='sprint'?' sel-sprint':'');
-  const cls = m==='sprint'?'da-sprint':'da-run';
+  const cls=m==='sprint'?'da-sprint':'da-run';
   ['d11','d12a','d12b','d13a','d13b','d13c'].forEach(id=>{const el=document.getElementById(id);if(el)el.className=cls;});
+  checkReady();
+}
+
+function selGenre(g){
+  selGenre_=g;
+  document.querySelectorAll('.genre-btn').forEach(b=>b.classList.remove('sel'));
+  event.target.classList.add('sel');
   checkReady();
 }
 
@@ -218,68 +225,37 @@ function selRatio(id,w,a){
   checkReady();
 }
 
-function checkReady(){document.getElementById('start-btn').disabled=!(selMode_&&selRatio_);}
+function checkReady(){document.getElementById('start-btn').disabled=!(selMode_&&selGenre_&&selRatio_);}
 
-function setMsg(t){document.getElementById('load-msg').textContent=t;}
+async function fetchSongs(zone){
+  const z=ZONES[zone];
+  const songs=[];
+  const usedTitles=new Set();
 
-// Fetch recordings from MusicBrainz for an artist
-async function mbSearch(artist, limit=10){
-  if(mbCache[artist]) return mbCache[artist];
-  const q = encodeURIComponent(`artist:"${artist}"`);
-  const url = `${MB}/recording/?query=${q}&limit=${limit}&fmt=json`;
-  const res = await fetch(url, {headers:{'User-Agent':UA}});
-  if(!res.ok) return [];
-  const data = await res.json();
-  const recs = (data.recordings||[]).map(r=>({
-    id: r.id,
-    title: r.title,
-    artist: r['artist-credit']?.[0]?.name ?? artist,
-    art: null,
-  }));
-  mbCache[artist] = recs;
-  return recs;
-}
-
-// Fetch BPM from AcousticBrainz
-async function abBpm(mbid){
-  if(abCache[mbid]!==undefined) return abCache[mbid];
-  try{
-    const res = await fetch(`${AB}/low-level?recording_ids=${mbid}`);
-    if(!res.ok){abCache[mbid]=null;return null;}
-    const data = await res.json();
-    const bpm = data[mbid]?.['0']?.rhythm?.bpm ?? null;
-    abCache[mbid] = bpm ? Math.round(bpm) : null;
-    return abCache[mbid];
-  } catch{abCache[mbid]=null;return null;}
-}
-
-async function fetchZoneSongs(zone){
-  const z = ZONES[zone];
-  const artists = zone==='walk' ? WALK_ARTISTS : zone==='run' ? RUN_ARTISTS : SPRINT_ARTISTS;
-  const songs = [];
-
-  for(const artist of artists){
-    if(songs.length >= 12) break;
-    setMsg(`"${artist}" şarkıları aranıyor...`);
-    const recs = await mbSearch(artist, 15);
-
-    // Check BPM for each recording
-    for(const rec of recs){
-      if(songs.length >= 12) break;
-      const bpm = await abBpm(rec.id);
-      if(bpm && bpm >= z.min && bpm <= z.max){
-        songs.push({...rec, bpm});
-      }
+  for(const bpm of z.bpms){
+    if(songs.length>=15) break;
+    const key=`${bpm}-${selGenre_}`;
+    let data=cache[key];
+    if(!data){
+      setMsg(`${bpm} BPM şarkılar aranıyor...`);
+      const res=await fetch(`${PROXY}?bpm=${bpm}&genre=${selGenre_}`);
+      data=await res.json();
+      cache[key]=data;
     }
-    // Small delay to respect rate limit
-    await new Promise(r=>setTimeout(r,200));
+    (data.songs||[]).forEach(s=>{
+      const k=`${s.title}|${s.artist}`;
+      if(!usedTitles.has(k)){
+        usedTitles.add(k);
+        songs.push({...s,id:k,bpm});
+      }
+    });
   }
   return songs;
 }
 
-function pick(pool, count, usedIds){
-  const avail = pool.filter(s=>!usedIds.includes(s.id));
-  const src = avail.length>=count ? avail : pool;
+function pick(pool,count,usedIds){
+  const avail=pool.filter(s=>!usedIds.includes(s.id));
+  const src=avail.length>=count?avail:pool;
   return [...src].sort(()=>Math.random()-.5).slice(0,count);
 }
 
@@ -288,24 +264,20 @@ async function startWorkout(){
   show('s-loading');
   try{
     setMsg('Yürüyüş şarkıları aranıyor...');
-    const walkSongs = await fetchZoneSongs('walk');
-
+    const walkSongs=await fetchSongs('walk');
     setMsg((selMode_==='sprint'?'Sprint':'Koşu')+' şarkıları aranıyor...');
-    const activeSongs = await fetchZoneSongs(selMode_);
+    const activeSongs=await fetchSongs(selMode_);
 
-    if(!walkSongs.length || !activeSongs.length) throw new Error('Yeterli şarkı bulunamadı. Lütfen tekrar deneyin.');
+    if(!walkSongs.length||!activeSongs.length) throw new Error('Şarkı bulunamadı. Farklı bir tür deneyin.');
 
-    setMsg('Playlist hazırlanıyor...');
     queue=[];
     const used=[];
     for(let r=0;r<5;r++){
       pick(walkSongs,selRatio_.walk,used).forEach(s=>{queue.push({zone:'walk',song:s,dur:SONG_DUR()});used.push(s.id);});
       pick(activeSongs,selRatio_.active,used).forEach(s=>{queue.push({zone:selMode_,song:s,dur:SONG_DUR()});used.push(s.id);});
     }
-    curIdx=0; secLeft=queue[0].dur; totTime=queue[0].dur; elapsed=0; running=true;
-    render();
-    startTimer();
-    show('s-workout');
+    curIdx=0;secLeft=queue[0].dur;totTime=queue[0].dur;elapsed=0;running=true;
+    render();startTimer();show('s-workout');
   } catch(e){
     show('s-setup');
     const eb=document.getElementById('err');
@@ -317,11 +289,11 @@ async function startWorkout(){
 function startTimer(){
   clearInterval(timer);
   timer=setInterval(()=>{
-    secLeft--; elapsed++;
+    secLeft--;elapsed++;
     if(secLeft<=0){
       curIdx++;
       if(curIdx>=queue.length){stopWorkout();return;}
-      secLeft=queue[curIdx].dur; totTime=queue[curIdx].dur;
+      secLeft=queue[curIdx].dur;totTime=queue[curIdx].dur;
     }
     render();
   },1000);
@@ -332,17 +304,15 @@ function stopWorkout(){clearInterval(timer);running=false;show('s-setup');}
 function skipNext(){
   curIdx++;
   if(curIdx>=queue.length){stopWorkout();return;}
-  secLeft=queue[curIdx].dur; totTime=queue[curIdx].dur;
-  render();
+  secLeft=queue[curIdx].dur;totTime=queue[curIdx].dur;render();
 }
 
 function render(){
-  const slot=queue[curIdx]; if(!slot)return;
+  const slot=queue[curIdx];if(!slot)return;
   const {zone,song}=slot;
   const z=ZONES[zone];
   const warn=secLeft<=WARN;
-  const circ=2*Math.PI*52;
-  const pct=Math.min(song.bpm/210,1);
+  const circ=2*Math.PI*52,pct=Math.min(song.bpm/210,1);
 
   document.getElementById('arc').setAttribute('stroke-dasharray',`${circ*pct} ${circ*(1-pct)}`);
   document.getElementById('arc').setAttribute('stroke',z.color);
@@ -362,10 +332,8 @@ function render(){
   wl.style.display=warn?'block':'none';
   wl.style.color=z.color;
 
-  const artEl=document.getElementById('sart');
-  artEl.style.background=z.color+'22';
-  artEl.innerHTML=song.art?`<img src="${song.art}" onerror="this.parentNode.innerHTML='♪'" alt="">`:`<span style="color:${z.color}">♪</span>`;
-
+  document.getElementById('sart').style.background=z.color+'22';
+  document.getElementById('sart').innerHTML=`<span style="color:${z.color}">♪</span>`;
   document.getElementById('stitle').textContent=song.title;
   document.getElementById('sartist').textContent=song.artist;
   document.getElementById('sbpm').textContent=song.bpm+' BPM';
@@ -378,16 +346,14 @@ function render(){
 
   const m=Math.floor(secLeft/60),s=secLeft%60;
   document.getElementById('tleft').textContent=`${m}:${String(s).padStart(2,'0')} kaldı`;
-
   const em=Math.floor(elapsed/60),es=elapsed%60;
   document.getElementById('elapsed').textContent=`⏱ ${em}:${String(es).padStart(2,'0')}`;
 
   const next=queue[curIdx+1];
   if(next){
     const nz=ZONES[next.zone];
-    const na=document.getElementById('nart');
-    na.style.background=nz.color+'22';
-    na.innerHTML=next.song.art?`<img src="${next.song.art}" onerror="this.parentNode.innerHTML='♪'" alt="" style="width:100%;height:100%;object-fit:cover">`:`<span style="color:${nz.color}">♪</span>`;
+    document.getElementById('nart').style.background=nz.color+'22';
+    document.getElementById('nart').innerHTML=`<span style="color:${nz.color}">♪</span>`;
     document.getElementById('ntitle').innerHTML=`${next.song.title} <span style="color:#555">· ${next.song.artist}</span>`;
     const np=document.getElementById('npill');
     np.textContent=nz.emoji+' '+nz.label;
@@ -402,7 +368,7 @@ function render(){
     const tz=ZONES[sl.zone];
     const bg=i===curIdx?tz.color:i<curIdx?tz.color+'44':tz.color+'28';
     const out=i===curIdx?`outline:2px solid ${tz.color};outline-offset:1px`:'';
-    return `<div style="flex:1;background:${bg};border-radius:2px;${out};transition:background .4s"></div>`;
+    return `<div style="flex:1;background:${bg};border-radius:2px;${out}"></div>`;
   }).join('');
 
   const zones=[...new Set(queue.map(s=>s.zone))];
