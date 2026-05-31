@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RhythmRun – Run to the Beat</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700;800&family=Space+Mono:wght@400;700&display=swap');
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #0d0d1a;
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+    .logo { font-size: 42px; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 8px; }
+    .logo span { color: #a855f7; }
+    .tagline { color: #888; font-size: 16px; margin-bottom: 48px; }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      max-width: 680px;
+      width: 100%;
+      margin-bottom: 48px;
+    }
+    .feature {
+      background: #12122a;
+      border: 1px solid #2a2a4a;
+      border-radius: 16px;
+      padding: 24px 20px;
+      text-align: center;
+    }
+    .feature-icon { font-size: 32px; margin-bottom: 12px; }
+    .feature-title { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+    .feature-desc { font-size: 13px; color: #888; line-height: 1.5; }
+    .zones {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .zone {
+      border-radius: 10px;
+      padding: 8px 18px;
+      font-size: 13px;
+      font-weight: 700;
+      font-family: 'Space Mono', monospace;
+    }
+    .credit {
+      font-size: 12px;
+      color: #444;
+      text-align: center;
+      line-height: 1.8;
+    }
+    .credit a { color: #a855f7; text-decoration: none; }
+    .credit a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="logo">◈ <span>rhythmrun</span></div>
+  <div class="tagline">Music that matches your pace. Song-complete intervals.</div>
+
+  <div class="features">
+    <div class="feature">
+      <div class="feature-icon">🎵</div>
+      <div class="feature-title">BPM-Matched Music</div>
+      <div class="feature-desc">Songs are selected to match your walking or running cadence automatically.</div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">🏃</div>
+      <div class="feature-title">Song-Complete Intervals</div>
+      <div class="feature-desc">No mid-song cuts. Every track plays to the end before switching zones.</div>
+    </div>
+    <div class="feature">
+      <div class="feature-icon">⚡</div>
+      <div class="feature-title">Walk / Run / Sprint</div>
+      <div class="feature-desc">Choose your active zone and ratio. Cadence adjusts the playlist in real time.</div>
+    </div>
+  </div>
+
+  <div class="zones">
+    <div class="zone" style="background:#22c55e22;color:#22c55e;border:1px solid #22c55e44">🚶 Walk 85–125 BPM</div>
+    <div class="zone" style="background:#f9731622;color:#f97316;border:1px solid #f9731644">🏃 Run 135–165 BPM</div>
+    <div class="zone" style="background:#ef444422;color:#ef4444;border:1px solid #ef444444">⚡ Sprint 168–185 BPM</div>
+  </div>
+
+  <div class="credit">
+    BPM data powered by <a href="https://getsongbpm.com" target="_blank" rel="noopener">GetSongBPM.com</a><br/>
+    Built with ♪ for runners everywhere
+  </div>
+</body>
+</html>
