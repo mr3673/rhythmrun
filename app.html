@@ -691,7 +691,24 @@ function render(){
 }
 
 // ── INIT ──────────────────────────────────────────────────────
+function handleRedirect() {
+  const hash = window.location.hash.substring(1);
+  const params = new URLSearchParams(hash);
+  const token = params.get('access_token');
+  const expiresIn = params.get('expires_in');
+  if (token) {
+    accessToken = token;
+    localStorage.setItem('rr_token', token);
+    localStorage.setItem('rr_token_exp', Date.now() + parseInt(expiresIn) * 1000);
+    window.history.replaceState(null, '', window.location.pathname);
+    initApp();
+    return true;
+  }
+  return false;
+}
+
 window.addEventListener('load', () => {
+  if (handleRedirect()) return;
   if (checkStoredToken()) { initApp(); return; }
   show('s-login');
 });
