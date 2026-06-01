@@ -11,7 +11,7 @@
     .screen{display:none;padding:20px 16px 48px;max-width:440px;margin:0 auto}
     .screen.active{display:block}
     /* Login */
-    #s-login{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:24px;text-align:center}
+    #s-login{flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:24px;text-align:center}
     #s-login.active{display:flex}
     .logo{font-size:28px;font-weight:800;letter-spacing:-1px}
     .logo span{color:#a855f7}
@@ -51,7 +51,7 @@
     .start-btn:hover:not(:disabled){opacity:.88;transform:translateY(-2px)}
     .start-btn:disabled{opacity:.4;cursor:not-allowed}
     /* Building screen */
-    #s-building{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:16px;text-align:center}
+    #s-building{flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:16px;text-align:center}
     #s-building.active{display:flex}
     .spinner{width:40px;height:40px;border:3px solid #2a2a4a;border-top-color:#a855f7;border-radius:50%;animation:spin .8s linear infinite}
     .build-msg{color:#888;font-size:14px;max-width:280px;line-height:1.6}
