@@ -4,7 +4,6 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>RhythmRun – Run to the Beat</title>
-  <script src="https://accounts.google.com/gsi/client" onload="onGoogleLibraryLoad()" async defer></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=Space+Mono:wght@400;700&display=swap');
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -374,30 +373,21 @@ const WARN=15;
 const ytCache={};
 
 // ── AUTH ──────────────────────────────────────────────────────
-let tokenClient = null;
-
-function initGoogleAuth() {
-  tokenClient = google.accounts.oauth2.initTokenClient({
-    client_id: CLIENT_ID,
-    scope: SCOPES,
-    callback: async (resp) => {
-      if (resp.error) { console.error(resp); return; }
-      accessToken = resp.access_token;
-      localStorage.setItem('rr_token', resp.access_token);
-      localStorage.setItem('rr_token_exp', Date.now() + resp.expires_in * 1000);
-      await initApp();
-    },
-  });
-}
-
 function googleLogin() {
-  if (!tokenClient) { console.warn('Google Identity Services henüz yüklenmedi'); return; }
-  tokenClient.requestAccessToken({ prompt: 'consent' });
+  const redirectUri = window.location.origin + window.location.pathname;
+  const params = new URLSearchParams({
+    client_id: CLIENT_ID,
+    redirect_uri: redirectUri,
+    response_type: 'token',
+    scope: SCOPES,
+    prompt: 'consent'
+  });
+  window.location.href = 'https://accounts.google.com/o/oauth2/v2/auth?' + params.toString();
 }
 
 function logout() {
-  if (accessToken && typeof google !== 'undefined' && google.accounts?.oauth2) {
-    try { google.accounts.oauth2.revoke(accessToken); } catch(e) {}
+  if (accessToken) {
+    fetch('https://oauth2.googleapis.com/revoke?token=' + accessToken, { method: 'POST' }).catch(() => {});
   }
   accessToken = null; userProfile = null;
   localStorage.removeItem('rr_token');
@@ -715,10 +705,6 @@ window.addEventListener('load', async () => {
   show('s-login');
 });
 
-// Called by GIS script onload
-function onGoogleLibraryLoad() {
-  initGoogleAuth();
-}
 </script>
 </body>
 </html>
