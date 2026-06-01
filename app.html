@@ -10,22 +10,33 @@
     body{font-family:'DM Sans',sans-serif;background:#0d0d1a;color:white;min-height:100vh}
     .screen{display:none;padding:20px 16px 48px;max-width:440px;margin:0 auto}
     .screen.active{display:block}
-    .logo{font-size:26px;font-weight:800;letter-spacing:-1px;margin-top:24px;margin-bottom:4px}
+    /* Login */
+    #s-login{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:24px;text-align:center}
+    #s-login.active{display:flex}
+    .logo{font-size:28px;font-weight:800;letter-spacing:-1px}
     .logo span{color:#a855f7}
-    .tagline{color:#666;font-size:13px;margin-bottom:28px}
-    .sec{color:#555;font-size:11px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px}
-    .mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px}
+    .tagline{color:#666;font-size:14px}
+    .google-btn{display:flex;align-items:center;gap:12px;background:white;color:#1a1a1a;border:none;border-radius:12px;padding:14px 24px;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit;transition:all 0.2s;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
+    .google-btn:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(0,0,0,0.4)}
+    .google-btn svg{width:20px;height:20px;flex-shrink:0}
+    .user-info{display:flex;align-items:center;gap:10px;background:#12122a;border:1px solid #2a2a4a;border-radius:12px;padding:10px 14px}
+    .user-avatar{width:32px;height:32px;border-radius:50%;object-fit:cover}
+    .user-name{font-size:13px;color:#bbb}
+    .logout-btn{background:none;border:none;color:#555;font-size:12px;cursor:pointer;margin-left:auto;font-family:inherit}
+    /* Setup */
+    .sec{color:#555;font-size:11px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;margin-top:20px}
+    .mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px}
     .mode-btn{background:#12122a;border:1px solid #2a2a4a;border-radius:14px;padding:16px 12px;cursor:pointer;text-align:center;color:white;transition:all 0.2s}
     .mode-btn:hover{transform:translateY(-1px)}
     .mode-btn.sel-run{border-color:#f97316;background:#f9731618}
     .mode-btn.sel-sprint{border-color:#ef4444;background:#ef444418}
     .m-title{font-size:14px;font-weight:700}
     .m-desc{font-size:11px;color:#888;margin-top:3px;font-family:'Space Mono',monospace}
-    .genre-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:24px}
+    .genre-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:4px}
     .genre-btn{background:#12122a;border:1px solid #2a2a4a;border-radius:10px;padding:10px 8px;cursor:pointer;text-align:center;color:#bbb;font-size:13px;font-family:inherit;transition:all 0.2s}
     .genre-btn:hover{transform:translateY(-1px)}
     .genre-btn.sel{border-color:#a855f7;background:#a855f720;color:white;font-weight:700}
-    .ratio-list{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+    .ratio-list{display:flex;flex-direction:column;gap:8px;margin-bottom:4px}
     .ratio-btn{background:#12122a;border:1px solid #2a2a4a;border-radius:12px;padding:13px 16px;cursor:pointer;display:flex;align-items:center;gap:12px;color:white;font-family:inherit;transition:all 0.2s;width:100%}
     .ratio-btn:hover{transform:translateY(-1px)}
     .ratio-btn.sel{border-color:#a855f7;background:#a855f720}
@@ -35,34 +46,42 @@
     .dw{width:14px;height:14px;border-radius:3px;background:#22c55e33;border:1.5px solid #22c55e}
     .da-run{width:14px;height:14px;border-radius:3px;background:#f9731633;border:1.5px solid #f97316}
     .da-sprint{width:14px;height:14px;border-radius:3px;background:#ef444433;border:1.5px solid #ef4444}
-    .err-box{background:#ef444415;border:1px solid #ef444440;border-radius:10px;padding:10px 14px;margin-bottom:16px;color:#ef4444;font-size:13px;display:none}
-    .start-btn{width:100%;background:linear-gradient(135deg,#a855f7,#6366f1);color:white;border:none;border-radius:16px;padding:16px 0;font-size:16px;font-weight:700;font-family:inherit;cursor:pointer;transition:all 0.2s}
+    .err-box{background:#ef444415;border:1px solid #ef444440;border-radius:10px;padding:10px 14px;margin-top:12px;color:#ef4444;font-size:13px;display:none}
+    .start-btn{width:100%;background:linear-gradient(135deg,#a855f7,#6366f1);color:white;border:none;border-radius:16px;padding:16px 0;font-size:16px;font-weight:700;font-family:inherit;cursor:pointer;transition:all 0.2s;margin-top:20px}
     .start-btn:hover:not(:disabled){opacity:.88;transform:translateY(-2px)}
     .start-btn:disabled{opacity:.4;cursor:not-allowed}
-    .wk-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;margin-top:8px}
+    /* Building screen */
+    #s-building{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;gap:16px;text-align:center}
+    #s-building.active{display:flex}
+    .spinner{width:40px;height:40px;border:3px solid #2a2a4a;border-top-color:#a855f7;border-radius:50%;animation:spin .8s linear infinite}
+    .build-msg{color:#888;font-size:14px;max-width:280px;line-height:1.6}
+    .build-steps{display:flex;flex-direction:column;gap:8px;width:100%;max-width:280px;margin-top:8px}
+    .build-step{display:flex;align-items:center;gap:10px;font-size:13px;color:#555}
+    .build-step.done{color:#22c55e}
+    .build-step.active{color:white}
+    .step-icon{width:18px;text-align:center;flex-shrink:0}
+    /* Workout */
+    .wk-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;margin-top:8px}
     .live{display:flex;align-items:center;gap:7px;color:#22c55e;font-size:12px;font-weight:700;letter-spacing:1px}
     .ldot{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 8px #22c55e;animation:blink 1s infinite}
     .el{color:#888;font-size:13px;font-family:'Space Mono',monospace}
     .stop-btn{background:none;border:1px solid #333;color:#888;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit}
-    /* YouTube Player */
-    .yt-wrap{position:relative;width:100%;border-radius:14px;overflow:hidden;margin-bottom:12px;background:#000;aspect-ratio:16/9}
-    .yt-wrap iframe{width:100%;height:100%;border:none;display:block}
-    .yt-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;background:#12122a;color:#666;font-size:13px}
-    .yt-spinner{width:28px;height:28px;border:2px solid #2a2a4a;border-top-color:#a855f7;border-radius:50%;animation:spin .7s linear infinite}
+    /* Zone */
+    .zone-hero{background:#12122a;border:1px solid #2a2a4a;border-radius:18px;padding:20px 16px;margin-bottom:12px;text-align:center;transition:border-color .5s,background .5s}
+    .zone-emoji{font-size:40px;margin-bottom:8px}
+    .zone-name{font-size:22px;font-weight:800;letter-spacing:-0.5px;margin-bottom:4px}
+    .zone-bpm{font-size:14px;font-family:'Space Mono',monospace;color:#888}
+    .warn-banner{background:#ef444415;border:1px solid #ef444440;border-radius:10px;padding:10px 14px;margin-bottom:12px;display:none;align-items:center;gap:10px;font-size:13px;font-weight:700}
     /* Song card */
-    .bpm-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-    .zbadge{display:inline-flex;align-items:center;padding:4px 12px;border-radius:8px;font-size:12px;font-weight:700;letter-spacing:1px}
-    .wlbl{font-size:12px;font-weight:700;animation:pulse .8s infinite}
-    .song-info{background:#12122a;border:1px solid #2a2a4a;border-radius:14px;padding:14px;margin-bottom:10px;transition:border-color .4s}
-    .song-info.warn{border-color:var(--zc)!important}
+    .song-card{background:#12122a;border:1px solid #2a2a4a;border-radius:14px;padding:14px 16px;margin-bottom:10px;transition:border-color .4s}
+    .song-card.warn{border-color:var(--zc)!important}
     .stitle{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
     .sartist{font-size:12px;color:#aaa;margin-bottom:10px}
-    .sbpm-row{display:flex;justify-content:space-between;align-items:center}
-    .sbpm{font-size:13px;font-weight:700;font-family:'Space Mono',monospace}
-    .prog-t{height:4px;background:#1a1a2e;border-radius:2px;overflow:hidden;flex:1;margin:0 12px}
+    .prog-row{display:flex;align-items:center;gap:10px}
+    .prog-t{height:4px;background:#1a1a2e;border-radius:2px;overflow:hidden;flex:1}
     .prog-f{height:100%;border-radius:2px;transition:width 1s linear,background .4s}
-    .tleft{color:#666;font-size:12px;font-family:'Space Mono',monospace}
-    .skip-btn{background:none;border:1px solid #333;color:#888;border-radius:8px;padding:4px 10px;font-size:11px;cursor:pointer;font-family:inherit}
+    .tleft{color:#666;font-size:12px;font-family:'Space Mono',monospace;white-space:nowrap}
+    .skip-btn{background:none;border:1px solid #333;color:#888;border-radius:8px;padding:4px 10px;font-size:11px;cursor:pointer;font-family:inherit;white-space:nowrap}
     /* Up next */
     .upnext{background:#0a0a1a;border:1px solid #1e1e38;border-radius:14px;padding:10px 14px;display:none;align-items:center;gap:10px;margin-bottom:14px}
     .unl{color:#555;font-size:12px;white-space:nowrap}
@@ -72,10 +91,13 @@
     .tl-wrap{margin-bottom:14px}
     .tl-meta{color:#555;font-size:11px;margin-bottom:6px}
     .tl{display:flex;gap:3px;height:7px;border-radius:4px;overflow:hidden}
-    .stats{display:flex;gap:8px;margin-bottom:16px}
+    .stats{display:flex;gap:8px;margin-bottom:12px}
     .stat{flex:1;background:#12122a;border-radius:10px;padding:8px 10px;border:1px solid #1e1e38}
     .szone{font-size:11px;font-weight:700}
     .scnt{font-size:11px;font-family:'Space Mono',monospace;color:#888;margin-top:2px}
+    /* YT open button */
+    .yt-open-btn{width:100%;background:#ff000018;border:1px solid #ff000044;color:#ff6666;border-radius:14px;padding:14px 0;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;transition:all 0.2s}
+    .yt-open-btn:hover{background:#ff000025}
     .credit{text-align:center;margin-top:4px}
     .credit a{color:#333;font-size:11px;text-decoration:none}
     @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
@@ -85,10 +107,36 @@
 </head>
 <body>
 
+<!-- LOGIN -->
+<div class="screen active" id="s-login">
+  <div style="font-size:36px;margin-bottom:4px">◈</div>
+  <div class="logo"><span>rhythmrun</span></div>
+  <div class="tagline">Koşuna göre müzik. Şarkı bitmeden geçiş yok.</div>
+  <button class="google-btn" onclick="googleLogin()">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+      <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+      <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+      <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+    </svg>
+    Google ile Giriş Yap
+  </button>
+  <div style="color:#444;font-size:12px;max-width:280px;line-height:1.6">
+    YouTube hesabına erişim gerekli — playlist oluşturmak için
+  </div>
+</div>
+
 <!-- SETUP -->
-<div class="screen active" id="s-setup">
-  <div class="logo">◈ <span>rhythmrun</span></div>
-  <div class="tagline">Şarkı bitmeden geçiş yok.</div>
+<div class="screen" id="s-setup">
+  <div style="margin-top:16px;margin-bottom:20px">
+    <div class="user-info" id="user-info">
+      <img class="user-avatar" id="user-avatar" src="" alt=""/>
+      <span class="user-name" id="user-name">—</span>
+      <button class="logout-btn" onclick="logout()">Çıkış</button>
+    </div>
+  </div>
+
+  <div class="logo" style="font-size:22px;margin-bottom:4px">◈ <span>rhythmrun</span></div>
 
   <div class="sec">Aktif zon</div>
   <div class="mode-grid">
@@ -127,7 +175,14 @@
   </div>
 
   <div class="err-box" id="err"></div>
-  <button class="start-btn" id="start-btn" onclick="startWorkout()" disabled>▶ Antrenmanı Başlat</button>
+  <button class="start-btn" id="start-btn" onclick="buildPlaylist()" disabled>▶ Playlist Oluştur & Başlat</button>
+</div>
+
+<!-- BUILDING -->
+<div class="screen" id="s-building">
+  <div class="spinner"></div>
+  <div class="build-msg" id="build-msg">YouTube playlist'i hazırlanıyor...</div>
+  <div class="build-steps" id="build-steps"></div>
 </div>
 
 <!-- WORKOUT -->
@@ -138,29 +193,23 @@
     <button class="stop-btn" onclick="stopWorkout()">⏹ Bitir</button>
   </div>
 
-  <!-- YouTube Player -->
-  <div class="yt-wrap" id="yt-wrap">
-    <div class="yt-overlay" id="yt-overlay">
-      <div class="yt-spinner"></div>
-      <span>Şarkı aranıyor...</span>
-    </div>
-    <div id="yt-player"></div>
+  <!-- Zone hero -->
+  <div class="zone-hero" id="zone-hero">
+    <div class="zone-emoji" id="zone-emoji">🚶</div>
+    <div class="zone-name" id="zone-name">Yürüyüş</div>
+    <div class="zone-bpm" id="zone-bpm">— BPM</div>
   </div>
 
-  <!-- Zone badge + warning -->
-  <div class="bpm-row">
-    <div class="zbadge" id="zbadge">—</div>
-    <div style="display:flex;align-items:center;gap:10px">
-      <div class="wlbl" id="wlbl" style="display:none">⚠ Hazır ol!</div>
-      <span id="bpm-badge" style="font-family:'Space Mono',monospace;font-size:13px;font-weight:700">—</span>
-    </div>
+  <!-- Warning banner -->
+  <div class="warn-banner" id="warn-banner">
+    <span id="warn-text">⚠ 15 saniye sonra koşu başlıyor!</span>
   </div>
 
-  <!-- Song info + progress -->
-  <div class="song-info" id="song-info">
+  <!-- Current song -->
+  <div class="song-card" id="song-card">
     <div class="stitle" id="stitle">—</div>
     <div class="sartist" id="sartist">—</div>
-    <div class="sbpm-row">
+    <div class="prog-row">
       <span class="tleft" id="tleft">—</span>
       <div class="prog-t"><div class="prog-f" id="pfill" style="width:0%"></div></div>
       <button class="skip-btn" onclick="skipNext()">⏭ sıradaki</button>
@@ -174,6 +223,12 @@
     <div class="zpill" id="npill">—</div>
   </div>
 
+  <!-- Open in YT Music -->
+  <button class="yt-open-btn" id="yt-open-btn" onclick="openInYTMusic()">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+    YouTube Music'te Aç
+  </button>
+
   <!-- Timeline -->
   <div class="tl-wrap">
     <div class="tl-meta" id="tlmeta">0 / 0 şarkı</div>
@@ -185,46 +240,44 @@
 </div>
 
 <script>
-const YT_KEY = "AIzaSyCFjmRYw_tkCKSMlSOf7CfGv29L99tWYK4";
+const CLIENT_ID = "107728234609-n9n2iatq19abjh1qlcgrdiu2h93v9ma7.apps.googleusercontent.com";
+const YT_KEY    = "AIzaSyCFjmRYw_tkCKSMlSOf7CfGv29L99tWYK4";
+const SCOPES    = "https://www.googleapis.com/auth/youtube.force-ssl profile email";
 
 // ── SONG DATABASE ──────────────────────────────────────────────
 const DB = {
   walk: {
-    all: [
+    all:[
       {t:"Hips Don't Lie",a:"Shakira",bpm:100},{t:"Crazy In Love",a:"Beyoncé",bpm:100},
       {t:"Levitating",a:"Dua Lipa",bpm:103},{t:"Stronger",a:"Kanye West",bpm:104},
       {t:"Eye of the Tiger",a:"Survivor",bpm:109},{t:"Can't Stop the Feeling",a:"Justin Timberlake",bpm:113},
       {t:"Uptown Funk",a:"Bruno Mars",bpm:115},{t:"Physical",a:"Dua Lipa",bpm:123},
       {t:"Run the World",a:"Beyoncé",bpm:127},{t:"Gold Digger",a:"Kanye West",bpm:130},
-      {t:"Rockabye",a:"Clean Bandit",bpm:100},{t:"Shape of You",a:"Ed Sheeran",bpm:96},
-      {t:"Señorita",a:"Shawn Mendes",bpm:117},{t:"Dynamite",a:"BTS",bpm:114},
-      {t:"Watermelon Sugar",a:"Harry Styles",bpm:95},{t:"As It Was",a:"Harry Styles",bpm:124},
-      {t:"Blurred Lines",a:"Robin Thicke",bpm:120},{t:"Stay With Me",a:"Sam Smith",bpm:86},
+      {t:"Shape of You",a:"Ed Sheeran",bpm:96},{t:"Señorita",a:"Shawn Mendes",bpm:117},
+      {t:"Dynamite",a:"BTS",bpm:114},{t:"Watermelon Sugar",a:"Harry Styles",bpm:95},
+      {t:"As It Was",a:"Harry Styles",bpm:124},{t:"Blurred Lines",a:"Robin Thicke",bpm:120},
     ],
     pop:[
       {t:"Hips Don't Lie",a:"Shakira",bpm:100},{t:"Levitating",a:"Dua Lipa",bpm:103},
       {t:"Can't Stop the Feeling",a:"Justin Timberlake",bpm:113},{t:"Uptown Funk",a:"Bruno Mars",bpm:115},
-      {t:"Physical",a:"Dua Lipa",bpm:123},{t:"Rockabye",a:"Clean Bandit",bpm:100},
-      {t:"Señorita",a:"Shawn Mendes",bpm:117},{t:"Dynamite",a:"BTS",bpm:114},
-      {t:"As It Was",a:"Harry Styles",bpm:124},{t:"Shape of You",a:"Ed Sheeran",bpm:96},
+      {t:"Physical",a:"Dua Lipa",bpm:123},{t:"Señorita",a:"Shawn Mendes",bpm:117},
+      {t:"Dynamite",a:"BTS",bpm:114},{t:"As It Was",a:"Harry Styles",bpm:124},
+      {t:"Shape of You",a:"Ed Sheeran",bpm:96},{t:"Watermelon Sugar",a:"Harry Styles",bpm:95},
     ],
     hiphop:[
       {t:"Gold Digger",a:"Kanye West",bpm:130},{t:"Stronger",a:"Kanye West",bpm:104},
       {t:"Sicko Mode",a:"Travis Scott",bpm:98},{t:"God's Plan",a:"Drake",bpm:77},
       {t:"Sunflower",a:"Post Malone",bpm:90},{t:"Hotline Bling",a:"Drake",bpm:81},
-      {t:"In My Feelings",a:"Drake",bpm:91},{t:"Old Town Road",a:"Lil Nas X",bpm:136},
     ],
     rock:[
       {t:"Eye of the Tiger",a:"Survivor",bpm:109},{t:"Come as You Are",a:"Nirvana",bpm:117},
       {t:"Yellow",a:"Coldplay",bpm:86},{t:"Californication",a:"Red Hot Chili Peppers",bpm:96},
       {t:"Sweet Child O' Mine",a:"Guns N' Roses",bpm:123},{t:"Wonderwall",a:"Oasis",bpm:87},
-      {t:"Under the Bridge",a:"Red Hot Chili Peppers",bpm:87},{t:"Come Together",a:"The Beatles",bpm:83},
     ],
     electronic:[
       {t:"One More Time",a:"Daft Punk",bpm:123},{t:"Get Lucky",a:"Daft Punk",bpm:116},
       {t:"Cheap Thrills",a:"Sia",bpm:93},{t:"Lean On",a:"Major Lazer",bpm:98},
       {t:"Titanium",a:"David Guetta ft. Sia",bpm:126},{t:"Animals",a:"Martin Garrix",bpm:128},
-      {t:"Roses",a:"SAINt JHN",bpm:93},{t:"Levels",a:"Avicii",bpm:126},
     ],
     rnb:[
       {t:"Crazy In Love",a:"Beyoncé",bpm:100},{t:"Stay With Me",a:"Sam Smith",bpm:86},
@@ -232,16 +285,15 @@ const DB = {
       {t:"Single Ladies",a:"Beyoncé",bpm:97},{t:"Waterfalls",a:"TLC",bpm:88},
     ],
   },
-  run: {
+  run:{
     all:[
       {t:"Pump It",a:"Black Eyed Peas",bpm:140},{t:"HUMBLE.",a:"Kendrick Lamar",bpm:150},
       {t:"Don't Stop Me Now",a:"Queen",bpm:156},{t:"Mr. Brightside",a:"The Killers",bpm:148},
-      {t:"Everlong",a:"Foo Fighters",bpm:156},{t:"Seek & Destroy",a:"Metallica",bpm:140},
-      {t:"Thunderstruck",a:"AC/DC",bpm:133},{t:"Crazy Train",a:"Ozzy Osbourne",bpm:138},
+      {t:"Everlong",a:"Foo Fighters",bpm:156},{t:"Thunderstruck",a:"AC/DC",bpm:133},
       {t:"Shake It Off",a:"Taylor Swift",bpm:160},{t:"Happy",a:"Pharrell Williams",bpm:160},
-      {t:"Roar",a:"Katy Perry",bpm:180},{t:"Can't Hold Us",a:"Macklemore",bpm:146},
-      {t:"Good as Hell",a:"Lizzo",bpm:148},{t:"Juice",a:"Lizzo",bpm:150},
+      {t:"Can't Hold Us",a:"Macklemore",bpm:146},{t:"Good as Hell",a:"Lizzo",bpm:148},
       {t:"Shivers",a:"Ed Sheeran",bpm:141},{t:"Formation",a:"Beyoncé",bpm:155},
+      {t:"Juice",a:"Lizzo",bpm:150},{t:"Crazy Train",a:"Ozzy Osbourne",bpm:138},
     ],
     pop:[
       {t:"Pump It",a:"Black Eyed Peas",bpm:140},{t:"Mr. Brightside",a:"The Killers",bpm:148},
@@ -254,19 +306,16 @@ const DB = {
       {t:"HUMBLE.",a:"Kendrick Lamar",bpm:150},{t:"Lose Yourself",a:"Eminem",bpm:171},
       {t:"Till I Collapse",a:"Eminem",bpm:171},{t:"Can't Hold Us",a:"Macklemore",bpm:146},
       {t:"Pump It",a:"Black Eyed Peas",bpm:140},{t:"Formation",a:"Beyoncé",bpm:155},
-      {t:"Good Feeling",a:"Flo Rida",bpm:128},{t:"Wild Ones",a:"Flo Rida",bpm:140},
     ],
     rock:[
       {t:"Don't Stop Me Now",a:"Queen",bpm:156},{t:"Everlong",a:"Foo Fighters",bpm:156},
-      {t:"Seek & Destroy",a:"Metallica",bpm:140},{t:"Thunderstruck",a:"AC/DC",bpm:133},
-      {t:"Crazy Train",a:"Ozzy Osbourne",bpm:138},{t:"Jump",a:"Van Halen",bpm:131},
-      {t:"Welcome to the Jungle",a:"Guns N' Roses",bpm:123},{t:"Back in Black",a:"AC/DC",bpm:92},
+      {t:"Thunderstruck",a:"AC/DC",bpm:133},{t:"Crazy Train",a:"Ozzy Osbourne",bpm:138},
+      {t:"Jump",a:"Van Halen",bpm:131},{t:"Welcome to the Jungle",a:"Guns N' Roses",bpm:123},
     ],
     electronic:[
       {t:"Wake Me Up",a:"Avicii",bpm:124},{t:"Animals",a:"Martin Garrix",bpm:128},
-      {t:"Clarity",a:"Zedd",bpm:128},{t:"Bangarang",a:"Skrillex",bpm:110},
-      {t:"Titanium",a:"David Guetta ft. Sia",bpm:126},{t:"I Gotta Feeling",a:"Black Eyed Peas",bpm:128},
-      {t:"She Wolf",a:"David Guetta ft. Sia",bpm:130},{t:"Beautiful Now",a:"Zedd",bpm:128},
+      {t:"Clarity",a:"Zedd",bpm:128},{t:"Titanium",a:"David Guetta ft. Sia",bpm:126},
+      {t:"I Gotta Feeling",a:"Black Eyed Peas",bpm:128},{t:"Beautiful Now",a:"Zedd",bpm:128},
     ],
     rnb:[
       {t:"Formation",a:"Beyoncé",bpm:155},{t:"HUMBLE.",a:"Kendrick Lamar",bpm:150},
@@ -274,7 +323,7 @@ const DB = {
       {t:"Let's Go Crazy",a:"Prince",bpm:167},{t:"Run the World",a:"Beyoncé",bpm:127},
     ],
   },
-  sprint: {
+  sprint:{
     all:[
       {t:"Blinding Lights",a:"The Weeknd",bpm:171},{t:"Lose Yourself",a:"Eminem",bpm:171},
       {t:"Till I Collapse",a:"Eminem",bpm:171},{t:"Good 4 U",a:"Olivia Rodrigo",bpm:166},
@@ -291,38 +340,103 @@ const DB = {
     hiphop:[
       {t:"Lose Yourself",a:"Eminem",bpm:171},{t:"Till I Collapse",a:"Eminem",bpm:171},
       {t:"Sabotage",a:"Beastie Boys",bpm:168},{t:"Jump Around",a:"House of Pain",bpm:180},
-      {t:"Killing in the Name",a:"Rage Against the Machine",bpm:168},{t:"Rap God",a:"Eminem",bpm:155},
+      {t:"Killing in the Name",a:"Rage Against the Machine",bpm:168},
     ],
     rock:[
       {t:"Run to the Hills",a:"Iron Maiden",bpm:172},{t:"Killing in the Name",a:"Rage Against the Machine",bpm:168},
       {t:"Basket Case",a:"Green Day",bpm:179},{t:"American Idiot",a:"Green Day",bpm:186},
-      {t:"I Write Sins Not Tragedies",a:"Panic! At The Disco",bpm:175},{t:"Bulls on Parade",a:"Rage Against the Machine",bpm:168},
+      {t:"I Write Sins Not Tragedies",a:"Panic! At The Disco",bpm:175},
     ],
     electronic:[
       {t:"Scary Monsters and Nice Sprites",a:"Skrillex",bpm:140},{t:"Bangarang",a:"Skrillex",bpm:110},
-      {t:"Turn Down for What",a:"DJ Snake",bpm:100},{t:"Harlem Shake",a:"Baauer",bpm:100},
-      {t:"Pursuit of Happiness",a:"Steve Aoki",bpm:128},{t:"Clarity",a:"Zedd",bpm:128},
+      {t:"Turn Down for What",a:"DJ Snake",bpm:100},{t:"Clarity",a:"Zedd",bpm:128},
     ],
     rnb:[
       {t:"Blinding Lights",a:"The Weeknd",bpm:171},{t:"Starboy",a:"The Weeknd",bpm:186},
       {t:"Good 4 U",a:"Olivia Rodrigo",bpm:166},{t:"Let's Go Crazy",a:"Prince",bpm:167},
-      {t:"Super Freak",a:"Rick James",bpm:111},
     ],
   }
 };
 
 const ZONES={
-  walk:  {label:"Yürüyüş",color:"#22c55e",emoji:"🚶"},
-  run:   {label:"Koşu",   color:"#f97316",emoji:"🏃"},
-  sprint:{label:"Sprint", color:"#ef4444",emoji:"⚡"},
+  walk:  {label:"Yürüyüş",color:"#22c55e",emoji:"🚶",bpmRange:"85–125 BPM"},
+  run:   {label:"Koşu",   color:"#f97316",emoji:"🏃",bpmRange:"135–165 BPM"},
+  sprint:{label:"Sprint", color:"#ef4444",emoji:"⚡",bpmRange:"168–185 BPM"},
 };
 
-let selMode_=null,selGenre_=null,selRatio_=null;
-let queue=[],curIdx=0,secLeft=0,totTime=0,elapsed=0,running=false,timer=null;
-let ytPlayer=null,ytReady=false,ytCache={};
+// State
+let accessToken=null, userProfile=null;
+let selMode_=null, selGenre_=null, selRatio_=null;
+let queue=[], curIdx=0, secLeft=0, totTime=0, elapsed=0, running=false, timer=null;
+let createdPlaylistId=null, createdPlaylistUrl=null;
 const WARN=15;
-const SONG_DUR=()=>200+Math.floor(Math.random()*100);
+const ytCache={};
 
+// ── AUTH ──────────────────────────────────────────────────────
+function googleLogin(){
+  const params=new URLSearchParams({
+    client_id: CLIENT_ID,
+    redirect_uri: window.location.origin+window.location.pathname,
+    response_type: 'token',
+    scope: SCOPES,
+    prompt: 'consent',
+  });
+  window.location.href='https://accounts.google.com/o/oauth2/v2/auth?'+params;
+}
+
+function logout(){
+  accessToken=null; userProfile=null;
+  localStorage.removeItem('rr_token');
+  localStorage.removeItem('rr_token_exp');
+  show('s-login');
+}
+
+function handleRedirect(){
+  const hash=window.location.hash.substring(1);
+  const params=new URLSearchParams(hash);
+  const token=params.get('access_token');
+  const expiresIn=params.get('expires_in');
+  if(token){
+    accessToken=token;
+    const exp=Date.now()+parseInt(expiresIn)*1000;
+    localStorage.setItem('rr_token',token);
+    localStorage.setItem('rr_token_exp',exp);
+    window.history.replaceState(null,'',window.location.pathname);
+    initApp();
+    return true;
+  }
+  return false;
+}
+
+function checkStoredToken(){
+  const token=localStorage.getItem('rr_token');
+  const exp=localStorage.getItem('rr_token_exp');
+  if(token && exp && Date.now()<parseInt(exp)){
+    accessToken=token;
+    return true;
+  }
+  return false;
+}
+
+async function fetchProfile(){
+  const res=await fetch('https://www.googleapis.com/oauth2/v2/userinfo',{
+    headers:{Authorization:'Bearer '+accessToken}
+  });
+  return res.json();
+}
+
+async function initApp(){
+  try{
+    userProfile=await fetchProfile();
+    document.getElementById('user-avatar').src=userProfile.picture||'';
+    document.getElementById('user-name').textContent=userProfile.name||userProfile.email||'';
+    show('s-setup');
+  }catch{
+    logout();
+  }
+}
+
+// ── UI ────────────────────────────────────────────────────────
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
 function selMode(m){
   selMode_=m;
@@ -336,88 +450,147 @@ function selGenre(btn,g){selGenre_=g;document.querySelectorAll('.genre-btn').for
 function selRatio(btn,id,w,a){selRatio_={id,walk:w,active:a};document.querySelectorAll('.ratio-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');checkReady();}
 function checkReady(){document.getElementById('start-btn').disabled=!(selMode_&&selGenre_&&selRatio_);}
 
-// YouTube IFrame API
-window.onYouTubeIframeAPIReady=function(){
-  ytPlayer=new YT.Player('yt-player',{
-    height:'100%',width:'100%',
-    playerVars:{autoplay:1,controls:1,rel:0,modestbranding:1,playsinline:1},
-    events:{
-      onReady:()=>{ytReady=true;},
-      onStateChange:(e)=>{
-        // YT.PlayerState.ENDED = 0
-        if(e.data===0) skipNext();
-      }
-    }
-  });
-};
-// Load YouTube API
-(function(){const s=document.createElement('script');s.src='https://www.youtube.com/iframe_api';document.head.appendChild(s);})();
-
-async function searchYT(title,artist){
-  const q=encodeURIComponent(`${title} ${artist} official`);
-  const key=q;
-  if(ytCache[key]) return ytCache[key];
-  try{
-    const res=await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${q}&type=video&videoCategoryId=10&maxResults=1&key=${YT_KEY}`);
-    const data=await res.json();
-    const vid=data.items?.[0]?.id?.videoId||null;
-    ytCache[key]=vid;
-    return vid;
-  }catch{return null;}
+function setStep(steps, idx, status){
+  const icons={pending:'○',active:'◌',done:'✓',error:'✗'};
+  const colors={pending:'#555',active:'white',done:'#22c55e',error:'#ef4444'};
+  document.getElementById('build-steps').innerHTML=steps.map((s,i)=>{
+    const st=i<idx?'done':i===idx?status:'pending';
+    return `<div class="build-step ${st}"><span class="step-icon">${icons[st]}</span>${s}</div>`;
+  }).join('');
 }
 
+// ── PLAYLIST BUILD ────────────────────────────────────────────
 function pick(pool,count,usedTs){
   const avail=pool.filter(s=>!usedTs.includes(s.t));
   const src=avail.length>=count?avail:pool;
   return [...src].sort(()=>Math.random()-.5).slice(0,count);
 }
-
 function getSongs(zone){
   const g=selGenre_||'all';
   return [...(DB[zone][g]||DB[zone].all)].sort(()=>Math.random()-.5);
 }
 
-function startWorkout(){
+async function searchYT(title,artist){
+  const q=encodeURIComponent(`${title} ${artist} official audio`);
+  if(ytCache[q]) return ytCache[q];
+  const res=await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${q}&type=video&videoCategoryId=10&maxResults=1&key=${YT_KEY}`);
+  const data=await res.json();
+  const item=data.items?.[0];
+  if(!item) return null;
+  const result={videoId:item.id.videoId, title:item.snippet.title, channelTitle:item.snippet.channelTitle};
+  ytCache[q]=result;
+  return result;
+}
+
+async function getVideoDuration(videoId){
+  const res=await fetch(`https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoId}&key=${YT_KEY}`);
+  const data=await res.json();
+  const dur=data.items?.[0]?.contentDetails?.duration;
+  if(!dur) return 210;
+  // Parse ISO 8601 duration PT3M45S
+  const m=dur.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+  return (parseInt(m[1]||0)*3600)+(parseInt(m[2]||0)*60)+(parseInt(m[3]||0));
+}
+
+async function createYTPlaylist(title){
+  const res=await fetch('https://www.googleapis.com/youtube/v3/playlists?part=snippet,status',{
+    method:'POST',
+    headers:{'Authorization':'Bearer '+accessToken,'Content-Type':'application/json'},
+    body:JSON.stringify({snippet:{title,description:'RhythmRun tarafından oluşturuldu 🎵'},status:{privacyStatus:'private'}})
+  });
+  const data=await res.json();
+  return data.id;
+}
+
+async function addToPlaylist(playlistId, videoId){
+  await fetch('https://www.googleapis.com/youtube/v3/playlistItems?part=snippet',{
+    method:'POST',
+    headers:{'Authorization':'Bearer '+accessToken,'Content-Type':'application/json'},
+    body:JSON.stringify({snippet:{playlistId,resourceId:{kind:'youtube#video',videoId}}})
+  });
+}
+
+async function buildPlaylist(){
+  document.getElementById('err').style.display='none';
+  show('s-building');
+
   const walkSongs=getSongs('walk');
   const activeSongs=getSongs(selMode_);
-  queue=[];const usedTs=[];
-  for(let r=0;r<6;r++){
-    pick(walkSongs,selRatio_.walk,usedTs).forEach(s=>{queue.push({zone:'walk',song:s,dur:SONG_DUR()});usedTs.push(s.t);});
-    pick(activeSongs,selRatio_.active,usedTs).forEach(s=>{queue.push({zone:selMode_,song:s,dur:SONG_DUR()});usedTs.push(s.t);});
+  const usedTs=[];
+  const slots=[];
+  for(let r=0;r<5;r++){
+    pick(walkSongs,selRatio_.walk,usedTs).forEach(s=>{slots.push({zone:'walk',song:s});usedTs.push(s.t);});
+    pick(activeSongs,selRatio_.active,usedTs).forEach(s=>{slots.push({zone:selMode_,song:s});usedTs.push(s.t);});
   }
-  curIdx=0;secLeft=queue[0].dur;totTime=queue[0].dur;elapsed=0;running=true;
-  show('s-workout');
-  loadAndPlay(0);
-  startTimer();
-}
 
-async function loadAndPlay(idx){
-  if(idx>=queue.length) return;
-  const {song}=queue[idx];
-  showYTOverlay(true,'Şarkı aranıyor...');
-  const vid=await searchYT(song.t,song.a);
-  if(vid){
-    showYTOverlay(false);
-    if(ytReady&&ytPlayer){
-      ytPlayer.loadVideoById(vid);
+  const steps=slots.map(sl=>`${sl.zone==='walk'?'🚶':'sl.zone==="sprint"?"⚡":"🏃"'} ${sl.song.t}`);
+  const stepLabels=[
+    '🎵 YouTube\'da şarkılar aranıyor',
+    '📋 Playlist oluşturuluyor',
+    '➕ Şarkılar ekleniyor',
+    '✅ Hazır!'
+  ];
+
+  try{
+    // Step 1: Search all songs
+    setStep(stepLabels,0,'active');
+    document.getElementById('build-msg').textContent='Şarkılar YouTube\'da aranıyor...';
+    const resolved=[];
+    for(let i=0;i<slots.length;i++){
+      const sl=slots[i];
+      document.getElementById('build-msg').textContent=`"${sl.song.t}" aranıyor... (${i+1}/${slots.length})`;
+      const yt=await searchYT(sl.song.t,sl.song.a);
+      if(yt){
+        const dur=await getVideoDuration(yt.videoId);
+        resolved.push({zone:sl.zone,song:sl.song,videoId:yt.videoId,ytTitle:yt.title,dur});
+      }
     }
-  } else {
-    showYTOverlay(true,'Video bulunamadı');
-  }
-  render();
-  // Prefetch next
-  if(queue[idx+1]){
-    const ns=queue[idx+1].song;
-    searchYT(ns.t,ns.a);
+
+    if(!resolved.length) throw new Error('Hiçbir şarkı bulunamadı.');
+
+    // Step 2: Create playlist
+    setStep(stepLabels,1,'active');
+    document.getElementById('build-msg').textContent='Playlist oluşturuluyor...';
+    const now=new Date().toLocaleDateString('tr-TR');
+    const modeLabel=selMode_==='sprint'?'Sprint':'Koşu';
+    const ratioLabel=selRatio_.id;
+    const playlistTitle=`RhythmRun – ${modeLabel} ${ratioLabel} (${now})`;
+    const playlistId=await createYTPlaylist(playlistTitle);
+    createdPlaylistId=playlistId;
+    createdPlaylistUrl=`https://music.youtube.com/playlist?list=${playlistId}`;
+
+    // Step 3: Add songs
+    setStep(stepLabels,2,'active');
+    for(let i=0;i<resolved.length;i++){
+      document.getElementById('build-msg').textContent=`Playlist'e ekleniyor... (${i+1}/${resolved.length})`;
+      await addToPlaylist(playlistId, resolved[i].videoId);
+      await new Promise(r=>setTimeout(r,200)); // rate limit
+    }
+
+    // Step 4: Done
+    setStep(stepLabels,3,'done');
+    document.getElementById('build-msg').textContent='Playlist hazır! 🎉';
+
+    // Start workout with real durations
+    queue=resolved;
+    curIdx=0;secLeft=queue[0].dur;totTime=queue[0].dur;elapsed=0;running=true;
+    await new Promise(r=>setTimeout(r,800));
+    render();startTimer();
+    show('s-workout');
+
+  }catch(e){
+    show('s-setup');
+    const eb=document.getElementById('err');
+    eb.style.display='block';
+    eb.textContent='⚠ '+e.message;
   }
 }
 
-function showYTOverlay(show,msg=''){
-  const ov=document.getElementById('yt-overlay');
-  ov.style.display=show?'flex':'none';
-  if(msg) ov.querySelector('span').textContent=msg;
+function openInYTMusic(){
+  if(createdPlaylistUrl) window.open(createdPlaylistUrl,'_blank');
 }
 
+// ── WORKOUT ───────────────────────────────────────────────────
 function startTimer(){
   clearInterval(timer);
   timer=setInterval(()=>{
@@ -426,7 +599,6 @@ function startTimer(){
       curIdx++;
       if(curIdx>=queue.length){stopWorkout();return;}
       secLeft=queue[curIdx].dur;totTime=queue[curIdx].dur;
-      loadAndPlay(curIdx);
     }
     render();
   },1000);
@@ -434,7 +606,6 @@ function startTimer(){
 
 function stopWorkout(){
   clearInterval(timer);running=false;
-  if(ytPlayer&&ytReady) ytPlayer.stopVideo();
   show('s-setup');
 }
 
@@ -443,29 +614,43 @@ function skipNext(){
   curIdx++;
   if(curIdx>=queue.length){stopWorkout();return;}
   secLeft=queue[curIdx].dur;totTime=queue[curIdx].dur;
-  loadAndPlay(curIdx);
-  startTimer();
+  render();startTimer();
 }
 
 function render(){
   const slot=queue[curIdx];if(!slot)return;
-  const {zone,song}=slot;
+  const {zone,song,dur}=slot;
   const z=ZONES[zone];
   const warn=secLeft<=WARN;
+  const nextSlot=queue[curIdx+1];
+  const nextZone=nextSlot?ZONES[nextSlot.zone]:null;
 
-  const badge=document.getElementById('zbadge');
-  badge.textContent=z.emoji+' '+z.label.toUpperCase();
-  badge.style.cssText=`background:${z.color}22;color:${z.color};display:inline-flex;align-items:center;padding:4px 12px;border-radius:8px;font-size:12px;font-weight:700;letter-spacing:1px`;
+  // Zone hero
+  const hero=document.getElementById('zone-hero');
+  hero.style.borderColor=z.color+'66';
+  hero.style.background=z.color+'0a';
+  document.getElementById('zone-emoji').textContent=z.emoji;
+  document.getElementById('zone-name').textContent=z.label;
+  document.getElementById('zone-name').style.color=z.color;
+  document.getElementById('zone-bpm').textContent=z.bpmRange;
 
-  document.getElementById('bpm-badge').textContent=song.bpm+' BPM';
-  document.getElementById('bpm-badge').style.color=z.color;
+  // Warning banner
+  const wb=document.getElementById('warn-banner');
+  if(warn && nextZone){
+    wb.style.display='flex';
+    wb.style.borderColor=nextZone.color+'44';
+    wb.style.background=nextZone.color+'10';
+    document.getElementById('warn-text').textContent=`⚠ ${secLeft} saniye sonra ${nextZone.label} başlıyor!`;
+    document.getElementById('warn-text').style.color=nextZone.color;
+  } else {
+    wb.style.display='none';
+  }
 
-  const wl=document.getElementById('wlbl');
-  wl.style.display=warn?'block':'none';wl.style.color=z.color;
-
-  const si=document.getElementById('song-info');
-  si.style.setProperty('--zc',z.color);
-  si.classList.toggle('warn',warn);
+  // Song card
+  const sc=document.getElementById('song-card');
+  sc.style.setProperty('--zc',z.color);
+  sc.classList.toggle('warn',warn);
+  sc.style.borderColor=warn?z.color+'88':'#2a2a4a';
 
   document.getElementById('stitle').textContent=song.t;
   document.getElementById('sartist').textContent=song.a;
@@ -480,19 +665,19 @@ function render(){
   const em=Math.floor(elapsed/60),es=elapsed%60;
   document.getElementById('elapsed').textContent=`⏱ ${em}:${String(es).padStart(2,'0')}`;
 
-  const next=queue[curIdx+1];
+  // Up next
   const un=document.getElementById('upnext');
-  if(next){
-    const nz=ZONES[next.zone];
-    document.getElementById('ntitle').innerHTML=`${next.song.t} <span style="color:#555">· ${next.song.a}</span>`;
+  if(nextSlot){
+    document.getElementById('ntitle').innerHTML=`${nextSlot.song.t} <span style="color:#555">· ${nextSlot.song.a}</span>`;
     const np=document.getElementById('npill');
-    np.textContent=nz.emoji+' '+nz.label;
-    np.style.cssText=`background:${nz.color}22;color:${nz.color};border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;white-space:nowrap`;
+    np.textContent=nextZone.emoji+' '+nextZone.label;
+    np.style.cssText=`background:${nextZone.color}22;color:${nextZone.color};border-radius:6px;padding:3px 8px;font-size:11px;font-weight:700;white-space:nowrap`;
     un.style.display='flex';
   } else {
     un.style.display='none';
   }
 
+  // Timeline
   document.getElementById('tlmeta').textContent=`${curIdx+1} / ${queue.length} şarkı`;
   document.getElementById('tl').innerHTML=queue.map((sl,i)=>{
     const tz=ZONES[sl.zone];
@@ -501,6 +686,7 @@ function render(){
     return `<div style="flex:1;background:${bg};border-radius:2px;${out}"></div>`;
   }).join('');
 
+  // Stats
   const zones=[...new Set(queue.map(s=>s.zone))];
   document.getElementById('stats').innerHTML=zones.map(zn=>{
     const zt=ZONES[zn];
@@ -509,6 +695,13 @@ function render(){
     return `<div class="stat"><div class="szone" style="color:${zt.color}">${zt.emoji} ${zt.label}</div><div class="scnt">${done}/${total}</div></div>`;
   }).join('');
 }
+
+// ── INIT ──────────────────────────────────────────────────────
+window.addEventListener('load',()=>{
+  if(handleRedirect()) return;
+  if(checkStoredToken()){initApp();return;}
+  show('s-login');
+});
 </script>
 </body>
 </html>
