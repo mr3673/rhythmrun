@@ -4,6 +4,7 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>RhythmRun – Run to the Beat</title>
+  <script src="https://accounts.google.com/gsi/client" onload="onGoogleLibraryLoad()" async defer></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=Space+Mono:wght@400;700&display=swap');
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -373,65 +374,58 @@ const WARN=15;
 const ytCache={};
 
 // ── AUTH ──────────────────────────────────────────────────────
-function googleLogin(){
-  const params=new URLSearchParams({
+let tokenClient = null;
+
+function initGoogleAuth() {
+  tokenClient = google.accounts.oauth2.initTokenClient({
     client_id: CLIENT_ID,
-    redirect_uri: window.location.origin+window.location.pathname,
-    response_type: 'token',
     scope: SCOPES,
-    prompt: 'consent',
+    callback: async (resp) => {
+      if (resp.error) { console.error(resp); return; }
+      accessToken = resp.access_token;
+      localStorage.setItem('rr_token', resp.access_token);
+      localStorage.setItem('rr_token_exp', Date.now() + resp.expires_in * 1000);
+      await initApp();
+    },
   });
-  window.location.href='https://accounts.google.com/o/oauth2/v2/auth?'+params;
 }
 
-function logout(){
-  accessToken=null; userProfile=null;
+function googleLogin() {
+  if (tokenClient) tokenClient.requestAccessToken({ prompt: 'consent' });
+}
+
+function logout() {
+  if (accessToken) google.accounts.oauth2.revoke(accessToken);
+  accessToken = null; userProfile = null;
   localStorage.removeItem('rr_token');
   localStorage.removeItem('rr_token_exp');
   show('s-login');
 }
 
-function handleRedirect(){
-  const hash=window.location.hash.substring(1);
-  const params=new URLSearchParams(hash);
-  const token=params.get('access_token');
-  const expiresIn=params.get('expires_in');
-  if(token){
-    accessToken=token;
-    const exp=Date.now()+parseInt(expiresIn)*1000;
-    localStorage.setItem('rr_token',token);
-    localStorage.setItem('rr_token_exp',exp);
-    window.history.replaceState(null,'',window.location.pathname);
-    initApp();
+function checkStoredToken() {
+  const token = localStorage.getItem('rr_token');
+  const exp = localStorage.getItem('rr_token_exp');
+  if (token && exp && Date.now() < parseInt(exp)) {
+    accessToken = token;
     return true;
   }
   return false;
 }
 
-function checkStoredToken(){
-  const token=localStorage.getItem('rr_token');
-  const exp=localStorage.getItem('rr_token_exp');
-  if(token && exp && Date.now()<parseInt(exp)){
-    accessToken=token;
-    return true;
-  }
-  return false;
-}
-
-async function fetchProfile(){
-  const res=await fetch('https://www.googleapis.com/oauth2/v2/userinfo',{
-    headers:{Authorization:'Bearer '+accessToken}
+async function fetchProfile() {
+  const res = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+    headers: { Authorization: 'Bearer ' + accessToken }
   });
   return res.json();
 }
 
-async function initApp(){
-  try{
-    userProfile=await fetchProfile();
-    document.getElementById('user-avatar').src=userProfile.picture||'';
-    document.getElementById('user-name').textContent=userProfile.name||userProfile.email||'';
+async function initApp() {
+  try {
+    userProfile = await fetchProfile();
+    document.getElementById('user-avatar').src = userProfile.picture || '';
+    document.getElementById('user-name').textContent = userProfile.name || userProfile.email || '';
     show('s-setup');
-  }catch{
+  } catch {
     logout();
   }
 }
@@ -697,11 +691,15 @@ function render(){
 }
 
 // ── INIT ──────────────────────────────────────────────────────
-window.addEventListener('load',()=>{
-  if(handleRedirect()) return;
-  if(checkStoredToken()){initApp();return;}
+window.addEventListener('load', () => {
+  if (checkStoredToken()) { initApp(); return; }
   show('s-login');
 });
+
+// Called by GIS script onload
+function onGoogleLibraryLoad() {
+  initGoogleAuth();
+}
 </script>
 </body>
 </html>
