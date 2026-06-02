@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>RhythmRun – Run to the Beat</title>
+  <title>Run2Beat – Run to the Beat</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&family=Space+Mono:wght@400;700&display=swap');
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -28,6 +28,9 @@
     .mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px}
     .mode-btn{background:#12122a;border:1px solid #2a2a4a;border-radius:14px;padding:16px 12px;cursor:pointer;text-align:center;color:white;transition:all 0.2s}
     .mode-btn:hover{transform:translateY(-1px)}
+    .mode-btn.sel-brisk{border-color:#a3e635;background:#a3e63518}
+    .mode-btn.sel-jogging{border-color:#fbbf24;background:#fbbf2418}
+    .mode-btn.sel-easy_run{border-color:#fb923c;background:#fb923c18}
     .mode-btn.sel-run{border-color:#f97316;background:#f9731618}
     .mode-btn.sel-sprint{border-color:#ef4444;background:#ef444418}
     .m-title{font-size:14px;font-weight:700}
@@ -103,6 +106,12 @@
     @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
     @keyframes spin{to{transform:rotate(360deg)}}
+    .spotify-bar{display:flex;align-items:center;justify-content:space-between;background:#12122a;border:1px solid #2a2a4a;border-radius:12px;padding:10px 14px;margin-bottom:4px;gap:10px}
+    .spotify-bar.connected{border-color:#1db95440;background:#1db95408}
+    .spotify-bar-left{display:flex;align-items:center;gap:8px;min-width:0;flex:1}
+    .spotify-status-text{font-size:12px;color:#666;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .spotify-status-text.connected{color:#1db954}
+    .spotify-connect-btn{background:#1db954;color:#000;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit;flex-shrink:0}
   </style>
 </head>
 <body>
@@ -110,7 +119,7 @@
 <!-- LOGIN -->
 <div class="screen active" id="s-login">
   <div style="font-size:36px;margin-bottom:4px">◈</div>
-  <div class="logo"><span>rhythmrun</span></div>
+  <div class="logo"><span>run2beat</span></div>
   <div class="tagline">Koşuna göre müzik. Şarkı bitmeden geçiş yok.</div>
   <button class="google-btn" onclick="googleLogin()">
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -137,11 +146,30 @@
     </div>
   </div>
 
-  <div class="logo" style="font-size:22px;margin-bottom:4px">◈ <span>rhythmrun</span></div>
+  <div class="logo" style="font-size:22px;margin-bottom:4px">◈ <span>run2beat</span></div>
+
+  <div class="sec">Müzik kaynağı</div>
+  <div class="spotify-bar" id="liked-bar">
+    <div class="spotify-bar-left">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="#ef4444" style="flex-shrink:0"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+      <span class="spotify-status-text" id="spotify-status-text">YouTube beğenilerinden playlist oluştur</span>
+    </div>
+    <button class="spotify-connect-btn" id="spotify-connect-btn" onclick="loadLikedSongs()">Yükle</button>
+  </div>
+  <div style="text-align:right;margin-top:4px"><a href="https://getsongbpm.com" target="_blank" rel="noopener" style="color:#333;font-size:10px;text-decoration:none">BPM data by GetSongBPM.com</a></div>
 
   <div id="mode-section">
   <div class="sec">Aktif zon</div>
   <div class="mode-grid">
+    <button class="mode-btn" id="btn-brisk" onclick="selMode('brisk')">
+      <div class="m-title">🚶 Tempolu Yürüyüş</div><div class="m-desc">100–120 BPM</div>
+    </button>
+    <button class="mode-btn" id="btn-jogging" onclick="selMode('jogging')">
+      <div class="m-title">🏃 Jogging</div><div class="m-desc">120–140 BPM</div>
+    </button>
+    <button class="mode-btn" id="btn-easy_run" onclick="selMode('easy_run')">
+      <div class="m-title">🏃 Hafif Koşu</div><div class="m-desc">140–160 BPM</div>
+    </button>
     <button class="mode-btn" id="btn-run" onclick="selMode('run')">
       <div class="m-title">🏃 Koşu</div><div class="m-desc">160–175 BPM</div>
     </button>
@@ -153,6 +181,7 @@
 
   <div class="sec">Müzik türü</div>
   <div class="genre-grid">
+    <button class="genre-btn" id="btn-liked" onclick="selLiked(this)" disabled style="opacity:.35">⭐ Beğenilenlerim</button>
     <button class="genre-btn" onclick="selGenre(this,'all')">🎵 Hepsi</button>
     <button class="genre-btn" onclick="selGenre(this,'pop')">💫 Pop</button>
     <button class="genre-btn" onclick="selGenre(this,'hiphop')">🎤 Hip-Hop</button>
@@ -255,9 +284,10 @@
 </div>
 
 <script>
-const CLIENT_ID = "107728234609-n9n2iatq19abjh1qlcgrdiu2h93v9ma7.apps.googleusercontent.com";
-const YT_KEY    = "AIzaSyCFjmRYw_tkCKSMlSOf7CfGv29L99tWYK4";
-const SCOPES    = "https://www.googleapis.com/auth/youtube.force-ssl profile email";
+const CLIENT_ID        = "107728234609-n9n2iatq19abjh1qlcgrdiu2h93v9ma7.apps.googleusercontent.com";
+const YT_KEY           = "AIzaSyCFjmRYw_tkCKSMlSOf7CfGv29L99tWYK4";
+const SCOPES           = "https://www.googleapis.com/auth/youtube.force-ssl profile email";
+const BPMDB_KEY = "01d95501999cadb1d1c2f45f7f843072";
 
 // ── SONG DATABASE ──────────────────────────────────────────────
 const DB = {
@@ -508,6 +538,7 @@ const ZONES={
 
 // State
 let accessToken=null, userProfile=null;
+let likedSongs=[], likedSongsLoaded=false, likedSongsLoading=false;
 let selMode_=null, selGenre_=null, selRatio_=null;
 let queue=[], curIdx=0, secLeft=0, totTime=0, elapsed=0, running=false, timer=null;
 let createdPlaylistId=null, createdPlaylistUrl=null;
@@ -561,6 +592,7 @@ async function initApp() {
     document.getElementById('user-avatar').src = userProfile.picture || '';
     document.getElementById('user-name').textContent = userProfile.name || userProfile.email || '';
     show('s-setup');
+    updateLikedUI();
   } catch(e) {
     console.error('[RR] initApp error:', e);
     showLoginErr('Giriş hatası: ' + e.message);
@@ -568,17 +600,128 @@ async function initApp() {
   }
 }
 
+// ── YOUTUBE LIKED + BPM LOOKUP ────────────────────────────────
+function parseVideoTitle(raw){
+  // Strip parenthetical/bracketed suffixes: (Official Video), [Lyrics], etc.
+  let s=raw.replace(/\s*[\(\[][^\)\]]{0,40}[\)\]]/g,'').trim();
+  // "Artist – Song" or "Artist - Song"
+  const m=s.match(/^(.+?)\s*[-–—]\s*(.+)$/);
+  if(m) return {a:m[1].trim(),t:m[2].trim()};
+  return {a:'',t:s};
+}
+
+async function fetchBPM(title,artist){
+  if(BPMDB_KEY==='YOUR_GETSONGBPM_KEY_HERE') return null;
+  const q=encodeURIComponent((artist?artist+' ':'')+title);
+  try{
+    const res=await fetch(`https://api.getsongbpm.com/search/?api_key=${BPMDB_KEY}&type=both&lookup=${q}`);
+    const data=await res.json();
+    const hit=data.search?.[0];
+    return hit?.tempo?Math.round(parseFloat(hit.tempo)):null;
+  }catch{return null;}
+}
+
+async function loadLikedSongs(){
+  if(likedSongsLoading) return;
+  if(BPMDB_KEY==='YOUR_GETSONGBPM_KEY_HERE'){
+    updateLikedUI('no-key');return;
+  }
+  const cached=localStorage.getItem('r2b_liked_songs');
+  const cachedTime=localStorage.getItem('r2b_liked_songs_time');
+  if(cached&&cachedTime&&Date.now()-parseInt(cachedTime)<86400000){
+    likedSongs=JSON.parse(cached);likedSongsLoaded=true;updateLikedUI();return;
+  }
+  likedSongsLoading=true;updateLikedUI();
+  try{
+    // Fetch YouTube Liked Videos (playlist LL)
+    const videos=[];
+    let pageToken='';
+    while(videos.length<200){
+      const url=`https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=LL&maxResults=50${pageToken?'&pageToken='+pageToken:''}&key=${YT_KEY}`;
+      const res=await fetch(url,{headers:{Authorization:'Bearer '+accessToken}});
+      const data=await res.json();
+      if(data.error) throw new Error(data.error.message);
+      (data.items||[]).forEach(item=>{
+        const title=item.snippet?.title;
+        if(title&&title!=='Private video'&&title!=='Deleted video') videos.push(title);
+      });
+      pageToken=data.nextPageToken||'';
+      if(!pageToken) break;
+    }
+    // Parse titles and fetch BPM (with small delay to respect rate limit)
+    const results=[];
+    for(let i=0;i<videos.length;i++){
+      const {t,a}=parseVideoTitle(videos[i]);
+      document.getElementById('spotify-status-text').textContent=`BPM aranıyor... (${i+1}/${videos.length})`;
+      const bpm=await fetchBPM(t,a);
+      if(bpm) results.push({t,a,bpm});
+      await new Promise(r=>setTimeout(r,120)); // ~8 req/s, stay under limit
+    }
+    likedSongs=results;likedSongsLoaded=true;
+    localStorage.setItem('r2b_liked_songs',JSON.stringify(likedSongs));
+    localStorage.setItem('r2b_liked_songs_time',String(Date.now()));
+  }catch(e){console.error('[R2B] loadLikedSongs:',e);}
+  finally{likedSongsLoading=false;updateLikedUI();}
+}
+
+function getSongsFromLiked(zone){
+  const z=ZONES[zone];
+  return [...likedSongs.filter(s=>s.bpm>=z.bpmMin&&s.bpm<=z.bpmMax)].sort(()=>Math.random()-.5);
+}
+
+function updateLikedUI(state){
+  const bar=document.getElementById('liked-bar');
+  const statusText=document.getElementById('spotify-status-text');
+  const loadBtn=document.getElementById('spotify-connect-btn');
+  const likedBtn=document.getElementById('btn-liked');
+  if(!bar) return;
+  if(state==='no-key'){
+    bar.className='spotify-bar';
+    statusText.className='spotify-status-text';
+    statusText.textContent='⚠ BPMDB_KEY eksik — getsongbpm.com ücretsiz key ekle';
+    loadBtn.style.display='none';
+    if(likedBtn){likedBtn.disabled=true;likedBtn.style.opacity='.35';}
+    return;
+  }
+  if(likedSongsLoading){
+    bar.className='spotify-bar connected';
+    statusText.className='spotify-status-text connected';
+    loadBtn.style.display='none';
+    if(likedBtn){likedBtn.disabled=true;likedBtn.style.opacity='.35';}
+    return;
+  }
+  if(likedSongsLoaded){
+    bar.className='spotify-bar connected';
+    statusText.className='spotify-status-text connected';
+    statusText.textContent=`✓ ${likedSongs.length} beğenilen şarkı yüklendi`;
+    loadBtn.style.display='none';
+    if(likedBtn){likedBtn.disabled=false;likedBtn.style.opacity='1';}
+  } else {
+    bar.className='spotify-bar';
+    statusText.className='spotify-status-text';
+    statusText.textContent='YouTube beğenilerinden playlist — BPM API gerekli';
+    loadBtn.style.display='';loadBtn.textContent='Yükle';
+    if(likedBtn){likedBtn.disabled=true;likedBtn.style.opacity='.35';}
+  }
+}
+
+// kept as alias so existing callers don't break
+function updateSpotifyUI(){updateLikedUI();}
+
 // ── UI ────────────────────────────────────────────────────────
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
 function selMode(m){
   selMode_=m;
-  document.getElementById('btn-run').className='mode-btn'+(m==='run'?' sel-run':'');
-  document.getElementById('btn-sprint').className='mode-btn'+(m==='sprint'?' sel-sprint':'');
+  ['brisk','jogging','easy_run','run','sprint'].forEach(z=>{
+    const btn=document.getElementById('btn-'+z);
+    if(btn) btn.className='mode-btn'+(m===z?' sel-'+z:'');
+  });
   const cls=m==='sprint'?'da-sprint':'da-run';
   ['d11','d12a','d12b','d13a','d13b','d13c','d21'].forEach(id=>{const el=document.getElementById(id);if(el)el.className=cls;});
   checkReady();
 }
 function selGenre(btn,g){selGenre_=g;document.querySelectorAll('.genre-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');checkReady();}
+function selLiked(btn){if(!likedSongsLoaded)return;selGenre_='liked';document.querySelectorAll('.genre-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');checkReady();}
 function selRatio(btn,id,w,a,zone){
   selRatio_={id,walk:w,active:a,zone:zone||null};
   document.querySelectorAll('.ratio-btn').forEach(b=>b.classList.remove('sel'));
@@ -587,7 +730,7 @@ function selRatio(btn,id,w,a,zone){
   const ms=document.getElementById('mode-section');
   ms.style.opacity=walkOnly?'0.35':'1';
   ms.style.pointerEvents=walkOnly?'none':'';
-  if(walkOnly){selMode_=null;document.getElementById('btn-run').className='mode-btn';document.getElementById('btn-sprint').className='mode-btn';}
+  if(walkOnly){selMode_=null;['brisk','jogging','easy_run','run','sprint'].forEach(z=>{const b=document.getElementById('btn-'+z);if(b)b.className='mode-btn';});}
   checkReady();
 }
 function checkReady(){
@@ -611,6 +754,10 @@ function pick(pool,count,usedTs){
   return [...src].sort(()=>Math.random()-.5).slice(0,count);
 }
 function getSongs(zone){
+  if(selGenre_==='liked'){
+    const liked=getSongsFromLiked(zone);
+    return liked.length?liked:[...DB[zone].all].sort(()=>Math.random()-.5);
+  }
   const g=selGenre_||'all';
   return [...(DB[zone][g]||DB[zone].all)].sort(()=>Math.random()-.5);
 }
@@ -641,7 +788,7 @@ async function createYTPlaylist(title){
   const res=await fetch('https://www.googleapis.com/youtube/v3/playlists?part=snippet,status',{
     method:'POST',
     headers:{'Authorization':'Bearer '+accessToken,'Content-Type':'application/json'},
-    body:JSON.stringify({snippet:{title,description:'RhythmRun tarafından oluşturuldu 🎵'},status:{privacyStatus:'private'}})
+    body:JSON.stringify({snippet:{title,description:'Run2Beat tarafından oluşturuldu 🎵'},status:{privacyStatus:'private'}})
   });
   const data=await res.json();
   return data.id;
@@ -698,9 +845,9 @@ async function buildPlaylist(){
     setStep(stepLabels,1,'active');
     document.getElementById('build-msg').textContent='Playlist oluşturuluyor...';
     const now=new Date().toLocaleDateString('tr-TR');
-    const modeLabel=selMode_==='sprint'?'Sprint':'Koşu';
+    const modeLabel=selMode_?ZONES[selMode_].label:'Yürüyüş';
     const ratioLabel=selRatio_.id;
-    const playlistTitle=`RhythmRun – ${modeLabel} ${ratioLabel} (${now})`;
+    const playlistTitle=`Run2Beat – ${modeLabel} ${ratioLabel} (${now})`;
     const playlistId=await createYTPlaylist(playlistTitle);
     createdPlaylistId=playlistId;
     createdPlaylistUrl=`https://music.youtube.com/playlist?list=${playlistId}`;
