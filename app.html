@@ -733,22 +733,17 @@ function initPickers(){
 }
 
 function addBlock(phase,zone){
-  const existing=plan[phase].find(b=>b.zone===zone);
-  if(existing){existing.count++;} else {plan[phase].push({zone,count:1});}
+  plan[phase].push({zone,count:1});
   renderPhase(phase);checkReady();
 }
 
-function removeBlock(el){
-  const item=el.closest('.block-item');
-  const {phase,zone}=item.dataset;
-  plan[phase]=plan[phase].filter(b=>b.zone!==zone);
+function removeBlock(phase,idx){
+  plan[phase].splice(idx,1);
   renderPhase(phase);checkReady();
 }
 
-function adjustCount(el,delta){
-  const item=el.closest('.block-item');
-  const {phase,zone}=item.dataset;
-  const block=plan[phase].find(b=>b.zone===zone);
+function adjustCount(phase,idx,delta){
+  const block=plan[phase][idx];
   if(!block) return;
   block.count=Math.max(1,block.count+delta);
   renderPhase(phase);
@@ -757,16 +752,16 @@ function adjustCount(el,delta){
 function renderPhase(phase){
   const container=document.getElementById('blocks-'+phase);
   const totalEl=document.getElementById(phase+'-total');
-  container.innerHTML=plan[phase].map(b=>{
+  container.innerHTML=plan[phase].map((b,i)=>{
     const z=ZONES[b.zone];
-    return `<div class="block-item" data-phase="${phase}" data-zone="${b.zone}" style="border-color:${z.color}44">
+    return `<div class="block-item" style="border-color:${z.color}44">
       <span class="block-info" style="color:${z.color}">${z.emoji} ${z.label}</span>
       <div class="block-controls">
-        <button onclick="adjustCount(this,-1)">−</button>
+        <button onclick="adjustCount('${phase}',${i},-1)">−</button>
         <span class="block-count">${b.count}</span>
-        <button onclick="adjustCount(this,+1)">+</button>
+        <button onclick="adjustCount('${phase}',${i},+1)">+</button>
       </div>
-      <button class="block-del" onclick="removeBlock(this)">×</button>
+      <button class="block-del" onclick="removeBlock('${phase}',${i})">×</button>
     </div>`;
   }).join('');
   const total=plan[phase].reduce((s,b)=>s+b.count,0);
