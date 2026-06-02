@@ -139,6 +139,7 @@
 
   <div class="logo" style="font-size:22px;margin-bottom:4px">◈ <span>rhythmrun</span></div>
 
+  <div id="mode-section">
   <div class="sec">Aktif zon</div>
   <div class="mode-grid">
     <button class="mode-btn" id="btn-run" onclick="selMode('run')">
@@ -147,6 +148,7 @@
     <button class="mode-btn" id="btn-sprint" onclick="selMode('sprint')">
       <div class="m-title">⚡ Sprint</div><div class="m-desc">168–185 BPM</div>
     </button>
+  </div>
   </div>
 
   <div class="sec">Müzik türü</div>
@@ -159,8 +161,20 @@
     <button class="genre-btn" onclick="selGenre(this,'rnb')">🎷 R&B</button>
   </div>
 
-  <div class="sec">Yürüyüş / Aktif oran</div>
+  <div class="sec">Mod</div>
   <div class="ratio-list">
+    <button class="ratio-btn" onclick="selRatio(this,'slow-walk',2,0,'slowwalk')">
+      <span class="rl">🐕</span><span class="rd">Yavaş yürüyüş — 70–100 BPM</span>
+      <div class="dots"><div class="dw"></div><div class="dw"></div></div>
+    </button>
+    <button class="ratio-btn" onclick="selRatio(this,'walk-only',2,0,'walk')">
+      <span class="rl">🚶</span><span class="rd">Sadece yürüyüş — 85–130 BPM</span>
+      <div class="dots"><div class="dw"></div><div class="dw"></div><div class="dw"></div></div>
+    </button>
+    <button class="ratio-btn" onclick="selRatio(this,'2-1',2,1)">
+      <span class="rl">2 : 1</span><span class="rd">2 yürüyüş · 1 aktif</span>
+      <div class="dots"><div class="dw"></div><div class="dw"></div><div class="da-run" id="d21"></div></div>
+    </button>
     <button class="ratio-btn" onclick="selRatio(this,'1-1',1,1)">
       <span class="rl">1 : 1</span><span class="rd">1 yürüyüş · 1 aktif</span>
       <div class="dots"><div class="dw"></div><div class="da-run" id="d11"></div></div>
@@ -247,6 +261,40 @@ const SCOPES    = "https://www.googleapis.com/auth/youtube.force-ssl profile ema
 
 // ── SONG DATABASE ──────────────────────────────────────────────
 const DB = {
+  slowwalk: {
+    all:[
+      {t:"God's Plan",a:"Drake",bpm:77},{t:"Hotline Bling",a:"Drake",bpm:81},
+      {t:"Stay With Me",a:"Sam Smith",bpm:86},{t:"Yellow",a:"Coldplay",bpm:86},
+      {t:"Wonderwall",a:"Oasis",bpm:87},{t:"Waterfalls",a:"TLC",bpm:88},
+      {t:"Sunflower",a:"Post Malone",bpm:90},{t:"Cheap Thrills",a:"Sia",bpm:93},
+      {t:"Watermelon Sugar",a:"Harry Styles",bpm:95},{t:"Californication",a:"Red Hot Chili Peppers",bpm:96},
+      {t:"Shape of You",a:"Ed Sheeran",bpm:96},{t:"Single Ladies",a:"Beyoncé",bpm:97},
+      {t:"Lean On",a:"Major Lazer",bpm:98},{t:"Sicko Mode",a:"Travis Scott",bpm:98},
+      {t:"Hips Don't Lie",a:"Shakira",bpm:100},{t:"No Scrubs",a:"TLC",bpm:100},
+      {t:"Crazy In Love",a:"Beyoncé",bpm:100},
+    ],
+    pop:[
+      {t:"Watermelon Sugar",a:"Harry Styles",bpm:95},{t:"Shape of You",a:"Ed Sheeran",bpm:96},
+      {t:"Cheap Thrills",a:"Sia",bpm:93},{t:"Stay With Me",a:"Sam Smith",bpm:86},
+      {t:"Hips Don't Lie",a:"Shakira",bpm:100},
+    ],
+    hiphop:[
+      {t:"God's Plan",a:"Drake",bpm:77},{t:"Hotline Bling",a:"Drake",bpm:81},
+      {t:"Sunflower",a:"Post Malone",bpm:90},{t:"Sicko Mode",a:"Travis Scott",bpm:98},
+    ],
+    rock:[
+      {t:"Yellow",a:"Coldplay",bpm:86},{t:"Wonderwall",a:"Oasis",bpm:87},
+      {t:"Californication",a:"Red Hot Chili Peppers",bpm:96},
+    ],
+    electronic:[
+      {t:"Lean On",a:"Major Lazer",bpm:98},{t:"Cheap Thrills",a:"Sia",bpm:93},
+    ],
+    rnb:[
+      {t:"Stay With Me",a:"Sam Smith",bpm:86},{t:"Waterfalls",a:"TLC",bpm:88},
+      {t:"Single Ladies",a:"Beyoncé",bpm:97},{t:"No Scrubs",a:"TLC",bpm:100},
+      {t:"Crazy In Love",a:"Beyoncé",bpm:100},
+    ],
+  },
   walk: {
     all:[
       {t:"Hips Don't Lie",a:"Shakira",bpm:100},{t:"Crazy In Love",a:"Beyoncé",bpm:100},
@@ -360,9 +408,10 @@ const DB = {
 };
 
 const ZONES={
-  walk:  {label:"Yürüyüş",color:"#22c55e",emoji:"🚶",bpmRange:"85–125 BPM"},
-  run:   {label:"Koşu",   color:"#f97316",emoji:"🏃",bpmRange:"135–165 BPM"},
-  sprint:{label:"Sprint", color:"#ef4444",emoji:"⚡",bpmRange:"168–185 BPM"},
+  slowwalk:{label:"Yavaş Yürüyüş",color:"#3b82f6",emoji:"🐕",bpmRange:"70–100 BPM"},
+  walk:    {label:"Yürüyüş",      color:"#22c55e",emoji:"🚶",bpmRange:"85–130 BPM"},
+  run:     {label:"Koşu",         color:"#f97316",emoji:"🏃",bpmRange:"135–165 BPM"},
+  sprint:  {label:"Sprint",       color:"#ef4444",emoji:"⚡",bpmRange:"168–185 BPM"},
 };
 
 // State
@@ -434,12 +483,25 @@ function selMode(m){
   document.getElementById('btn-run').className='mode-btn'+(m==='run'?' sel-run':'');
   document.getElementById('btn-sprint').className='mode-btn'+(m==='sprint'?' sel-sprint':'');
   const cls=m==='sprint'?'da-sprint':'da-run';
-  ['d11','d12a','d12b','d13a','d13b','d13c'].forEach(id=>{const el=document.getElementById(id);if(el)el.className=cls;});
+  ['d11','d12a','d12b','d13a','d13b','d13c','d21'].forEach(id=>{const el=document.getElementById(id);if(el)el.className=cls;});
   checkReady();
 }
 function selGenre(btn,g){selGenre_=g;document.querySelectorAll('.genre-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');checkReady();}
-function selRatio(btn,id,w,a){selRatio_={id,walk:w,active:a};document.querySelectorAll('.ratio-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');checkReady();}
-function checkReady(){document.getElementById('start-btn').disabled=!(selMode_&&selGenre_&&selRatio_);}
+function selRatio(btn,id,w,a,zone){
+  selRatio_={id,walk:w,active:a,zone:zone||null};
+  document.querySelectorAll('.ratio-btn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  const walkOnly=a===0;
+  const ms=document.getElementById('mode-section');
+  ms.style.opacity=walkOnly?'0.35':'1';
+  ms.style.pointerEvents=walkOnly?'none':'';
+  if(walkOnly){selMode_=null;document.getElementById('btn-run').className='mode-btn';document.getElementById('btn-sprint').className='mode-btn';}
+  checkReady();
+}
+function checkReady(){
+  const walkOnly=selRatio_&&selRatio_.active===0;
+  document.getElementById('start-btn').disabled=!(selGenre_&&selRatio_&&(walkOnly||selMode_));
+}
 
 function setStep(steps, idx, status){
   const icons={pending:'○',active:'◌',done:'✓',error:'✗'};
@@ -505,13 +567,14 @@ async function buildPlaylist(){
   document.getElementById('err').style.display='none';
   show('s-building');
 
-  const walkSongs=getSongs('walk');
-  const activeSongs=getSongs(selMode_);
+  const walkZone=selRatio_.zone||'walk';
+  const walkSongs=getSongs(walkZone);
+  const activeSongs=selRatio_.active>0?getSongs(selMode_):[];
   const usedTs=[];
   const slots=[];
   for(let r=0;r<5;r++){
-    pick(walkSongs,selRatio_.walk,usedTs).forEach(s=>{slots.push({zone:'walk',song:s});usedTs.push(s.t);});
-    pick(activeSongs,selRatio_.active,usedTs).forEach(s=>{slots.push({zone:selMode_,song:s});usedTs.push(s.t);});
+    pick(walkSongs,selRatio_.walk,usedTs).forEach(s=>{slots.push({zone:walkZone,song:s});usedTs.push(s.t);});
+    if(selRatio_.active>0) pick(activeSongs,selRatio_.active,usedTs).forEach(s=>{slots.push({zone:selMode_,song:s});usedTs.push(s.t);});
   }
 
   const steps=slots.map(sl=>`${sl.zone==='walk'?'🚶':'sl.zone==="sprint"?"⚡":"🏃"'} ${sl.song.t}`);
