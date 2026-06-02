@@ -627,9 +627,6 @@ async function fetchBPM(title,artist){
 
 async function loadLikedSongs(){
   if(likedSongsLoading) return;
-  if(BPMDB_KEY==='YOUR_GETSONGBPM_KEY_HERE'){
-    updateLikedUI('no-key');return;
-  }
   const cached=localStorage.getItem('r2b_liked_songs');
   const cachedTime=localStorage.getItem('r2b_liked_songs_time');
   if(cached&&cachedTime&&Date.now()-parseInt(cachedTime)<86400000){
@@ -679,14 +676,6 @@ function updateLikedUI(state){
   const loadBtn=document.getElementById('spotify-connect-btn');
   const likedBtn=document.getElementById('btn-liked');
   if(!bar) return;
-  if(state==='no-key'){
-    bar.className='spotify-bar';
-    statusText.className='spotify-status-text';
-    statusText.textContent='⚠ BPMDB_KEY eksik — getsongbpm.com ücretsiz key ekle';
-    loadBtn.style.display='none';
-    if(likedBtn){likedBtn.disabled=true;likedBtn.style.opacity='.35';}
-    return;
-  }
   if(likedSongsLoading){
     bar.className='spotify-bar connected';
     statusText.className='spotify-status-text connected';
