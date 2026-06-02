@@ -143,10 +143,10 @@
   <div class="sec">Aktif zon</div>
   <div class="mode-grid">
     <button class="mode-btn" id="btn-run" onclick="selMode('run')">
-      <div class="m-title">🏃 Koşu</div><div class="m-desc">135–165 BPM</div>
+      <div class="m-title">🏃 Koşu</div><div class="m-desc">160–175 BPM</div>
     </button>
     <button class="mode-btn" id="btn-sprint" onclick="selMode('sprint')">
-      <div class="m-title">⚡ Sprint</div><div class="m-desc">168–185 BPM</div>
+      <div class="m-title">⚡ Sprint</div><div class="m-desc">175–195 BPM</div>
     </button>
   </div>
   </div>
@@ -164,11 +164,11 @@
   <div class="sec">Mod</div>
   <div class="ratio-list">
     <button class="ratio-btn" onclick="selRatio(this,'slow-walk',2,0,'slowwalk')">
-      <span class="rl">🐕</span><span class="rd">Yavaş yürüyüş — 70–100 BPM</span>
+      <span class="rl">🐕</span><span class="rd">Yavaş yürüyüş — 60–80 BPM</span>
       <div class="dots"><div class="dw"></div><div class="dw"></div></div>
     </button>
     <button class="ratio-btn" onclick="selRatio(this,'walk-only',2,0,'walk')">
-      <span class="rl">🚶</span><span class="rd">Sadece yürüyüş — 85–130 BPM</span>
+      <span class="rl">🚶</span><span class="rd">Normal yürüyüş — 80–100 BPM</span>
       <div class="dots"><div class="dw"></div><div class="dw"></div><div class="dw"></div></div>
     </button>
     <button class="ratio-btn" onclick="selRatio(this,'2-1',2,1)">
@@ -261,6 +261,95 @@ const SCOPES    = "https://www.googleapis.com/auth/youtube.force-ssl profile ema
 
 // ── SONG DATABASE ──────────────────────────────────────────────
 const DB = {
+  brisk: {
+    all:[
+      {t:"Hips Don't Lie",a:"Shakira",bpm:100},{t:"Crazy In Love",a:"Beyoncé",bpm:100},
+      {t:"Levitating",a:"Dua Lipa",bpm:103},{t:"Stronger",a:"Kanye West",bpm:104},
+      {t:"Eye of the Tiger",a:"Survivor",bpm:109},{t:"Can't Stop the Feeling",a:"Justin Timberlake",bpm:113},
+      {t:"Dynamite",a:"BTS",bpm:114},{t:"Uptown Funk",a:"Bruno Mars",bpm:115},
+      {t:"Get Lucky",a:"Daft Punk",bpm:116},{t:"Come as You Are",a:"Nirvana",bpm:117},
+      {t:"Señorita",a:"Shawn Mendes",bpm:117},{t:"Blurred Lines",a:"Robin Thicke",bpm:120},
+    ],
+    pop:[
+      {t:"Hips Don't Lie",a:"Shakira",bpm:100},{t:"Levitating",a:"Dua Lipa",bpm:103},
+      {t:"Can't Stop the Feeling",a:"Justin Timberlake",bpm:113},{t:"Uptown Funk",a:"Bruno Mars",bpm:115},
+      {t:"Dynamite",a:"BTS",bpm:114},{t:"Señorita",a:"Shawn Mendes",bpm:117},
+    ],
+    hiphop:[
+      {t:"Crazy In Love",a:"Beyoncé",bpm:100},{t:"Stronger",a:"Kanye West",bpm:104},
+      {t:"Gold Digger",a:"Kanye West",bpm:130},
+    ],
+    rock:[
+      {t:"Eye of the Tiger",a:"Survivor",bpm:109},{t:"Come as You Are",a:"Nirvana",bpm:117},
+    ],
+    electronic:[
+      {t:"Get Lucky",a:"Daft Punk",bpm:116},
+    ],
+    rnb:[
+      {t:"Hips Don't Lie",a:"Shakira",bpm:100},{t:"Crazy In Love",a:"Beyoncé",bpm:100},
+    ],
+  },
+  jogging: {
+    all:[
+      {t:"Physical",a:"Dua Lipa",bpm:123},{t:"One More Time",a:"Daft Punk",bpm:123},
+      {t:"Sweet Child O' Mine",a:"Guns N' Roses",bpm:123},{t:"As It Was",a:"Harry Styles",bpm:124},
+      {t:"Wake Me Up",a:"Avicii",bpm:124},{t:"Titanium",a:"David Guetta ft. Sia",bpm:126},
+      {t:"Run the World",a:"Beyoncé",bpm:127},{t:"Moves Like Jagger",a:"Maroon 5",bpm:128},
+      {t:"Animals",a:"Martin Garrix",bpm:128},{t:"Clarity",a:"Zedd",bpm:128},
+      {t:"Gold Digger",a:"Kanye West",bpm:130},{t:"Jump",a:"Van Halen",bpm:131},
+      {t:"Welcome to the Jungle",a:"Guns N' Roses",bpm:123},{t:"Thunderstruck",a:"AC/DC",bpm:133},
+      {t:"Walking on Sunshine",a:"Katrina and The Waves",bpm:133},
+    ],
+    pop:[
+      {t:"Physical",a:"Dua Lipa",bpm:123},{t:"As It Was",a:"Harry Styles",bpm:124},
+      {t:"Wake Me Up",a:"Avicii",bpm:124},{t:"Moves Like Jagger",a:"Maroon 5",bpm:128},
+      {t:"Walking on Sunshine",a:"Katrina and The Waves",bpm:133},
+    ],
+    hiphop:[
+      {t:"Gold Digger",a:"Kanye West",bpm:130},{t:"Run the World",a:"Beyoncé",bpm:127},
+    ],
+    rock:[
+      {t:"Sweet Child O' Mine",a:"Guns N' Roses",bpm:123},{t:"Jump",a:"Van Halen",bpm:131},
+      {t:"Welcome to the Jungle",a:"Guns N' Roses",bpm:123},{t:"Thunderstruck",a:"AC/DC",bpm:133},
+    ],
+    electronic:[
+      {t:"One More Time",a:"Daft Punk",bpm:123},{t:"Wake Me Up",a:"Avicii",bpm:124},
+      {t:"Titanium",a:"David Guetta ft. Sia",bpm:126},{t:"Animals",a:"Martin Garrix",bpm:128},
+      {t:"Clarity",a:"Zedd",bpm:128},
+    ],
+    rnb:[
+      {t:"Run the World",a:"Beyoncé",bpm:127},{t:"Physical",a:"Dua Lipa",bpm:123},
+    ],
+  },
+  easy_run: {
+    all:[
+      {t:"Pump It",a:"Black Eyed Peas",bpm:140},{t:"Shivers",a:"Ed Sheeran",bpm:141},
+      {t:"Can't Hold Us",a:"Macklemore",bpm:146},{t:"Mr. Brightside",a:"The Killers",bpm:148},
+      {t:"Good as Hell",a:"Lizzo",bpm:148},{t:"HUMBLE.",a:"Kendrick Lamar",bpm:150},
+      {t:"Juice",a:"Lizzo",bpm:150},{t:"Formation",a:"Beyoncé",bpm:155},
+      {t:"Blinding Lights",a:"The Weeknd",bpm:171},{t:"Good 4 U",a:"Olivia Rodrigo",bpm:166},
+    ],
+    pop:[
+      {t:"Pump It",a:"Black Eyed Peas",bpm:140},{t:"Mr. Brightside",a:"The Killers",bpm:148},
+      {t:"Good as Hell",a:"Lizzo",bpm:148},{t:"Shivers",a:"Ed Sheeran",bpm:141},
+      {t:"Juice",a:"Lizzo",bpm:150},
+    ],
+    hiphop:[
+      {t:"HUMBLE.",a:"Kendrick Lamar",bpm:150},{t:"Can't Hold Us",a:"Macklemore",bpm:146},
+      {t:"Formation",a:"Beyoncé",bpm:155},{t:"Pump It",a:"Black Eyed Peas",bpm:140},
+    ],
+    rock:[
+      {t:"Mr. Brightside",a:"The Killers",bpm:148},{t:"Crazy Train",a:"Ozzy Osbourne",bpm:138},
+    ],
+    electronic:[
+      {t:"Wake Me Up",a:"Avicii",bpm:124},{t:"Beautiful Now",a:"Zedd",bpm:128},
+      {t:"I Gotta Feeling",a:"Black Eyed Peas",bpm:128},
+    ],
+    rnb:[
+      {t:"Formation",a:"Beyoncé",bpm:155},{t:"Good as Hell",a:"Lizzo",bpm:148},
+      {t:"Juice",a:"Lizzo",bpm:150},{t:"HUMBLE.",a:"Kendrick Lamar",bpm:150},
+    ],
+  },
   slowwalk: {
     all:[
       {t:"God's Plan",a:"Drake",bpm:77},{t:"Hotline Bling",a:"Drake",bpm:81},
@@ -408,10 +497,13 @@ const DB = {
 };
 
 const ZONES={
-  slowwalk:{label:"Yavaş Yürüyüş",color:"#3b82f6",emoji:"🐕",bpmRange:"70–100 BPM"},
-  walk:    {label:"Yürüyüş",      color:"#22c55e",emoji:"🚶",bpmRange:"85–130 BPM"},
-  run:     {label:"Koşu",         color:"#f97316",emoji:"🏃",bpmRange:"135–165 BPM"},
-  sprint:  {label:"Sprint",       color:"#ef4444",emoji:"⚡",bpmRange:"168–185 BPM"},
+  slowwalk:{label:"Yavaş Yürüyüş",  color:"#3b82f6",emoji:"🐕",bpmRange:"60–80 BPM",  bpmMin:60, bpmMax:80 },
+  walk:    {label:"Normal Yürüyüş", color:"#22c55e",emoji:"🚶",bpmRange:"80–100 BPM", bpmMin:80, bpmMax:100},
+  brisk:   {label:"Tempolu Yürüyüş",color:"#a3e635",emoji:"🚶",bpmRange:"100–120 BPM",bpmMin:100,bpmMax:120},
+  jogging: {label:"Jogging",        color:"#fbbf24",emoji:"🏃",bpmRange:"120–140 BPM",bpmMin:120,bpmMax:140},
+  easy_run:{label:"Hafif Tempo Koşu",color:"#fb923c",emoji:"🏃",bpmRange:"140–160 BPM",bpmMin:140,bpmMax:160},
+  run:     {label:"Koşu",           color:"#f97316",emoji:"🏃",bpmRange:"160–175 BPM",bpmMin:160,bpmMax:175},
+  sprint:  {label:"Sprint",         color:"#ef4444",emoji:"⚡",bpmRange:"175–195 BPM",bpmMin:175,bpmMax:195},
 };
 
 // State
