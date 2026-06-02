@@ -106,6 +106,25 @@
     @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
     @keyframes spin{to{transform:rotate(360deg)}}
+    /* Phase planner */
+    .phase-section{background:#0a0a18;border:1px solid #1e1e38;border-radius:16px;padding:14px;margin-bottom:10px}
+    .phase-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .phase-title{font-size:13px;font-weight:700}
+    .phase-opt{color:#444;font-weight:400;font-size:11px}
+    .phase-total{font-size:11px;color:#666;font-family:'Space Mono',monospace}
+    .phase-blocks{display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
+    .block-item{display:flex;align-items:center;gap:8px;background:#12122a;border:1px solid #2a2a4a;border-radius:10px;padding:8px 10px}
+    .block-info{flex:1;font-size:13px;font-weight:600}
+    .block-controls{display:flex;align-items:center;gap:6px}
+    .block-controls button{width:24px;height:24px;background:#1e1e38;border:1px solid #2a2a4a;border-radius:6px;color:white;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;font-family:inherit;line-height:1}
+    .block-count{font-size:13px;font-family:'Space Mono',monospace;min-width:22px;text-align:center;font-weight:700}
+    .block-del{background:none;border:none;color:#333;cursor:pointer;font-size:18px;padding:0 2px;line-height:1;flex-shrink:0}
+    .block-del:hover{color:#ef4444}
+    .zone-picker{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
+    .zp-btn{background:#12122a;border:1px solid #2a2a4a;border-radius:8px;padding:6px 2px;cursor:pointer;color:white;font-family:inherit;text-align:center;transition:all 0.15s}
+    .zp-btn:hover{transform:translateY(-1px)}
+    .zp-emoji{font-size:15px;display:block;margin-bottom:2px}
+    .zp-bpm{color:#555;font-size:8px;font-family:'Space Mono',monospace;display:block}
     .spotify-bar{display:flex;align-items:center;justify-content:space-between;background:#12122a;border:1px solid #2a2a4a;border-radius:12px;padding:10px 14px;margin-bottom:4px;gap:10px}
     .spotify-bar.connected{border-color:#1db95440;background:#1db95408}
     .spotify-bar-left{display:flex;align-items:center;gap:8px;min-width:0;flex:1}
@@ -158,27 +177,6 @@
   </div>
   <div style="text-align:right;margin-top:4px"><a href="https://getsongbpm.com" target="_blank" rel="noopener" style="color:#333;font-size:10px;text-decoration:none">BPM data by GetSongBPM.com</a></div>
 
-  <div id="mode-section">
-  <div class="sec">Aktif zon</div>
-  <div class="mode-grid">
-    <button class="mode-btn" id="btn-brisk" onclick="selMode('brisk')">
-      <div class="m-title">🚶 Tempolu Yürüyüş</div><div class="m-desc">100–120 BPM</div>
-    </button>
-    <button class="mode-btn" id="btn-jogging" onclick="selMode('jogging')">
-      <div class="m-title">🏃 Jogging</div><div class="m-desc">120–140 BPM</div>
-    </button>
-    <button class="mode-btn" id="btn-easy_run" onclick="selMode('easy_run')">
-      <div class="m-title">🏃 Hafif Koşu</div><div class="m-desc">140–160 BPM</div>
-    </button>
-    <button class="mode-btn" id="btn-run" onclick="selMode('run')">
-      <div class="m-title">🏃 Koşu</div><div class="m-desc">160–175 BPM</div>
-    </button>
-    <button class="mode-btn" id="btn-sprint" onclick="selMode('sprint')">
-      <div class="m-title">⚡ Sprint</div><div class="m-desc">175–195 BPM</div>
-    </button>
-  </div>
-  </div>
-
   <div class="sec">Müzik türü</div>
   <div class="genre-grid">
     <button class="genre-btn" id="btn-liked" onclick="selLiked(this)" disabled style="opacity:.35">⭐ Beğenilenlerim</button>
@@ -190,32 +188,33 @@
     <button class="genre-btn" onclick="selGenre(this,'rnb')">🎷 R&B</button>
   </div>
 
-  <div class="sec">Mod</div>
-  <div class="ratio-list">
-    <button class="ratio-btn" onclick="selRatio(this,'slow-walk',2,0,'slowwalk')">
-      <span class="rl">🐕</span><span class="rd">Yavaş yürüyüş — 60–80 BPM</span>
-      <div class="dots"><div class="dw"></div><div class="dw"></div></div>
-    </button>
-    <button class="ratio-btn" onclick="selRatio(this,'walk-only',2,0,'walk')">
-      <span class="rl">🚶</span><span class="rd">Normal yürüyüş — 80–100 BPM</span>
-      <div class="dots"><div class="dw"></div><div class="dw"></div><div class="dw"></div></div>
-    </button>
-    <button class="ratio-btn" onclick="selRatio(this,'2-1',2,1)">
-      <span class="rl">2 : 1</span><span class="rd">2 yürüyüş · 1 aktif</span>
-      <div class="dots"><div class="dw"></div><div class="dw"></div><div class="da-run" id="d21"></div></div>
-    </button>
-    <button class="ratio-btn" onclick="selRatio(this,'1-1',1,1)">
-      <span class="rl">1 : 1</span><span class="rd">1 yürüyüş · 1 aktif</span>
-      <div class="dots"><div class="dw"></div><div class="da-run" id="d11"></div></div>
-    </button>
-    <button class="ratio-btn" onclick="selRatio(this,'1-2',1,2)">
-      <span class="rl">1 : 2</span><span class="rd">1 yürüyüş · 2 aktif</span>
-      <div class="dots"><div class="dw"></div><div class="da-run" id="d12a"></div><div class="da-run" id="d12b"></div></div>
-    </button>
-    <button class="ratio-btn" onclick="selRatio(this,'1-3',1,3)">
-      <span class="rl">1 : 3</span><span class="rd">1 yürüyüş · 3 aktif</span>
-      <div class="dots"><div class="dw"></div><div class="da-run" id="d13a"></div><div class="da-run" id="d13b"></div><div class="da-run" id="d13c"></div></div>
-    </button>
+  <div class="sec">Aktivite Planı</div>
+
+  <div class="phase-section">
+    <div class="phase-header">
+      <span class="phase-title">🔥 İsınma<span class="phase-opt"> · opsiyonel</span></span>
+      <span class="phase-total" id="warmup-total"></span>
+    </div>
+    <div class="phase-blocks" id="blocks-warmup"></div>
+    <div class="zone-picker" id="picker-warmup"></div>
+  </div>
+
+  <div class="phase-section">
+    <div class="phase-header">
+      <span class="phase-title">⚡ Ana Aktivite</span>
+      <span class="phase-total" id="main-total"></span>
+    </div>
+    <div class="phase-blocks" id="blocks-main"></div>
+    <div class="zone-picker" id="picker-main"></div>
+  </div>
+
+  <div class="phase-section">
+    <div class="phase-header">
+      <span class="phase-title">❄️ Soğuma<span class="phase-opt"> · opsiyonel</span></span>
+      <span class="phase-total" id="cooldown-total"></span>
+    </div>
+    <div class="phase-blocks" id="blocks-cooldown"></div>
+    <div class="zone-picker" id="picker-cooldown"></div>
   </div>
 
   <div class="err-box" id="err"></div>
@@ -536,10 +535,13 @@ const ZONES={
   sprint:  {label:"Sprint",         color:"#ef4444",emoji:"⚡",bpmRange:"175–195 BPM",bpmMin:175,bpmMax:195},
 };
 
+const ZONE_ORDER=['slowwalk','walk','brisk','jogging','easy_run','run','sprint'];
+const plan={warmup:[],main:[],cooldown:[]};
+
 // State
 let accessToken=null, userProfile=null;
 let likedSongs=[], likedSongsLoaded=false, likedSongsLoading=false;
-let selMode_=null, selGenre_=null, selRatio_=null;
+let selGenre_=null;
 let queue=[], curIdx=0, secLeft=0, totTime=0, elapsed=0, running=false, timer=null;
 let createdPlaylistId=null, createdPlaylistUrl=null;
 const WARN=15;
@@ -592,6 +594,7 @@ async function initApp() {
     document.getElementById('user-avatar').src = userProfile.picture || '';
     document.getElementById('user-name').textContent = userProfile.name || userProfile.email || '';
     show('s-setup');
+    initPickers();
     updateLikedUI();
   } catch(e) {
     console.error('[RR] initApp error:', e);
@@ -710,32 +713,64 @@ function updateSpotifyUI(){updateLikedUI();}
 
 // ── UI ────────────────────────────────────────────────────────
 function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
-function selMode(m){
-  selMode_=m;
-  ['brisk','jogging','easy_run','run','sprint'].forEach(z=>{
-    const btn=document.getElementById('btn-'+z);
-    if(btn) btn.className='mode-btn'+(m===z?' sel-'+z:'');
-  });
-  const cls=m==='sprint'?'da-sprint':'da-run';
-  ['d11','d12a','d12b','d13a','d13b','d13c','d21'].forEach(id=>{const el=document.getElementById(id);if(el)el.className=cls;});
-  checkReady();
-}
+
 function selGenre(btn,g){selGenre_=g;document.querySelectorAll('.genre-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');checkReady();}
 function selLiked(btn){if(!likedSongsLoaded)return;selGenre_='liked';document.querySelectorAll('.genre-btn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');checkReady();}
-function selRatio(btn,id,w,a,zone){
-  selRatio_={id,walk:w,active:a,zone:zone||null};
-  document.querySelectorAll('.ratio-btn').forEach(b=>b.classList.remove('sel'));
-  btn.classList.add('sel');
-  const walkOnly=a===0;
-  const ms=document.getElementById('mode-section');
-  ms.style.opacity=walkOnly?'0.35':'1';
-  ms.style.pointerEvents=walkOnly?'none':'';
-  if(walkOnly){selMode_=null;['brisk','jogging','easy_run','run','sprint'].forEach(z=>{const b=document.getElementById('btn-'+z);if(b)b.className='mode-btn';});}
-  checkReady();
-}
 function checkReady(){
-  const walkOnly=selRatio_&&selRatio_.active===0;
-  document.getElementById('start-btn').disabled=!(selGenre_&&selRatio_&&(walkOnly||selMode_));
+  const hasMain=plan.main.length>0&&plan.main.some(b=>b.count>0);
+  document.getElementById('start-btn').disabled=!(selGenre_&&hasMain);
+}
+
+// ── PHASE PLANNER ─────────────────────────────────────────────
+function initPickers(){
+  ['warmup','main','cooldown'].forEach(phase=>{
+    const el=document.getElementById('picker-'+phase);
+    el.innerHTML=ZONE_ORDER.map(z=>{
+      const zd=ZONES[z];
+      return `<button class="zp-btn" style="border-color:${zd.color}55" onclick="addBlock('${phase}','${z}')" title="${zd.label}"><span class="zp-emoji">${zd.emoji}</span><span class="zp-bpm">${zd.bpmMin}+</span></button>`;
+    }).join('');
+  });
+}
+
+function addBlock(phase,zone){
+  const existing=plan[phase].find(b=>b.zone===zone);
+  if(existing){existing.count++;} else {plan[phase].push({zone,count:1});}
+  renderPhase(phase);checkReady();
+}
+
+function removeBlock(el){
+  const item=el.closest('.block-item');
+  const {phase,zone}=item.dataset;
+  plan[phase]=plan[phase].filter(b=>b.zone!==zone);
+  renderPhase(phase);checkReady();
+}
+
+function adjustCount(el,delta){
+  const item=el.closest('.block-item');
+  const {phase,zone}=item.dataset;
+  const block=plan[phase].find(b=>b.zone===zone);
+  if(!block) return;
+  block.count=Math.max(1,block.count+delta);
+  renderPhase(phase);
+}
+
+function renderPhase(phase){
+  const container=document.getElementById('blocks-'+phase);
+  const totalEl=document.getElementById(phase+'-total');
+  container.innerHTML=plan[phase].map(b=>{
+    const z=ZONES[b.zone];
+    return `<div class="block-item" data-phase="${phase}" data-zone="${b.zone}" style="border-color:${z.color}44">
+      <span class="block-info" style="color:${z.color}">${z.emoji} ${z.label}</span>
+      <div class="block-controls">
+        <button onclick="adjustCount(this,-1)">−</button>
+        <span class="block-count">${b.count}</span>
+        <button onclick="adjustCount(this,+1)">+</button>
+      </div>
+      <button class="block-del" onclick="removeBlock(this)">×</button>
+    </div>`;
+  }).join('');
+  const total=plan[phase].reduce((s,b)=>s+b.count,0);
+  totalEl.textContent=total>0?total+' şarkı':'';
 }
 
 function setStep(steps, idx, status){
@@ -806,17 +841,22 @@ async function buildPlaylist(){
   document.getElementById('err').style.display='none';
   show('s-building');
 
-  const walkZone=selRatio_.zone||'walk';
-  const walkSongs=getSongs(walkZone);
-  const activeSongs=selRatio_.active>0?getSongs(selMode_):[];
-  const usedTs=[];
+  // Build slots from 3-phase plan
   const slots=[];
-  for(let r=0;r<5;r++){
-    pick(walkSongs,selRatio_.walk,usedTs).forEach(s=>{slots.push({zone:walkZone,song:s});usedTs.push(s.t);});
-    if(selRatio_.active>0) pick(activeSongs,selRatio_.active,usedTs).forEach(s=>{slots.push({zone:selMode_,song:s});usedTs.push(s.t);});
+  for(const phase of['warmup','main','cooldown']){
+    for(const block of plan[phase]){
+      const pool=getSongs(block.zone);
+      const usedInBlock=[];
+      for(let i=0;i<block.count;i++){
+        const avail=pool.filter(s=>!usedInBlock.includes(s.t));
+        const src=avail.length?avail:pool;
+        const song=src[Math.floor(Math.random()*src.length)];
+        slots.push({zone:block.zone,song});
+        usedInBlock.push(song.t);
+      }
+    }
   }
 
-  const steps=slots.map(sl=>`${sl.zone==='walk'?'🚶':'sl.zone==="sprint"?"⚡":"🏃"'} ${sl.song.t}`);
   const stepLabels=[
     '🎵 YouTube\'da şarkılar aranıyor',
     '📋 Playlist oluşturuluyor',
@@ -845,9 +885,8 @@ async function buildPlaylist(){
     setStep(stepLabels,1,'active');
     document.getElementById('build-msg').textContent='Playlist oluşturuluyor...';
     const now=new Date().toLocaleDateString('tr-TR');
-    const modeLabel=selMode_?ZONES[selMode_].label:'Yürüyüş';
-    const ratioLabel=selRatio_.id;
-    const playlistTitle=`Run2Beat – ${modeLabel} ${ratioLabel} (${now})`;
+    const mainZones=[...new Set(plan.main.map(b=>b.zone))].map(z=>ZONES[z].label).join(' + ');
+    const playlistTitle=`Run2Beat – ${mainZones} (${now})`;
     const playlistId=await createYTPlaylist(playlistTitle);
     createdPlaylistId=playlistId;
     createdPlaylistUrl=`https://music.youtube.com/playlist?list=${playlistId}`;
