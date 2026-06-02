@@ -286,7 +286,6 @@
 const CLIENT_ID        = "107728234609-n9n2iatq19abjh1qlcgrdiu2h93v9ma7.apps.googleusercontent.com";
 const YT_KEY           = "AIzaSyCFjmRYw_tkCKSMlSOf7CfGv29L99tWYK4";
 const SCOPES           = "https://www.googleapis.com/auth/youtube.force-ssl profile email";
-const BPMDB_KEY = "01d95501999cadb1d1c2f45f7f843072";
 
 // ── SONG DATABASE ──────────────────────────────────────────────
 const DB = {
@@ -614,16 +613,14 @@ function parseVideoTitle(raw){
 }
 
 async function fetchBPM(title,artist){
-  if(BPMDB_KEY==='YOUR_GETSONGBPM_KEY_HERE') return null;
-  const q=encodeURIComponent((artist?artist+' ':'')+title);
-  const apiUrl=`https://api.getsongbpm.com/search/?api_key=${BPMDB_KEY}&type=both&lookup=${q}`;
+  const q=(artist?artist+' ':'')+title;
   try{
-    const res=await fetch('https://corsproxy.io/?'+encodeURIComponent(apiUrl));
+    const res=await fetch('/bpm?q='+encodeURIComponent(q));
     if(!res.ok) return null;
     const data=await res.json();
     const hit=data.search?.[0];
     return hit?.tempo?Math.round(parseFloat(hit.tempo)):null;
-  }catch(e){
+  }catch{
     return null;
   }
 }
