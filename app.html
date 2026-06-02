@@ -618,10 +618,15 @@ async function fetchBPM(title,artist){
   const q=encodeURIComponent((artist?artist+' ':'')+title);
   try{
     const res=await fetch(`https://api.getsongbpm.com/search/?api_key=${BPMDB_KEY}&type=both&lookup=${q}`);
+    if(!res.ok){console.warn('[R2B] BPM HTTP',res.status,title);return null;}
     const data=await res.json();
+    if(!data.search) console.warn('[R2B] BPM unexpected response for',title,JSON.stringify(data).slice(0,120));
     const hit=data.search?.[0];
     return hit?.tempo?Math.round(parseFloat(hit.tempo)):null;
-  }catch{return null;}
+  }catch(e){
+    console.error('[R2B] fetchBPM FAILED for',title,':',e.message);
+    return null;
+  }
 }
 
 async function loadLikedSongs(){
