@@ -615,7 +615,7 @@ function parseVideoTitle(raw){
 async function fetchBPM(title,artist){
   const q=(artist?artist+' ':'')+title;
   try{
-    const res=await fetch('/bpm?q='+encodeURIComponent(q));
+    const res=await fetch('https://bpmproxy.mr3673.workers.dev/?q='+encodeURIComponent(q));
     if(!res.ok) return null;
     const data=await res.json();
     const hit=data.search?.[0];
