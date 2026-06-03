@@ -615,15 +615,23 @@ function parseVideoTitle(raw){
 async function fetchBPM(title,artist){
   const q=(artist?artist+' ':'')+title;
   try{
-    const res=await fetch('https://bpmproxy.mr3673.workers.dev/?q='+encodeURIComponent(q));
-    if(!res.ok){console.warn('[R2B] BPM HTTP',res.status,q);return null;}
+    const res=await fetch('https://bpmproxy.mr3673.workers.dev/?q='+encodeURIComponent(title));
+    if(!res.ok) return null;
     const data=await res.json();
-    if(q.includes('TLC')||q.includes('Billie')||q.includes('Starships'))
-      console.log('[R2B] sample response for',q,JSON.stringify(data).slice(0,200));
-    const hit=data.search?.[0];
-    return hit?.tempo?Math.round(parseFloat(hit.tempo)):null;
-  }catch(e){
-    console.error('[R2B] fetchBPM catch:',e.message,q);
+    const results=(data.search||[]).filter(s=>s.tempo);
+    if(!results.length) return null;
+    // Try to match by artist name
+    if(artist){
+      const al=artist.toLowerCase();
+      const match=results.find(s=>{
+        const n=(s.artist?.name||'').toLowerCase();
+        return n.includes(al)||al.includes(n);
+      });
+      if(match) return Math.round(parseFloat(match.tempo));
+    }
+    // Fall back to first result with tempo
+    return Math.round(parseFloat(results[0].tempo));
+  }catch{
     return null;
   }
 }
