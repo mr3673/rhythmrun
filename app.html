@@ -837,18 +837,25 @@ async function buildPlaylist(){
   document.getElementById('err').style.display='none';
   show('s-building');
 
-  // Build slots from 3-phase plan
+  // Build slots from 3-phase plan — track used titles globally
   const slots=[];
+  const usedTs=new Set();
   for(const phase of['warmup','main','cooldown']){
     for(const block of plan[phase]){
       const pool=getSongs(block.zone);
-      const usedInBlock=[];
       for(let i=0;i<block.count;i++){
-        const avail=pool.filter(s=>!usedInBlock.includes(s.t));
-        const src=avail.length?avail:pool;
+        const avail=pool.filter(s=>!usedTs.has(s.t));
+        // If liked pool exhausted, try merging with DB songs
+        let src=avail;
+        if(!src.length&&selGenre_==='liked'){
+          const dbPool=[...DB[block.zone].all].filter(s=>!usedTs.has(s.t));
+          src=dbPool.length?dbPool:pool; // DB fallback, then allow repeat
+        } else if(!src.length){
+          src=pool; // allow repeat when fully exhausted
+        }
         const song=src[Math.floor(Math.random()*src.length)];
         slots.push({zone:block.zone,song});
-        usedInBlock.push(song.t);
+        usedTs.add(song.t);
       }
     }
   }
