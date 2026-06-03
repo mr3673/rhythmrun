@@ -537,9 +537,20 @@ const ZONES={
 const ZONE_ORDER=['slowwalk','walk','brisk','jogging','easy_run','run','sprint'];
 const plan={warmup:[],main:[],cooldown:[]};
 
+const ZONE_BPM_SAMPLES={
+  slowwalk:[63,67,72,76,80],
+  walk:    [82,86,90,95,100],
+  brisk:   [102,106,110,114,118],
+  jogging: [122,126,130,134,138],
+  easy_run:[142,146,150,154,158],
+  run:     [161,165,168,172,175],
+  sprint:  [177,181,185,189,193]
+};
+
 // State
 let accessToken=null, userProfile=null;
 let likedSongs=[], likedSongsLoaded=false, likedSongsLoading=false;
+const bpmPools={}; // zone → [{t,a,bpm}]
 let selGenre_=null;
 let queue=[], curIdx=0, secLeft=0, totTime=0, elapsed=0, running=false, timer=null;
 let createdPlaylistId=null, createdPlaylistUrl=null;
@@ -595,6 +606,7 @@ async function initApp() {
     show('s-setup');
     initPickers();
     updateLikedUI();
+    loadBpmPools(); // background, no await
   } catch(e) {
     console.error('[RR] initApp error:', e);
     showLoginErr('Giriş hatası: ' + e.message);
@@ -785,12 +797,47 @@ function pick(pool,count,usedTs){
   return [...src].sort(()=>Math.random()-.5).slice(0,count);
 }
 function getSongs(zone){
+  const pool=bpmPools[zone]||[];
   if(selGenre_==='liked'){
     const liked=getSongsFromLiked(zone);
-    return liked.length?liked:[...DB[zone].all].sort(()=>Math.random()-.5);
+    const likedTitles=new Set(liked.map(s=>s.t));
+    const extra=pool.filter(s=>!likedTitles.has(s.t));
+    return [...liked,...extra].sort(()=>Math.random()-.5);
   }
-  const g=selGenre_||'all';
-  return [...(DB[zone][g]||DB[zone].all)].sort(()=>Math.random()-.5);
+  const db=[...(DB[zone][selGenre_||'all']||DB[zone].all)];
+  const dbTitles=new Set(db.map(s=>s.t));
+  const extra=pool.filter(s=>!dbTitles.has(s.t));
+  return [...db,...extra].sort(()=>Math.random()-.5);
+}
+
+async function loadBpmPools(){
+  for(const zone of ZONE_ORDER){
+    const cacheKey=`r2b_pool_${zone}`;
+    const cacheTimeKey=`r2b_pool_${zone}_t`;
+    const cached=localStorage.getItem(cacheKey);
+    const cachedTime=localStorage.getItem(cacheTimeKey);
+    if(cached&&cachedTime&&Date.now()-parseInt(cachedTime)<7*86400000){
+      bpmPools[zone]=JSON.parse(cached);continue;
+    }
+    const songs=[];
+    const seen=new Set();
+    for(const bpm of ZONE_BPM_SAMPLES[zone]||[]){
+      try{
+        const res=await fetch(`https://bpmproxy.mr3673.workers.dev/?bpm=${bpm}`);
+        const data=await res.json();
+        (data.tempo||[]).forEach(s=>{
+          if(!seen.has(s.song_id)&&s.song_title){
+            seen.add(s.song_id);
+            songs.push({t:s.song_title,a:s.artist?.name||'',bpm:parseInt(s.tempo)});
+          }
+        });
+      }catch{}
+      await new Promise(r=>setTimeout(r,80));
+    }
+    bpmPools[zone]=songs;
+    localStorage.setItem(cacheKey,JSON.stringify(songs));
+    localStorage.setItem(cacheTimeKey,String(Date.now()));
+  }
 }
 
 async function searchYT(title,artist){
