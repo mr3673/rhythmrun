@@ -24,7 +24,7 @@
     .user-name{font-size:11px;color:#bbb}
     .logout-btn{background:none;border:none;color:#555;font-size:11px;cursor:pointer;margin-left:auto;font-family:inherit}
     /* Setup */
-    .sec{color:#555;font-size:11px;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;margin-top:20px}
+    .sec{color:#555;font-size:11px;letter-spacing:1.5px;margin-bottom:10px;margin-top:20px}
     .mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px}
     .mode-btn{background:#12122a;border:1px solid #2a2a4a;border-radius:14px;padding:16px 12px;cursor:pointer;text-align:center;color:white;transition:all 0.2s}
     .mode-btn:hover{transform:translateY(-1px)}
@@ -175,7 +175,7 @@
     </div>
   </div>
 
-  <div class="sec" data-i18n="secSource">Müzik kaynağı</div>
+  <div class="sec" data-i18n="secSource">MÜZİK KAYNAĞI</div>
   <div class="spotify-bar" id="liked-bar">
     <div class="spotify-bar-left">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="#ef4444" style="flex-shrink:0"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
@@ -185,7 +185,7 @@
   </div>
   <div style="text-align:right;margin-top:4px"><a href="https://getsongbpm.com" target="_blank" rel="noopener" style="color:#333;font-size:10px;text-decoration:none">BPM data by GetSongBPM.com</a></div>
 
-  <div class="sec" data-i18n="secGenre">Müzik türü</div>
+  <div class="sec" data-i18n="secGenre">MÜZİK TÜRÜ</div>
   <div class="genre-grid">
     <button class="genre-btn" id="btn-liked" onclick="selLiked(this)" disabled style="opacity:.35" data-i18n="myLikes">⭐ Beğenilenlerim</button>
     <button class="genre-btn" onclick="selGenre(this,'all')" data-i18n="allGenres">🎵 Hepsi</button>
@@ -196,7 +196,7 @@
     <button class="genre-btn" onclick="selGenre(this,'rnb')">🎷 R&B</button>
   </div>
 
-  <div class="sec" data-i18n="secPlan">Aktivite Planı</div>
+  <div class="sec" data-i18n="secPlan">AKTİVİTE PLANI</div>
 
   <div class="phase-section">
     <div class="phase-header">
@@ -574,15 +574,15 @@ const I18N={
     googleLogin:'Google ile Giriş Yap',
     ytAccess:'Playlist oluşturmak için YouTube hesabına erişim gerekli.',
     logout:'Çıkış',
-    secSource:'Müzik kaynağı',
+    secSource:'MÜZİK KAYNAĞI',
     loadLikes:'YouTube beğenilerimden playlist oluştur',
     load:'Yükle',
     likesLoaded:(n)=>`✓ ${n} beğenilen şarkı yüklendi`,
     likesLoading:'Şarkılar yükleniyor...',
-    secGenre:'Müzik türü',
+    secGenre:'MÜZİK TÜRÜ',
     myLikes:'⭐ Beğenilenlerim',
     allGenres:'🎵 Hepsi',
-    secPlan:'Aktivite Planı',
+    secPlan:'AKTİVİTE PLANI',
     warmupTitle:'🔥 İsınma',
     mainTitle:'⚡ Ana Aktivite',
     cooldownTitle:'❄️ Soğuma',
