@@ -861,7 +861,7 @@ function initPickers(){
     const el=document.getElementById('picker-'+phase);
     el.innerHTML=ZONE_ORDER.map(z=>{
       const zd=ZONES[z];
-      return `<button class="zp-btn" style="border-color:${zd.color}55" onclick="addBlock('${phase}','${z}')" title="${zd.label}"><span class="zp-emoji">${zd.emoji}</span><span class="zp-bpm">${zd.bpmMin}+</span></button>`;
+      return `<button class="zp-btn" style="border-color:${zd.color}55" onclick="addBlock('${phase}','${z}')" title="${zLabel(z)}"><span class="zp-emoji">${zd.emoji}</span><span class="zp-bpm">${zd.bpmMin}+</span></button>`;
     }).join('');
   });
 }
