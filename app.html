@@ -131,15 +131,25 @@
     .spotify-status-text{font-size:12px;color:#666;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .spotify-status-text.connected{color:#1db954}
     .spotify-connect-btn{background:#1db954;color:#000;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit;flex-shrink:0}
+    .lang-toggle{position:fixed;top:12px;right:16px;display:flex;align-items:center;gap:5px;z-index:200;font-family:'Space Mono',monospace}
+    .lang-toggle button{background:none;border:none;color:#444;cursor:pointer;font-family:inherit;font-size:11px;font-weight:700;padding:2px 4px;border-radius:4px;transition:color 0.15s}
+    .lang-toggle button.active{color:#a855f7}
+    .lang-toggle span{color:#2a2a4a;font-size:10px}
   </style>
 </head>
 <body>
+
+<div class="lang-toggle" id="lang-toggle">
+  <button id="lt-tr" onclick="setLang('tr')">TR</button>
+  <span>|</span>
+  <button id="lt-en" onclick="setLang('en')">EN</button>
+</div>
 
 <!-- LOGIN -->
 <div class="screen active" id="s-login">
   <div style="font-size:36px;margin-bottom:4px">◈</div>
   <div class="logo"><span>run2beat</span></div>
-  <div class="tagline">Koşuna göre müzik. Şarkı bitmeden geçiş yok.</div>
+  <div class="tagline" data-i18n="tagline">Koşuna göre müzik. Şarkı bitmeden geçiş yok.</div>
   <button class="google-btn" onclick="googleLogin()">
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
       <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -147,10 +157,10 @@
       <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
       <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
     </svg>
-    Google ile Giriş Yap
+    <span data-i18n="googleLogin">Google ile Giriş Yap</span>
   </button>
   <div id="login-err" style="color:#ef4444;font-size:12px;max-width:280px;text-align:center;display:none"></div>
-  <div style="color:#444;font-size:12px;max-width:280px;line-height:1.6">
+  <div style="color:#444;font-size:12px;max-width:280px;line-height:1.6" data-i18n="ytAccess">
     YouTube hesabına erişim gerekli — playlist oluşturmak için
   </div>
 </div>
@@ -161,26 +171,26 @@
     <div class="user-info" id="user-info">
       <img class="user-avatar" id="user-avatar" src="" alt=""/>
       <span class="user-name" id="user-name">—</span>
-      <button class="logout-btn" onclick="logout()">Çıkış</button>
+      <button class="logout-btn" onclick="logout()" data-i18n="logout">Çıkış</button>
     </div>
   </div>
 
   <div class="logo" style="font-size:22px;margin-bottom:4px">◈ <span>run2beat</span></div>
 
-  <div class="sec">Müzik kaynağı</div>
+  <div class="sec" data-i18n="secSource">Müzik kaynağı</div>
   <div class="spotify-bar" id="liked-bar">
     <div class="spotify-bar-left">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="#ef4444" style="flex-shrink:0"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-      <span class="spotify-status-text" id="spotify-status-text">YouTube beğenilerinden playlist oluştur</span>
+      <span class="spotify-status-text" id="spotify-status-text" data-i18n="loadLikes">YouTube beğenilerinden playlist oluştur</span>
     </div>
-    <button class="spotify-connect-btn" id="spotify-connect-btn" onclick="loadLikedSongs()">Yükle</button>
+    <button class="spotify-connect-btn" id="spotify-connect-btn" onclick="loadLikedSongs()" data-i18n="load">Yükle</button>
   </div>
   <div style="text-align:right;margin-top:4px"><a href="https://getsongbpm.com" target="_blank" rel="noopener" style="color:#333;font-size:10px;text-decoration:none">BPM data by GetSongBPM.com</a></div>
 
-  <div class="sec">Müzik türü</div>
+  <div class="sec" data-i18n="secGenre">Müzik türü</div>
   <div class="genre-grid">
-    <button class="genre-btn" id="btn-liked" onclick="selLiked(this)" disabled style="opacity:.35">⭐ Beğenilenlerim</button>
-    <button class="genre-btn" onclick="selGenre(this,'all')">🎵 Hepsi</button>
+    <button class="genre-btn" id="btn-liked" onclick="selLiked(this)" disabled style="opacity:.35" data-i18n="myLikes">⭐ Beğenilenlerim</button>
+    <button class="genre-btn" onclick="selGenre(this,'all')" data-i18n="allGenres">🎵 Hepsi</button>
     <button class="genre-btn" onclick="selGenre(this,'pop')">💫 Pop</button>
     <button class="genre-btn" onclick="selGenre(this,'hiphop')">🎤 Hip-Hop</button>
     <button class="genre-btn" onclick="selGenre(this,'rock')">🎸 Rock</button>
@@ -188,11 +198,11 @@
     <button class="genre-btn" onclick="selGenre(this,'rnb')">🎷 R&B</button>
   </div>
 
-  <div class="sec">Aktivite Planı</div>
+  <div class="sec" data-i18n="secPlan">Aktivite Planı</div>
 
   <div class="phase-section">
     <div class="phase-header">
-      <span class="phase-title">🔥 İsınma<span class="phase-opt"> · opsiyonel</span></span>
+      <span class="phase-title" data-i18n="warmupTitle">🔥 İsınma<span class="phase-opt" data-i18n="optional"> · opsiyonel</span></span>
       <span class="phase-total" id="warmup-total"></span>
     </div>
     <div class="phase-blocks" id="blocks-warmup"></div>
@@ -201,7 +211,7 @@
 
   <div class="phase-section">
     <div class="phase-header">
-      <span class="phase-title">⚡ Ana Aktivite</span>
+      <span class="phase-title" data-i18n="mainTitle">⚡ Ana Aktivite</span>
       <span class="phase-total" id="main-total"></span>
     </div>
     <div class="phase-blocks" id="blocks-main"></div>
@@ -210,7 +220,7 @@
 
   <div class="phase-section">
     <div class="phase-header">
-      <span class="phase-title">❄️ Soğuma<span class="phase-opt"> · opsiyonel</span></span>
+      <span class="phase-title" data-i18n="cooldownTitle">❄️ Soğuma<span class="phase-opt" data-i18n="optional"> · opsiyonel</span></span>
       <span class="phase-total" id="cooldown-total"></span>
     </div>
     <div class="phase-blocks" id="blocks-cooldown"></div>
@@ -218,22 +228,22 @@
   </div>
 
   <div class="err-box" id="err"></div>
-  <button class="start-btn" id="start-btn" onclick="buildPlaylist()" disabled>▶ Playlist Oluştur & Başlat</button>
+  <button class="start-btn" id="start-btn" onclick="buildPlaylist()" disabled data-i18n="startBtn">▶ Playlist Oluştur & Başlat</button>
 </div>
 
 <!-- BUILDING -->
 <div class="screen" id="s-building">
   <div class="spinner"></div>
-  <div class="build-msg" id="build-msg">YouTube playlist'i hazırlanıyor...</div>
+  <div class="build-msg" id="build-msg" data-i18n="preparingPlaylist">YouTube playlist'i hazırlanıyor...</div>
   <div class="build-steps" id="build-steps"></div>
 </div>
 
 <!-- WORKOUT -->
 <div class="screen" id="s-workout">
   <div class="wk-hdr">
-    <div class="live"><div class="ldot"></div>CANLI</div>
+    <div class="live"><div class="ldot"></div><span data-i18n="live">CANLI</span></div>
     <div class="el" id="elapsed">⏱ 0:00</div>
-    <button class="stop-btn" onclick="stopWorkout()">⏹ Bitir</button>
+    <button class="stop-btn" onclick="stopWorkout()" data-i18n="stop">⏹ Bitir</button>
   </div>
 
   <!-- Zone hero -->
@@ -255,13 +265,13 @@
     <div class="prog-row">
       <span class="tleft" id="tleft">—</span>
       <div class="prog-t"><div class="prog-f" id="pfill" style="width:0%"></div></div>
-      <button class="skip-btn" onclick="skipNext()">⏭ sıradaki</button>
+      <button class="skip-btn" onclick="skipNext()" data-i18n="next">⏭ sıradaki</button>
     </div>
   </div>
 
   <!-- Up next -->
   <div class="upnext" id="upnext">
-    <span class="unl">Sıradaki</span>
+    <span class="unl" data-i18n="upNext">Sıradaki</span>
     <span class="untitle" id="ntitle">—</span>
     <div class="zpill" id="npill">—</div>
   </div>
@@ -269,7 +279,7 @@
   <!-- Open in YT Music -->
   <button class="yt-open-btn" id="yt-open-btn" onclick="openInYTMusic()">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
-    YouTube Music'te Aç
+    <span data-i18n="openYT">YouTube Music'te Aç</span>
   </button>
 
   <!-- Timeline -->
@@ -525,14 +535,15 @@ const DB = {
 };
 
 const ZONES={
-  slowwalk:{label:"Yavaş Yürüyüş",  color:"#3b82f6",emoji:"🐕",bpmRange:"60–80 BPM",  bpmMin:60, bpmMax:80 },
-  walk:    {label:"Normal Yürüyüş", color:"#22c55e",emoji:"🚶",bpmRange:"80–100 BPM", bpmMin:80, bpmMax:100},
-  brisk:   {label:"Tempolu Yürüyüş",color:"#a3e635",emoji:"🚶",bpmRange:"100–120 BPM",bpmMin:100,bpmMax:120},
-  jogging: {label:"Jogging",        color:"#fbbf24",emoji:"🏃",bpmRange:"120–140 BPM",bpmMin:120,bpmMax:140},
-  easy_run:{label:"Hafif Tempo Koşu",color:"#fb923c",emoji:"🏃",bpmRange:"140–160 BPM",bpmMin:140,bpmMax:160},
-  run:     {label:"Koşu",           color:"#f97316",emoji:"🏃",bpmRange:"160–175 BPM",bpmMin:160,bpmMax:175},
-  sprint:  {label:"Sprint",         color:"#ef4444",emoji:"⚡",bpmRange:"175–195 BPM",bpmMin:175,bpmMax:195},
+  slowwalk:{label:"Yavaş Yürüyüş",  label_en:"Slow Walk",   color:"#3b82f6",emoji:"🐕",bpmRange:"60–80 BPM",  bpmMin:60, bpmMax:80 },
+  walk:    {label:"Normal Yürüyüş", label_en:"Walk",         color:"#22c55e",emoji:"🚶",bpmRange:"80–100 BPM", bpmMin:80, bpmMax:100},
+  brisk:   {label:"Tempolu Yürüyüş",label_en:"Brisk Walk",   color:"#a3e635",emoji:"🚶",bpmRange:"100–120 BPM",bpmMin:100,bpmMax:120},
+  jogging: {label:"Jogging",        label_en:"Jogging",      color:"#fbbf24",emoji:"🏃",bpmRange:"120–140 BPM",bpmMin:120,bpmMax:140},
+  easy_run:{label:"Hafif Tempo Koşu",label_en:"Easy Run",    color:"#fb923c",emoji:"🏃",bpmRange:"140–160 BPM",bpmMin:140,bpmMax:160},
+  run:     {label:"Koşu",           label_en:"Run",          color:"#f97316",emoji:"🏃",bpmRange:"160–175 BPM",bpmMin:160,bpmMax:175},
+  sprint:  {label:"Sprint",         label_en:"Sprint",       color:"#ef4444",emoji:"⚡",bpmRange:"175–195 BPM",bpmMin:175,bpmMax:195},
 };
+function zLabel(z){return lang==='en'?ZONES[z].label_en:ZONES[z].label;}
 
 const ZONE_ORDER=['slowwalk','walk','brisk','jogging','easy_run','run','sprint'];
 const plan={warmup:[],main:[],cooldown:[]};
@@ -556,6 +567,115 @@ let queue=[], curIdx=0, secLeft=0, totTime=0, elapsed=0, running=false, timer=nu
 let createdPlaylistId=null, createdPlaylistUrl=null;
 const WARN=15;
 const ytCache={};
+
+// ── I18N ─────────────────────────────────────────────────────
+let lang=localStorage.getItem('r2b_lang')||'tr';
+const I18N={
+  tr:{
+    tagline:'Koşuna göre müzik. Şarkı bitmeden geçiş yok.',
+    googleLogin:'Google ile Giriş Yap',
+    ytAccess:'YouTube hesabına erişim gerekli — playlist oluşturmak için',
+    logout:'Çıkış',
+    secSource:'Müzik kaynağı',
+    loadLikes:'YouTube beğenilerinden playlist oluştur',
+    load:'Yükle',
+    likesLoaded:(n)=>`✓ ${n} beğenilen şarkı yüklendi`,
+    likesLoading:'Şarkılar yükleniyor...',
+    secGenre:'Müzik türü',
+    myLikes:'⭐ Beğenilenlerim',
+    allGenres:'🎵 Hepsi',
+    secPlan:'Aktivite Planı',
+    warmupTitle:'🔥 İsınma',
+    mainTitle:'⚡ Ana Aktivite',
+    cooldownTitle:'❄️ Soğuma',
+    optional:' · opsiyonel',
+    songCount:(n)=>`${n} şarkı`,
+    startBtn:'▶ Playlist Oluştur & Başlat',
+    preparingPlaylist:'YouTube playlist\'i hazırlanıyor...',
+    stepSearch:'🎵 YouTube\'da şarkılar aranıyor',
+    stepCreate:'📋 Playlist oluşturuluyor',
+    stepAdd:'➕ Şarkılar ekleniyor',
+    stepDone:'✅ Hazır!',
+    searchingAll:'Şarkılar YouTube\'da aranıyor...',
+    searchingSong:(t,i,n)=>`"${t}" aranıyor... (${i}/${n})`,
+    creatingPlaylist:'Playlist oluşturuluyor...',
+    addingToPlaylist:(i,n)=>`Playlist'e ekleniyor... (${i}/${n})`,
+    playlistReady:'Playlist hazır! 🎉',
+    noSongs:'Hiçbir şarkı bulunamadı.',
+    live:'CANLI',
+    stop:'⏹ Bitir',
+    next:'⏭ sıradaki',
+    timeLeft:(t)=>`${t} kaldı`,
+    upNext:'Sıradaki',
+    openYT:'YouTube Music\'te Aç',
+    songCounter:(i,n)=>`${i} / ${n} şarkı`,
+    warning:(zone,sec)=>`⚠ ${sec} saniye sonra ${zone} başlıyor!`,
+  },
+  en:{
+    tagline:'Music for your run. No track changes mid-song.',
+    googleLogin:'Sign in with Google',
+    ytAccess:'YouTube access required — to create playlists',
+    logout:'Sign out',
+    secSource:'Music source',
+    loadLikes:'Create playlist from YouTube likes',
+    load:'Load',
+    likesLoaded:(n)=>`✓ ${n} liked songs loaded`,
+    likesLoading:'Loading songs...',
+    secGenre:'Music genre',
+    myLikes:'⭐ My Likes',
+    allGenres:'🎵 All',
+    secPlan:'Activity Plan',
+    warmupTitle:'🔥 Warm-up',
+    mainTitle:'⚡ Main Activity',
+    cooldownTitle:'❄️ Cool-down',
+    optional:' · optional',
+    songCount:(n)=>`${n} songs`,
+    startBtn:'▶ Create Playlist & Start',
+    preparingPlaylist:'Preparing YouTube playlist...',
+    stepSearch:'🎵 Searching songs on YouTube',
+    stepCreate:'📋 Creating playlist',
+    stepAdd:'➕ Adding songs',
+    stepDone:'✅ Done!',
+    searchingAll:'Searching songs on YouTube...',
+    searchingSong:(t,i,n)=>`Searching "${t}"... (${i}/${n})`,
+    creatingPlaylist:'Creating playlist...',
+    addingToPlaylist:(i,n)=>`Adding to playlist... (${i}/${n})`,
+    playlistReady:'Playlist ready! 🎉',
+    noSongs:'No songs found.',
+    live:'LIVE',
+    stop:'⏹ Stop',
+    next:'⏭ next',
+    timeLeft:(t)=>`${t} left`,
+    upNext:'Up next',
+    openYT:'Open in YouTube Music',
+    songCounter:(i,n)=>`${i} / ${n} songs`,
+    warning:(zone,sec)=>`⚠ ${zone} starts in ${sec} seconds!`,
+  }
+};
+function t(key){return I18N[lang][key]||I18N.tr[key]||key;}
+function applyLang(){
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key=el.getAttribute('data-i18n');
+    const val=t(key);
+    if(typeof val==='string') el.textContent=val;
+  });
+  // Phase titles need special handling (has inner span)
+  const phaseMap={warmupTitle:'🔥 ',mainTitle:'⚡ ',cooldownTitle:'❄️ '};
+  document.querySelectorAll('[data-i18n="warmupTitle"],[data-i18n="mainTitle"],[data-i18n="cooldownTitle"]').forEach(el=>{
+    const key=el.getAttribute('data-i18n');
+    el.innerHTML=t(key)+'<span class="phase-opt" data-i18n="optional">'+t('optional')+'</span>';
+  });
+  document.getElementById('lt-tr').className=lang==='tr'?'active':'';
+  document.getElementById('lt-en').className=lang==='en'?'active':'';
+  if(typeof initPickers==='function') initPickers();
+  ['warmup','main','cooldown'].forEach(p=>renderPhase(p));
+}
+function setLang(l){
+  lang=l;
+  localStorage.setItem('r2b_lang',l);
+  applyLang();
+  updateLikedUI();
+}
 
 // ── AUTH ──────────────────────────────────────────────────────
 function googleLogin() {
@@ -702,6 +822,7 @@ function updateLikedUI(state){
   if(likedSongsLoading){
     bar.className='spotify-bar connected';
     statusText.className='spotify-status-text connected';
+    statusText.textContent=t('likesLoading');
     loadBtn.style.display='none';
     if(likedBtn){likedBtn.disabled=true;likedBtn.style.opacity='.35';}
     return;
@@ -709,14 +830,14 @@ function updateLikedUI(state){
   if(likedSongsLoaded){
     bar.className='spotify-bar connected';
     statusText.className='spotify-status-text connected';
-    statusText.textContent=`✓ ${likedSongs.length} beğenilen şarkı yüklendi`;
+    statusText.textContent=t('likesLoaded')(likedSongs.length);
     loadBtn.style.display='none';
     if(likedBtn){likedBtn.disabled=false;likedBtn.style.opacity='1';}
   } else {
     bar.className='spotify-bar';
     statusText.className='spotify-status-text';
-    statusText.textContent='YouTube beğenilerinden playlist — BPM API gerekli';
-    loadBtn.style.display='';loadBtn.textContent='Yükle';
+    statusText.textContent=t('loadLikes');
+    loadBtn.style.display='';loadBtn.textContent=t('load');
     if(likedBtn){likedBtn.disabled=true;likedBtn.style.opacity='.35';}
   }
 }
@@ -768,7 +889,7 @@ function renderPhase(phase){
   container.innerHTML=plan[phase].map((b,i)=>{
     const z=ZONES[b.zone];
     return `<div class="block-item" style="border-color:${z.color}44">
-      <span class="block-info" style="color:${z.color}">${z.emoji} ${z.label}</span>
+      <span class="block-info" style="color:${z.color}">${z.emoji} ${zLabel(b.zone)}</span>
       <div class="block-controls">
         <button onclick="adjustCount('${phase}',${i},-1)">−</button>
         <span class="block-count">${b.count}</span>
@@ -778,7 +899,7 @@ function renderPhase(phase){
     </div>`;
   }).join('');
   const total=plan[phase].reduce((s,b)=>s+b.count,0);
-  totalEl.textContent=total>0?total+' şarkı':'';
+  totalEl.textContent=total>0?t('songCount')(total):'';
 }
 
 function setStep(steps, idx, status){
@@ -907,21 +1028,16 @@ async function buildPlaylist(){
     }
   }
 
-  const stepLabels=[
-    '🎵 YouTube\'da şarkılar aranıyor',
-    '📋 Playlist oluşturuluyor',
-    '➕ Şarkılar ekleniyor',
-    '✅ Hazır!'
-  ];
+  const stepLabels=[t('stepSearch'),t('stepCreate'),t('stepAdd'),t('stepDone')];
 
   try{
     // Step 1: Search all songs
     setStep(stepLabels,0,'active');
-    document.getElementById('build-msg').textContent='Şarkılar YouTube\'da aranıyor...';
+    document.getElementById('build-msg').textContent=t('searchingAll');
     const resolved=[];
     for(let i=0;i<slots.length;i++){
       const sl=slots[i];
-      document.getElementById('build-msg').textContent=`"${sl.song.t}" aranıyor... (${i+1}/${slots.length})`;
+      document.getElementById('build-msg').textContent=t('searchingSong')(sl.song.t,i+1,slots.length);
       const yt=await searchYT(sl.song.t,sl.song.a);
       if(yt){
         const dur=await getVideoDuration(yt.videoId);
@@ -929,11 +1045,11 @@ async function buildPlaylist(){
       }
     }
 
-    if(!resolved.length) throw new Error('Hiçbir şarkı bulunamadı.');
+    if(!resolved.length) throw new Error(t('noSongs'));
 
     // Step 2: Create playlist
     setStep(stepLabels,1,'active');
-    document.getElementById('build-msg').textContent='Playlist oluşturuluyor...';
+    document.getElementById('build-msg').textContent=t('creatingPlaylist');
     const now=new Date().toLocaleDateString('tr-TR');
     const mainZones=[...new Set(plan.main.map(b=>b.zone))].map(z=>ZONES[z].label).join(' + ');
     const playlistTitle=`Run2Beat – ${mainZones} (${now})`;
@@ -944,14 +1060,14 @@ async function buildPlaylist(){
     // Step 3: Add songs
     setStep(stepLabels,2,'active');
     for(let i=0;i<resolved.length;i++){
-      document.getElementById('build-msg').textContent=`Playlist'e ekleniyor... (${i+1}/${resolved.length})`;
+      document.getElementById('build-msg').textContent=t('addingToPlaylist')(i+1,resolved.length);
       await addToPlaylist(playlistId, resolved[i].videoId);
       await new Promise(r=>setTimeout(r,200)); // rate limit
     }
 
     // Step 4: Done
     setStep(stepLabels,3,'done');
-    document.getElementById('build-msg').textContent='Playlist hazır! 🎉';
+    document.getElementById('build-msg').textContent=t('playlistReady');
 
     // Start workout with real durations
     queue=resolved;
@@ -1012,7 +1128,7 @@ function render(){
   hero.style.borderColor=z.color+'66';
   hero.style.background=z.color+'0a';
   document.getElementById('zone-emoji').textContent=z.emoji;
-  document.getElementById('zone-name').textContent=z.label;
+  document.getElementById('zone-name').textContent=zLabel(zone);
   document.getElementById('zone-name').style.color=z.color;
   document.getElementById('zone-bpm').textContent=z.bpmRange;
 
@@ -1022,7 +1138,7 @@ function render(){
     wb.style.display='flex';
     wb.style.borderColor=nextZone.color+'44';
     wb.style.background=nextZone.color+'10';
-    document.getElementById('warn-text').textContent=`⚠ ${secLeft} saniye sonra ${nextZone.label} başlıyor!`;
+    document.getElementById('warn-text').textContent=t('warning')(zLabel(queue[curIdx+1].zone),secLeft);
     document.getElementById('warn-text').style.color=nextZone.color;
   } else {
     wb.style.display='none';
@@ -1043,7 +1159,7 @@ function render(){
   pf.style.background=warn?z.color:z.color+'aa';
 
   const m=Math.floor(secLeft/60),s=secLeft%60;
-  document.getElementById('tleft').textContent=`${m}:${String(s).padStart(2,'0')} kaldı`;
+  document.getElementById('tleft').textContent=t('timeLeft')(`${m}:${String(s).padStart(2,'0')}`);
   const em=Math.floor(elapsed/60),es=elapsed%60;
   document.getElementById('elapsed').textContent=`⏱ ${em}:${String(es).padStart(2,'0')}`;
 
@@ -1060,7 +1176,7 @@ function render(){
   }
 
   // Timeline
-  document.getElementById('tlmeta').textContent=`${curIdx+1} / ${queue.length} şarkı`;
+  document.getElementById('tlmeta').textContent=t('songCounter')(curIdx+1,queue.length);
   document.getElementById('tl').innerHTML=queue.map((sl,i)=>{
     const tz=ZONES[sl.zone];
     const bg=i===curIdx?tz.color:i<curIdx?tz.color+'44':tz.color+'28';
@@ -1074,7 +1190,7 @@ function render(){
     const zt=ZONES[zn];
     const done=queue.filter((s,i)=>s.zone===zn&&i<=curIdx).length;
     const total=queue.filter(s=>s.zone===zn).length;
-    return `<div class="stat"><div class="szone" style="color:${zt.color}">${zt.emoji} ${zt.label}</div><div class="scnt">${done}/${total}</div></div>`;
+    return `<div class="stat"><div class="szone" style="color:${zt.color}">${zt.emoji} ${zLabel(zn)}</div><div class="scnt">${done}/${total}</div></div>`;
   }).join('');
 }
 
@@ -1109,6 +1225,7 @@ async function handleRedirect() {
 }
 
 window.addEventListener('load', async () => {
+  applyLang();
   if (await handleRedirect()) return;
   if (checkStoredToken()) { await initApp(); return; }
   show('s-login');
