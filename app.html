@@ -148,7 +148,7 @@
 <!-- LOGIN -->
 <div class="screen active" id="s-login">
   <img src="logo.png" alt="Run2Beat" style="width:220px;margin-bottom:-8px;filter:brightness(2) contrast(0.75) saturate(1.4)">
-  <div class="tagline" data-i18n="tagline">Koşuna göre müzik. Şarkı bitmeden geçiş yok.</div>
+  <div class="tagline" data-i18n="tagline">Kendini ritme kaptır.</div>
   <button class="google-btn" onclick="googleLogin()">
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
       <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -160,7 +160,7 @@
   </button>
   <div id="login-err" style="color:#ef4444;font-size:12px;max-width:280px;text-align:center;display:none"></div>
   <div style="color:#444;font-size:12px;max-width:280px;line-height:1.6" data-i18n="ytAccess">
-    YouTube hesabına erişim gerekli — playlist oluşturmak için
+    Playlist oluşturmak için YouTube hesabına erişim gerekli.
   </div>
 </div>
 
@@ -570,9 +570,9 @@ const ytCache={};
 let lang=localStorage.getItem('r2b_lang')||'tr';
 const I18N={
   tr:{
-    tagline:'Koşuna göre müzik. Şarkı bitmeden geçiş yok.',
+    tagline:'Kendini ritme kaptır.',
     googleLogin:'Google ile Giriş Yap',
-    ytAccess:'YouTube hesabına erişim gerekli — playlist oluşturmak için',
+    ytAccess:'Playlist oluşturmak için YouTube hesabına erişim gerekli.',
     logout:'Çıkış',
     secSource:'Müzik kaynağı',
     loadLikes:'YouTube beğenilerinden playlist oluştur',
@@ -610,9 +610,9 @@ const I18N={
     warning:(zone,sec)=>`⚠ ${sec} saniye sonra ${zone} başlıyor!`,
   },
   en:{
-    tagline:'Music for your run. No track changes mid-song.',
+    tagline:'Lose yourself in the beat.',
     googleLogin:'Sign in with Google',
-    ytAccess:'YouTube access required — to create playlists',
+    ytAccess:'YouTube access is required to create playlists.',
     logout:'Sign out',
     secSource:'Music source',
     loadLikes:'Create playlist from YouTube likes',
