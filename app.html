@@ -147,7 +147,7 @@
 
 <!-- LOGIN -->
 <div class="screen active" id="s-login">
-  <img src="logo.png" alt="Run2Beat" style="width:220px;margin-bottom:-8px;filter:brightness(2) contrast(0.85)">
+  <img src="logo.png" alt="Run2Beat" style="width:220px;margin-bottom:-8px;filter:brightness(2) contrast(0.75) saturate(1.4)">
   <div class="tagline" data-i18n="tagline">Koşuna göre müzik. Şarkı bitmeden geçiş yok.</div>
   <button class="google-btn" onclick="googleLogin()">
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -166,15 +166,14 @@
 
 <!-- SETUP -->
 <div class="screen" id="s-setup">
-  <div style="margin-top:16px;margin-bottom:20px">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin:-20px -16px 20px;padding:8px 16px 8px 0;border-bottom:1px solid #1a1a2e">
+    <img src="logo.png" alt="Run2Beat" style="height:52px;filter:brightness(2) contrast(0.75) saturate(1.4)">
     <div class="user-info" id="user-info">
       <img class="user-avatar" id="user-avatar" src="" alt=""/>
       <span class="user-name" id="user-name">—</span>
       <button class="logout-btn" onclick="logout()" data-i18n="logout">Çıkış</button>
     </div>
   </div>
-
-  <img src="logo.png" alt="Run2Beat" style="width:160px;margin-bottom:-4px;margin-top:4px;filter:brightness(2) contrast(0.85)">
 
   <div class="sec" data-i18n="secSource">Müzik kaynağı</div>
   <div class="spotify-bar" id="liked-bar">
