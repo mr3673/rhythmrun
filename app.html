@@ -1061,16 +1061,15 @@ async function buildPlaylist(){
       const pool=getSongs(block.zone);
       for(let i=0;i<block.count;i++){
         const avail=pool.filter(s=>!usedTs.has(s.t));
-        // If liked pool exhausted, try merging with DB songs
         let src=avail;
         if(!src.length&&selGenre_==='liked'){
           const dbPool=[...DB[block.zone].all].filter(s=>!usedTs.has(s.t));
-          src=dbPool.length?dbPool:pool; // DB fallback, then allow repeat
+          src=dbPool.length?dbPool:pool;
         } else if(!src.length){
-          src=pool; // allow repeat when fully exhausted
+          src=pool;
         }
         const song=src[Math.floor(Math.random()*src.length)];
-        slots.push({zone:block.zone,song});
+        slots.push({phase,zone:block.zone,song});
         usedTs.add(song.t);
       }
     }
@@ -1105,12 +1104,20 @@ async function buildPlaylist(){
     createdPlaylistId=playlistId;
     createdPlaylistUrl=`https://music.youtube.com/playlist?list=${playlistId}`;
 
-    // Step 3: Add songs
+    // Step 3: Add songs (with beep at warmup→main and main→cooldown transitions)
+    const BEEP_ID='DiUGv1vsuSU';
     setStep(stepLabels,2,'active');
+    let lastPhase=null;
     for(let i=0;i<resolved.length;i++){
+      const slot=resolved[i];
+      if(lastPhase&&slot.phase!==lastPhase&&(slot.phase==='main'||slot.phase==='cooldown')){
+        await addToPlaylist(playlistId,BEEP_ID);
+        await new Promise(r=>setTimeout(r,200));
+      }
+      lastPhase=slot.phase;
       document.getElementById('build-msg').textContent=t('addingToPlaylist')(i+1,resolved.length);
-      await addToPlaylist(playlistId, resolved[i].videoId);
-      await new Promise(r=>setTimeout(r,200)); // rate limit
+      await addToPlaylist(playlistId,slot.videoId);
+      await new Promise(r=>setTimeout(r,200));
     }
 
     // Step 4: Done
