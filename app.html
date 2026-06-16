@@ -121,17 +121,12 @@
     .block-del{background:none;border:none;color:#333;cursor:pointer;font-size:18px;padding:0 2px;line-height:1;flex-shrink:0}
     .block-del:hover{color:#ef4444}
     .zone-picker{display:grid;grid-template-columns:repeat(6,1fr);gap:5px}
-    .zp-btn{background:#12122a;border:1px solid #2a2a4a;border-radius:8px;padding:6px 2px;cursor:pointer;color:white;font-family:inherit;text-align:center;transition:all 0.15s}
+    .zp-btn{background:#12122a;border:1px solid #2a2a4a;border-radius:8px;padding:6px 2px;cursor:pointer;color:white;font-family:inherit;text-align:center;transition:all 0.15s;position:relative}
     .zp-btn:hover{transform:translateY(-1px)}
     .zp-emoji{font-size:15px;display:block;margin-bottom:2px}
     .zp-bpm{color:#555;font-size:8px;font-family:'Space Mono',monospace;display:block}
-    .bpm-preview{display:none;align-items:center;gap:12px;background:#12122a;border:1px solid #2a2a4a;border-radius:10px;padding:8px 14px;margin-top:8px}
-    .bpm-preview.visible{display:flex}
-    .bpm-preview-feet{display:flex;gap:10px;align-items:flex-end;min-width:52px}
-    .bpm-preview-foot{font-size:20px;line-height:1;transition:opacity 0.05s,transform 0.05s}
-    .bpm-preview-info{flex:1}
-    .bpm-preview-name{font-size:12px;font-weight:600}
-    .bpm-preview-val{font-size:11px;color:#555;font-family:'Space Mono',monospace}
+    .zp-dots{display:flex;justify-content:center;gap:4px;height:6px;margin-top:3px}
+    .zp-dot{width:5px;height:5px;border-radius:50%;background:#fbbf24;opacity:0.15;transition:opacity 0.05s}
     .spotify-bar{display:flex;align-items:center;justify-content:space-between;background:#12122a;border:1px solid #2a2a4a;border-radius:12px;padding:10px 14px;margin-bottom:4px;gap:10px}
     .spotify-bar.connected{border-color:#1db95440;background:#1db95408}
     .spotify-bar-left{display:flex;align-items:center;gap:8px;min-width:0;flex:1}
@@ -212,7 +207,6 @@
     </div>
     <div class="phase-blocks" id="blocks-warmup"></div>
     <div class="zone-picker" id="picker-warmup"></div>
-    <div class="bpm-preview" id="preview-warmup"><div class="bpm-preview-feet"><span class="bpm-preview-foot" id="pw-l">🦶</span><span class="bpm-preview-foot" id="pw-r">🦶</span></div><div class="bpm-preview-info"><div class="bpm-preview-name" id="pw-name"></div><div class="bpm-preview-val" id="pw-val"></div></div></div>
   </div>
 
   <div class="phase-section">
@@ -222,7 +216,6 @@
     </div>
     <div class="phase-blocks" id="blocks-main"></div>
     <div class="zone-picker" id="picker-main"></div>
-    <div class="bpm-preview" id="preview-main"><div class="bpm-preview-feet"><span class="bpm-preview-foot" id="pm-l">🦶</span><span class="bpm-preview-foot" id="pm-r">🦶</span></div><div class="bpm-preview-info"><div class="bpm-preview-name" id="pm-name"></div><div class="bpm-preview-val" id="pm-val"></div></div></div>
   </div>
 
   <div class="phase-section">
@@ -232,7 +225,6 @@
     </div>
     <div class="phase-blocks" id="blocks-cooldown"></div>
     <div class="zone-picker" id="picker-cooldown"></div>
-    <div class="bpm-preview" id="preview-cooldown"><div class="bpm-preview-feet"><span class="bpm-preview-foot" id="pc-l">🦶</span><span class="bpm-preview-foot" id="pc-r">🦶</span></div><div class="bpm-preview-info"><div class="bpm-preview-name" id="pc-name"></div><div class="bpm-preview-val" id="pc-val"></div></div></div>
   </div>
 
   <div class="err-box" id="err"></div>
@@ -796,55 +788,36 @@ function checkReady(){
 }
 
 // ── PHASE PLANNER ─────────────────────────────────────────────
-const _previewTimers={};
-const _previewAnims={};
-const PHASE_IDS={warmup:'pw',main:'pm',cooldown:'pc'};
+let _dotAnim=null;
 
 function initPickers(){
   ['warmup','main','cooldown'].forEach(phase=>{
     const el=document.getElementById('picker-'+phase);
     el.innerHTML=ZONE_ORDER.map(z=>{
       const zd=ZONES[z];
-      return `<button class="zp-btn" style="border-color:${zd.color}55" onclick="addBlock('${phase}','${z}')" onmouseenter="showBpmPreview('${phase}','${z}')" ontouchstart="showBpmPreview('${phase}','${z}')" title="${zLabel(z)}"><span class="zp-emoji">${zd.emoji}</span><span class="zp-bpm">${zd.bpmMin}+</span></button>`;
+      return `<button class="zp-btn" style="border-color:${zd.color}55" onclick="addBlock('${phase}','${z}')" onmouseenter="startDotAnim(this,'${z}')" ontouchstart="startDotAnim(this,'${z}')" title="${zLabel(z)}"><span class="zp-emoji">${zd.emoji}</span><span class="zp-bpm">${zd.bpmMin}+</span><span class="zp-dots"><span class="zp-dot"></span><span class="zp-dot"></span></span></button>`;
     }).join('');
   });
 }
 
-function showBpmPreview(phase,zone){
+function startDotAnim(btn, zone){
+  if(_dotAnim) clearInterval(_dotAnim);
+  document.querySelectorAll('.zp-dot').forEach(d=>{d.style.opacity='0.15';});
   const zd=ZONES[zone];
-  const pid=PHASE_IDS[phase];
-  const preview=document.getElementById('preview-'+phase);
-  const nameEl=document.getElementById(pid+'-name');
-  const valEl=document.getElementById(pid+'-val');
-  const fL=document.getElementById(pid+'-l');
-  const fR=document.getElementById(pid+'-r');
-  if(!preview) return;
-
-  nameEl.textContent=zLabel(zone);
-  nameEl.style.color=zd.color;
-  valEl.textContent=zd.bpmRange;
-  preview.classList.add('visible');
-
-  if(_previewAnims[phase]) clearInterval(_previewAnims[phase]);
-  let step=0;
+  const dots=btn.querySelectorAll('.zp-dot');
+  const color=zd.color;
+  dots.forEach(d=>d.style.background=color);
   const bpm=Math.round((zd.bpmMin+zd.bpmMax)/2);
   const interval=Math.round(60000/bpm);
-  fL.style.opacity='1'; fL.style.transform='scaleX(-1) translateY(-3px)';
-  fR.style.opacity='0.2'; fR.style.transform='translateY(0)';
-  _previewAnims[phase]=setInterval(()=>{
+  let step=0;
+  dots[0].style.opacity='1';
+  dots[1].style.opacity='0.15';
+  _dotAnim=setInterval(()=>{
     step++;
     const L=step%2===1;
-    fL.style.opacity=L?'1':'0.2';
-    fR.style.opacity=L?'0.2':'1';
-    fL.style.transform=`scaleX(-1) translateY(${L?'-3px':'0'})`;
-    fR.style.transform=`translateY(${L?'0':'-3px'})`;
+    dots[0].style.opacity=L?'1':'0.15';
+    dots[1].style.opacity=L?'0.15':'1';
   },interval);
-
-  if(_previewTimers[phase]) clearTimeout(_previewTimers[phase]);
-  _previewTimers[phase]=setTimeout(()=>{
-    preview.classList.remove('visible');
-    clearInterval(_previewAnims[phase]);
-  },3000);
 }
 
 function addBlock(phase,zone){
