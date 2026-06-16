@@ -30,7 +30,7 @@
     .mode-btn:hover{transform:translateY(-1px)}
     .mode-btn.sel-brisk{border-color:#a3e635;background:#a3e63518}
     .mode-btn.sel-jogging{border-color:#fbbf24;background:#fbbf2418}
-    .mode-btn.sel-easy_run{border-color:#fb923c;background:#fb923c18}
+    .mode-btn.sel-brisk{border-color:#a3e635;background:#a3e63518}
     .mode-btn.sel-run{border-color:#f97316;background:#f9731618}
     .mode-btn.sel-sprint{border-color:#ef4444;background:#ef444418}
     .m-title{font-size:14px;font-weight:700}
@@ -307,35 +307,62 @@ const SCOPES           = "https://www.googleapis.com/auth/youtube.force-ssl prof
 
 // ── SONG DATABASE ──────────────────────────────────────────────
 const DB = {
-  brisk: {
+  slowwalk: {
     all:[
-      {t:"Hips Don't Lie",a:"Shakira",bpm:100},{t:"Crazy In Love",a:"Beyoncé",bpm:100},
-      {t:"Levitating",a:"Dua Lipa",bpm:103},{t:"Stronger",a:"Kanye West",bpm:104},
-      {t:"Eye of the Tiger",a:"Survivor",bpm:109},{t:"Can't Stop the Feeling",a:"Justin Timberlake",bpm:113},
-      {t:"Dynamite",a:"BTS",bpm:114},{t:"Uptown Funk",a:"Bruno Mars",bpm:115},
-      {t:"Get Lucky",a:"Daft Punk",bpm:116},{t:"Come as You Are",a:"Nirvana",bpm:117},
-      {t:"Señorita",a:"Shawn Mendes",bpm:117},{t:"Blurred Lines",a:"Robin Thicke",bpm:120},
+      {t:"Sunflower",a:"Post Malone",bpm:90},{t:"Cheap Thrills",a:"Sia",bpm:93},
+      {t:"Watermelon Sugar",a:"Harry Styles",bpm:95},{t:"Californication",a:"Red Hot Chili Peppers",bpm:96},
+      {t:"Shape of You",a:"Ed Sheeran",bpm:96},{t:"Single Ladies",a:"Beyoncé",bpm:97},
+      {t:"Lean On",a:"Major Lazer",bpm:98},{t:"Sicko Mode",a:"Travis Scott",bpm:98},
+      {t:"Hips Don't Lie",a:"Shakira",bpm:100},{t:"No Scrubs",a:"TLC",bpm:100},
+      {t:"Crazy In Love",a:"Beyoncé",bpm:100},{t:"Levitating",a:"Dua Lipa",bpm:103},
+      {t:"Stronger",a:"Kanye West",bpm:104},{t:"Eye of the Tiger",a:"Survivor",bpm:109},
     ],
     pop:[
-      {t:"Hips Don't Lie",a:"Shakira",bpm:100},{t:"Levitating",a:"Dua Lipa",bpm:103},
-      {t:"Can't Stop the Feeling",a:"Justin Timberlake",bpm:113},{t:"Uptown Funk",a:"Bruno Mars",bpm:115},
-      {t:"Dynamite",a:"BTS",bpm:114},{t:"Señorita",a:"Shawn Mendes",bpm:117},
+      {t:"Watermelon Sugar",a:"Harry Styles",bpm:95},{t:"Shape of You",a:"Ed Sheeran",bpm:96},
+      {t:"Cheap Thrills",a:"Sia",bpm:93},{t:"Hips Don't Lie",a:"Shakira",bpm:100},
+      {t:"Levitating",a:"Dua Lipa",bpm:103},
     ],
     hiphop:[
-      {t:"Crazy In Love",a:"Beyoncé",bpm:100},{t:"Stronger",a:"Kanye West",bpm:104},
-      {t:"Gold Digger",a:"Kanye West",bpm:130},
+      {t:"Sunflower",a:"Post Malone",bpm:90},{t:"Sicko Mode",a:"Travis Scott",bpm:98},
+      {t:"Stronger",a:"Kanye West",bpm:104},{t:"Crazy In Love",a:"Beyoncé",bpm:100},
     ],
     rock:[
-      {t:"Eye of the Tiger",a:"Survivor",bpm:109},{t:"Come as You Are",a:"Nirvana",bpm:117},
+      {t:"Californication",a:"Red Hot Chili Peppers",bpm:96},{t:"Eye of the Tiger",a:"Survivor",bpm:109},
+    ],
+    electronic:[
+      {t:"Lean On",a:"Major Lazer",bpm:98},{t:"Cheap Thrills",a:"Sia",bpm:93},
+    ],
+    rnb:[
+      {t:"Single Ladies",a:"Beyoncé",bpm:97},{t:"No Scrubs",a:"TLC",bpm:100},
+      {t:"Crazy In Love",a:"Beyoncé",bpm:100},{t:"Hips Don't Lie",a:"Shakira",bpm:100},
+    ],
+  },
+  walk: {
+    all:[
+      {t:"Can't Stop the Feeling",a:"Justin Timberlake",bpm:113},{t:"Dynamite",a:"BTS",bpm:114},
+      {t:"Uptown Funk",a:"Bruno Mars",bpm:115},{t:"Get Lucky",a:"Daft Punk",bpm:116},
+      {t:"Come as You Are",a:"Nirvana",bpm:117},{t:"Señorita",a:"Shawn Mendes",bpm:117},
+      {t:"Blurred Lines",a:"Robin Thicke",bpm:120},{t:"Mr. Brightside",a:"The Killers",bpm:120},
+    ],
+    pop:[
+      {t:"Can't Stop the Feeling",a:"Justin Timberlake",bpm:113},{t:"Dynamite",a:"BTS",bpm:114},
+      {t:"Uptown Funk",a:"Bruno Mars",bpm:115},{t:"Señorita",a:"Shawn Mendes",bpm:117},
+      {t:"Blurred Lines",a:"Robin Thicke",bpm:120},
+    ],
+    hiphop:[
+      {t:"Dynamite",a:"BTS",bpm:114},
+    ],
+    rock:[
+      {t:"Come as You Are",a:"Nirvana",bpm:117},{t:"Mr. Brightside",a:"The Killers",bpm:120},
     ],
     electronic:[
       {t:"Get Lucky",a:"Daft Punk",bpm:116},
     ],
     rnb:[
-      {t:"Hips Don't Lie",a:"Shakira",bpm:100},{t:"Crazy In Love",a:"Beyoncé",bpm:100},
+      {t:"Señorita",a:"Shawn Mendes",bpm:117},{t:"Blurred Lines",a:"Robin Thicke",bpm:120},
     ],
   },
-  jogging: {
+  brisk: {
     all:[
       {t:"Physical",a:"Dua Lipa",bpm:123},{t:"One More Time",a:"Daft Punk",bpm:123},
       {t:"Sweet Child O' Mine",a:"Guns N' Roses",bpm:123},{t:"As It Was",a:"Harry Styles",bpm:124},
@@ -348,8 +375,7 @@ const DB = {
     ],
     pop:[
       {t:"Physical",a:"Dua Lipa",bpm:123},{t:"As It Was",a:"Harry Styles",bpm:124},
-      {t:"Wake Me Up",a:"Avicii",bpm:124},{t:"Moves Like Jagger",a:"Maroon 5",bpm:128},
-      {t:"Walking on Sunshine",a:"Katrina and The Waves",bpm:133},
+      {t:"Moves Like Jagger",a:"Maroon 5",bpm:128},{t:"Walking on Sunshine",a:"Katrina and The Waves",bpm:133},
     ],
     hiphop:[
       {t:"Gold Digger",a:"Kanye West",bpm:130},{t:"Run the World",a:"Beyoncé",bpm:127},
@@ -367,202 +393,109 @@ const DB = {
       {t:"Run the World",a:"Beyoncé",bpm:127},{t:"Physical",a:"Dua Lipa",bpm:123},
     ],
   },
-  easy_run: {
+  jogging: {
     all:[
-      {t:"Pump It",a:"Black Eyed Peas",bpm:140},{t:"Shivers",a:"Ed Sheeran",bpm:141},
-      {t:"Can't Hold Us",a:"Macklemore",bpm:146},{t:"Mr. Brightside",a:"The Killers",bpm:148},
-      {t:"Good as Hell",a:"Lizzo",bpm:148},{t:"HUMBLE.",a:"Kendrick Lamar",bpm:150},
-      {t:"Juice",a:"Lizzo",bpm:150},{t:"Formation",a:"Beyoncé",bpm:155},
-      {t:"Blinding Lights",a:"The Weeknd",bpm:171},{t:"Good 4 U",a:"Olivia Rodrigo",bpm:166},
+      {t:"Crazy Train",a:"Ozzy Osbourne",bpm:138},{t:"Pump It",a:"Black Eyed Peas",bpm:140},
+      {t:"Shivers",a:"Ed Sheeran",bpm:141},{t:"Can't Hold Us",a:"Macklemore",bpm:146},
+      {t:"Mr. Brightside",a:"The Killers",bpm:148},{t:"Good as Hell",a:"Lizzo",bpm:148},
+      {t:"HUMBLE.",a:"Kendrick Lamar",bpm:150},{t:"Juice",a:"Lizzo",bpm:150},
     ],
     pop:[
-      {t:"Pump It",a:"Black Eyed Peas",bpm:140},{t:"Mr. Brightside",a:"The Killers",bpm:148},
-      {t:"Good as Hell",a:"Lizzo",bpm:148},{t:"Shivers",a:"Ed Sheeran",bpm:141},
-      {t:"Juice",a:"Lizzo",bpm:150},
+      {t:"Pump It",a:"Black Eyed Peas",bpm:140},{t:"Shivers",a:"Ed Sheeran",bpm:141},
+      {t:"Good as Hell",a:"Lizzo",bpm:148},{t:"Juice",a:"Lizzo",bpm:150},
     ],
     hiphop:[
       {t:"HUMBLE.",a:"Kendrick Lamar",bpm:150},{t:"Can't Hold Us",a:"Macklemore",bpm:146},
-      {t:"Formation",a:"Beyoncé",bpm:155},{t:"Pump It",a:"Black Eyed Peas",bpm:140},
+      {t:"Pump It",a:"Black Eyed Peas",bpm:140},
     ],
     rock:[
-      {t:"Mr. Brightside",a:"The Killers",bpm:148},{t:"Crazy Train",a:"Ozzy Osbourne",bpm:138},
+      {t:"Crazy Train",a:"Ozzy Osbourne",bpm:138},{t:"Mr. Brightside",a:"The Killers",bpm:148},
     ],
     electronic:[
-      {t:"Wake Me Up",a:"Avicii",bpm:124},{t:"Beautiful Now",a:"Zedd",bpm:128},
-      {t:"I Gotta Feeling",a:"Black Eyed Peas",bpm:128},
+      {t:"Pump It",a:"Black Eyed Peas",bpm:140},
     ],
     rnb:[
-      {t:"Formation",a:"Beyoncé",bpm:155},{t:"Good as Hell",a:"Lizzo",bpm:148},
-      {t:"Juice",a:"Lizzo",bpm:150},{t:"HUMBLE.",a:"Kendrick Lamar",bpm:150},
+      {t:"Good as Hell",a:"Lizzo",bpm:148},{t:"Juice",a:"Lizzo",bpm:150},
+      {t:"HUMBLE.",a:"Kendrick Lamar",bpm:150},
     ],
   },
-  slowwalk: {
+  run: {
     all:[
-      {t:"God's Plan",a:"Drake",bpm:77},{t:"Hotline Bling",a:"Drake",bpm:81},
-      {t:"Stay With Me",a:"Sam Smith",bpm:86},{t:"Yellow",a:"Coldplay",bpm:86},
-      {t:"Wonderwall",a:"Oasis",bpm:87},{t:"Waterfalls",a:"TLC",bpm:88},
-      {t:"Sunflower",a:"Post Malone",bpm:90},{t:"Cheap Thrills",a:"Sia",bpm:93},
-      {t:"Watermelon Sugar",a:"Harry Styles",bpm:95},{t:"Californication",a:"Red Hot Chili Peppers",bpm:96},
-      {t:"Shape of You",a:"Ed Sheeran",bpm:96},{t:"Single Ladies",a:"Beyoncé",bpm:97},
-      {t:"Lean On",a:"Major Lazer",bpm:98},{t:"Sicko Mode",a:"Travis Scott",bpm:98},
-      {t:"Hips Don't Lie",a:"Shakira",bpm:100},{t:"No Scrubs",a:"TLC",bpm:100},
-      {t:"Crazy In Love",a:"Beyoncé",bpm:100},
+      {t:"Don't Stop Me Now",a:"Queen",bpm:156},{t:"Everlong",a:"Foo Fighters",bpm:156},
+      {t:"Formation",a:"Beyoncé",bpm:155},{t:"Shake It Off",a:"Taylor Swift",bpm:160},
+      {t:"Happy",a:"Pharrell Williams",bpm:160},{t:"Good 4 U",a:"Olivia Rodrigo",bpm:166},
+      {t:"Let's Go Crazy",a:"Prince",bpm:167},{t:"Killing in the Name",a:"Rage Against the Machine",bpm:168},
+      {t:"Sabotage",a:"Beastie Boys",bpm:168},{t:"Blinding Lights",a:"The Weeknd",bpm:171},
+      {t:"Lose Yourself",a:"Eminem",bpm:171},{t:"Till I Collapse",a:"Eminem",bpm:171},
+      {t:"Run to the Hills",a:"Iron Maiden",bpm:172},{t:"I Write Sins Not Tragedies",a:"Panic! At The Disco",bpm:175},
     ],
     pop:[
-      {t:"Watermelon Sugar",a:"Harry Styles",bpm:95},{t:"Shape of You",a:"Ed Sheeran",bpm:96},
-      {t:"Cheap Thrills",a:"Sia",bpm:93},{t:"Stay With Me",a:"Sam Smith",bpm:86},
-      {t:"Hips Don't Lie",a:"Shakira",bpm:100},
-    ],
-    hiphop:[
-      {t:"God's Plan",a:"Drake",bpm:77},{t:"Hotline Bling",a:"Drake",bpm:81},
-      {t:"Sunflower",a:"Post Malone",bpm:90},{t:"Sicko Mode",a:"Travis Scott",bpm:98},
-    ],
-    rock:[
-      {t:"Yellow",a:"Coldplay",bpm:86},{t:"Wonderwall",a:"Oasis",bpm:87},
-      {t:"Californication",a:"Red Hot Chili Peppers",bpm:96},
-    ],
-    electronic:[
-      {t:"Lean On",a:"Major Lazer",bpm:98},{t:"Cheap Thrills",a:"Sia",bpm:93},
-    ],
-    rnb:[
-      {t:"Stay With Me",a:"Sam Smith",bpm:86},{t:"Waterfalls",a:"TLC",bpm:88},
-      {t:"Single Ladies",a:"Beyoncé",bpm:97},{t:"No Scrubs",a:"TLC",bpm:100},
-      {t:"Crazy In Love",a:"Beyoncé",bpm:100},
-    ],
-  },
-  walk: {
-    all:[
-      {t:"Hips Don't Lie",a:"Shakira",bpm:100},{t:"Crazy In Love",a:"Beyoncé",bpm:100},
-      {t:"Levitating",a:"Dua Lipa",bpm:103},{t:"Stronger",a:"Kanye West",bpm:104},
-      {t:"Eye of the Tiger",a:"Survivor",bpm:109},{t:"Can't Stop the Feeling",a:"Justin Timberlake",bpm:113},
-      {t:"Uptown Funk",a:"Bruno Mars",bpm:115},{t:"Physical",a:"Dua Lipa",bpm:123},
-      {t:"Run the World",a:"Beyoncé",bpm:127},{t:"Gold Digger",a:"Kanye West",bpm:130},
-      {t:"Shape of You",a:"Ed Sheeran",bpm:96},{t:"Señorita",a:"Shawn Mendes",bpm:117},
-      {t:"Dynamite",a:"BTS",bpm:114},{t:"Watermelon Sugar",a:"Harry Styles",bpm:95},
-      {t:"As It Was",a:"Harry Styles",bpm:124},{t:"Blurred Lines",a:"Robin Thicke",bpm:120},
-    ],
-    pop:[
-      {t:"Hips Don't Lie",a:"Shakira",bpm:100},{t:"Levitating",a:"Dua Lipa",bpm:103},
-      {t:"Can't Stop the Feeling",a:"Justin Timberlake",bpm:113},{t:"Uptown Funk",a:"Bruno Mars",bpm:115},
-      {t:"Physical",a:"Dua Lipa",bpm:123},{t:"Señorita",a:"Shawn Mendes",bpm:117},
-      {t:"Dynamite",a:"BTS",bpm:114},{t:"As It Was",a:"Harry Styles",bpm:124},
-      {t:"Shape of You",a:"Ed Sheeran",bpm:96},{t:"Watermelon Sugar",a:"Harry Styles",bpm:95},
-    ],
-    hiphop:[
-      {t:"Gold Digger",a:"Kanye West",bpm:130},{t:"Stronger",a:"Kanye West",bpm:104},
-      {t:"Sicko Mode",a:"Travis Scott",bpm:98},{t:"God's Plan",a:"Drake",bpm:77},
-      {t:"Sunflower",a:"Post Malone",bpm:90},{t:"Hotline Bling",a:"Drake",bpm:81},
-    ],
-    rock:[
-      {t:"Eye of the Tiger",a:"Survivor",bpm:109},{t:"Come as You Are",a:"Nirvana",bpm:117},
-      {t:"Yellow",a:"Coldplay",bpm:86},{t:"Californication",a:"Red Hot Chili Peppers",bpm:96},
-      {t:"Sweet Child O' Mine",a:"Guns N' Roses",bpm:123},{t:"Wonderwall",a:"Oasis",bpm:87},
-    ],
-    electronic:[
-      {t:"One More Time",a:"Daft Punk",bpm:123},{t:"Get Lucky",a:"Daft Punk",bpm:116},
-      {t:"Cheap Thrills",a:"Sia",bpm:93},{t:"Lean On",a:"Major Lazer",bpm:98},
-      {t:"Titanium",a:"David Guetta ft. Sia",bpm:126},{t:"Animals",a:"Martin Garrix",bpm:128},
-    ],
-    rnb:[
-      {t:"Crazy In Love",a:"Beyoncé",bpm:100},{t:"Stay With Me",a:"Sam Smith",bpm:86},
-      {t:"No Scrubs",a:"TLC",bpm:100},{t:"Irreplaceable",a:"Beyoncé",bpm:101},
-      {t:"Single Ladies",a:"Beyoncé",bpm:97},{t:"Waterfalls",a:"TLC",bpm:88},
-    ],
-  },
-  run:{
-    all:[
-      {t:"Pump It",a:"Black Eyed Peas",bpm:140},{t:"HUMBLE.",a:"Kendrick Lamar",bpm:150},
-      {t:"Don't Stop Me Now",a:"Queen",bpm:156},{t:"Mr. Brightside",a:"The Killers",bpm:148},
-      {t:"Everlong",a:"Foo Fighters",bpm:156},{t:"Thunderstruck",a:"AC/DC",bpm:133},
-      {t:"Shake It Off",a:"Taylor Swift",bpm:160},{t:"Happy",a:"Pharrell Williams",bpm:160},
-      {t:"Can't Hold Us",a:"Macklemore",bpm:146},{t:"Good as Hell",a:"Lizzo",bpm:148},
-      {t:"Shivers",a:"Ed Sheeran",bpm:141},{t:"Formation",a:"Beyoncé",bpm:155},
-      {t:"Juice",a:"Lizzo",bpm:150},{t:"Crazy Train",a:"Ozzy Osbourne",bpm:138},
-    ],
-    pop:[
-      {t:"Pump It",a:"Black Eyed Peas",bpm:140},{t:"Mr. Brightside",a:"The Killers",bpm:148},
       {t:"Don't Stop Me Now",a:"Queen",bpm:156},{t:"Shake It Off",a:"Taylor Swift",bpm:160},
-      {t:"Happy",a:"Pharrell Williams",bpm:160},{t:"Can't Hold Us",a:"Macklemore",bpm:146},
-      {t:"Good as Hell",a:"Lizzo",bpm:148},{t:"Shivers",a:"Ed Sheeran",bpm:141},
-      {t:"Juice",a:"Lizzo",bpm:150},{t:"Blinding Lights",a:"The Weeknd",bpm:171},
+      {t:"Happy",a:"Pharrell Williams",bpm:160},{t:"Good 4 U",a:"Olivia Rodrigo",bpm:166},
+      {t:"Blinding Lights",a:"The Weeknd",bpm:171},
     ],
     hiphop:[
       {t:"HUMBLE.",a:"Kendrick Lamar",bpm:150},{t:"Lose Yourself",a:"Eminem",bpm:171},
-      {t:"Till I Collapse",a:"Eminem",bpm:171},{t:"Can't Hold Us",a:"Macklemore",bpm:146},
-      {t:"Pump It",a:"Black Eyed Peas",bpm:140},{t:"Formation",a:"Beyoncé",bpm:155},
-    ],
-    rock:[
-      {t:"Don't Stop Me Now",a:"Queen",bpm:156},{t:"Everlong",a:"Foo Fighters",bpm:156},
-      {t:"Thunderstruck",a:"AC/DC",bpm:133},{t:"Crazy Train",a:"Ozzy Osbourne",bpm:138},
-      {t:"Jump",a:"Van Halen",bpm:131},{t:"Welcome to the Jungle",a:"Guns N' Roses",bpm:123},
-    ],
-    electronic:[
-      {t:"Wake Me Up",a:"Avicii",bpm:124},{t:"Animals",a:"Martin Garrix",bpm:128},
-      {t:"Clarity",a:"Zedd",bpm:128},{t:"Titanium",a:"David Guetta ft. Sia",bpm:126},
-      {t:"I Gotta Feeling",a:"Black Eyed Peas",bpm:128},{t:"Beautiful Now",a:"Zedd",bpm:128},
-    ],
-    rnb:[
-      {t:"Formation",a:"Beyoncé",bpm:155},{t:"HUMBLE.",a:"Kendrick Lamar",bpm:150},
-      {t:"Good as Hell",a:"Lizzo",bpm:148},{t:"Juice",a:"Lizzo",bpm:150},
-      {t:"Let's Go Crazy",a:"Prince",bpm:167},{t:"Run the World",a:"Beyoncé",bpm:127},
-    ],
-  },
-  sprint:{
-    all:[
-      {t:"Blinding Lights",a:"The Weeknd",bpm:171},{t:"Lose Yourself",a:"Eminem",bpm:171},
-      {t:"Till I Collapse",a:"Eminem",bpm:171},{t:"Good 4 U",a:"Olivia Rodrigo",bpm:166},
-      {t:"Roar",a:"Katy Perry",bpm:180},{t:"Run to the Hills",a:"Iron Maiden",bpm:172},
-      {t:"Killing in the Name",a:"Rage Against the Machine",bpm:168},{t:"Sabotage",a:"Beastie Boys",bpm:168},
-      {t:"Jump Around",a:"House of Pain",bpm:180},{t:"Basket Case",a:"Green Day",bpm:179},
-      {t:"American Idiot",a:"Green Day",bpm:186},{t:"I Write Sins Not Tragedies",a:"Panic! At The Disco",bpm:175},
-    ],
-    pop:[
-      {t:"Blinding Lights",a:"The Weeknd",bpm:171},{t:"Good 4 U",a:"Olivia Rodrigo",bpm:166},
-      {t:"Roar",a:"Katy Perry",bpm:180},{t:"Brutal",a:"Olivia Rodrigo",bpm:170},
-      {t:"Starboy",a:"The Weeknd",bpm:186},{t:"Shake It Off",a:"Taylor Swift",bpm:160},
-    ],
-    hiphop:[
-      {t:"Lose Yourself",a:"Eminem",bpm:171},{t:"Till I Collapse",a:"Eminem",bpm:171},
-      {t:"Sabotage",a:"Beastie Boys",bpm:168},{t:"Jump Around",a:"House of Pain",bpm:180},
+      {t:"Till I Collapse",a:"Eminem",bpm:171},{t:"Sabotage",a:"Beastie Boys",bpm:168},
       {t:"Killing in the Name",a:"Rage Against the Machine",bpm:168},
     ],
     rock:[
-      {t:"Run to the Hills",a:"Iron Maiden",bpm:172},{t:"Killing in the Name",a:"Rage Against the Machine",bpm:168},
-      {t:"Basket Case",a:"Green Day",bpm:179},{t:"American Idiot",a:"Green Day",bpm:186},
-      {t:"I Write Sins Not Tragedies",a:"Panic! At The Disco",bpm:175},
+      {t:"Don't Stop Me Now",a:"Queen",bpm:156},{t:"Everlong",a:"Foo Fighters",bpm:156},
+      {t:"Run to the Hills",a:"Iron Maiden",bpm:172},{t:"I Write Sins Not Tragedies",a:"Panic! At The Disco",bpm:175},
     ],
     electronic:[
-      {t:"Scary Monsters and Nice Sprites",a:"Skrillex",bpm:140},{t:"Bangarang",a:"Skrillex",bpm:110},
-      {t:"Turn Down for What",a:"DJ Snake",bpm:100},{t:"Clarity",a:"Zedd",bpm:128},
+      {t:"Scary Monsters and Nice Sprites",a:"Skrillex",bpm:155},{t:"Bangarang",a:"Skrillex",bpm:160},
     ],
     rnb:[
+      {t:"Formation",a:"Beyoncé",bpm:155},{t:"Let's Go Crazy",a:"Prince",bpm:167},
       {t:"Blinding Lights",a:"The Weeknd",bpm:171},{t:"Starboy",a:"The Weeknd",bpm:186},
-      {t:"Good 4 U",a:"Olivia Rodrigo",bpm:166},{t:"Let's Go Crazy",a:"Prince",bpm:167},
     ],
-  }
+  },
+  sprint: {
+    all:[
+      {t:"Roar",a:"Katy Perry",bpm:180},{t:"Jump Around",a:"House of Pain",bpm:180},
+      {t:"Basket Case",a:"Green Day",bpm:179},{t:"American Idiot",a:"Green Day",bpm:186},
+      {t:"Starboy",a:"The Weeknd",bpm:186},{t:"Warp 1.9",a:"The Bloody Beetroots",bpm:185},
+    ],
+    pop:[
+      {t:"Roar",a:"Katy Perry",bpm:180},{t:"Brutal",a:"Olivia Rodrigo",bpm:178},
+      {t:"Starboy",a:"The Weeknd",bpm:186},
+    ],
+    hiphop:[
+      {t:"Jump Around",a:"House of Pain",bpm:180},
+    ],
+    rock:[
+      {t:"Basket Case",a:"Green Day",bpm:179},{t:"American Idiot",a:"Green Day",bpm:186},
+    ],
+    electronic:[
+      {t:"Warp 1.9",a:"The Bloody Beetroots",bpm:185},
+    ],
+    rnb:[
+      {t:"Starboy",a:"The Weeknd",bpm:186},
+    ],
+  },
 };
 
 const ZONES={
-  slowwalk:{label:"Yavaş Yürüyüş",  label_en:"Slow Walk",  color:"#3b82f6",emoji:"🐕",bpmRange:"70–90 BPM",  bpmMin:70, bpmMax:90 },
-  walk:    {label:"Normal Yürüyüş", label_en:"Walk",        color:"#22c55e",emoji:"🚶",bpmRange:"90–110 BPM", bpmMin:90, bpmMax:110},
-  jogging: {label:"Jogging",        label_en:"Jogging",     color:"#fbbf24",emoji:"🏃",bpmRange:"130–150 BPM",bpmMin:130,bpmMax:150},
-  easy_run:{label:"Hafif Koşu",     label_en:"Easy Run",    color:"#fb923c",emoji:"🏃",bpmRange:"150–170 BPM",bpmMin:150,bpmMax:170},
-  run:     {label:"Koşu",           label_en:"Run",         color:"#f97316",emoji:"🏃",bpmRange:"170–190 BPM",bpmMin:170,bpmMax:190},
-  sprint:  {label:"Sprint",         label_en:"Sprint",      color:"#ef4444",emoji:"⚡",bpmRange:"190–210 BPM",bpmMin:190,bpmMax:210},
+  slowwalk:{label:"Yavaş Yürüyüş",  label_en:"Slow Walk",   color:"#3b82f6",emoji:"🐕",bpmRange:"90–110 BPM", bpmMin:90, bpmMax:110},
+  walk:    {label:"Normal Yürüyüş", label_en:"Walk",         color:"#22c55e",emoji:"🚶",bpmRange:"110–120 BPM",bpmMin:110,bpmMax:120},
+  brisk:   {label:"Tempolu Yürüyüş",label_en:"Brisk Walk",   color:"#a3e635",emoji:"🚶",bpmRange:"120–135 BPM",bpmMin:120,bpmMax:135},
+  jogging: {label:"Jogging",        label_en:"Jogging",      color:"#fbbf24",emoji:"🏃",bpmRange:"135–150 BPM",bpmMin:135,bpmMax:150},
+  run:     {label:"Koşu",           label_en:"Run",          color:"#f97316",emoji:"🏃",bpmRange:"150–175 BPM",bpmMin:150,bpmMax:175},
+  sprint:  {label:"Sprint",         label_en:"Sprint",       color:"#ef4444",emoji:"⚡",bpmRange:"175–200 BPM",bpmMin:175,bpmMax:200},
 };
 function zLabel(z){return lang==='en'?ZONES[z].label_en:ZONES[z].label;}
 
-const ZONE_ORDER=['slowwalk','walk','jogging','easy_run','run','sprint'];
+const ZONE_ORDER=['slowwalk','walk','brisk','jogging','run','sprint'];
 const plan={warmup:[],main:[],cooldown:[]};
 
 const ZONE_BPM_SAMPLES={
-  slowwalk:[63,67,72,76,80],
-  walk:    [82,86,90,95,100],
-  brisk:   [102,106,110,114,118],
-  jogging: [122,126,130,134,138],
-  easy_run:[142,146,150,154,158],
-  run:     [161,165,168,172,175],
-  sprint:  [177,181,185,189,193]
+  slowwalk:[92,96,100,104,108],
+  walk:    [112,115,117,119],
+  brisk:   [122,125,128,131,134],
+  jogging: [137,140,143,147,150],
+  run:     [152,156,160,165,170,174],
+  sprint:  [177,181,185,189,195]
 };
 
 // State
