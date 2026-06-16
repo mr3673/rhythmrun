@@ -477,12 +477,12 @@ const DB = {
 };
 
 const ZONES={
-  slowwalk:{label:"Yavaş Yürüyüş",  label_en:"Slow Walk",   color:"#3b82f6",emoji:"🐕",bpmRange:"90–110 BPM", bpmMin:90, bpmMax:110},
-  walk:    {label:"Normal Yürüyüş", label_en:"Walk",         color:"#22c55e",emoji:"🚶",bpmRange:"110–120 BPM",bpmMin:110,bpmMax:120},
-  brisk:   {label:"Tempolu Yürüyüş",label_en:"Brisk Walk",   color:"#a3e635",emoji:"🚶",bpmRange:"120–135 BPM",bpmMin:120,bpmMax:135},
-  jogging: {label:"Jogging",        label_en:"Jogging",      color:"#fbbf24",emoji:"🏃",bpmRange:"135–150 BPM",bpmMin:135,bpmMax:150},
-  run:     {label:"Koşu",           label_en:"Run",          color:"#f97316",emoji:"🏃",bpmRange:"150–175 BPM",bpmMin:150,bpmMax:175},
-  sprint:  {label:"Sprint",         label_en:"Sprint",       color:"#ef4444",emoji:"⚡",bpmRange:"175–200 BPM",bpmMin:175,bpmMax:200},
+  slowwalk:{label:"Yavaş Yürüyüş",  label_en:"Slow Walk",   color:"#3b82f6",emoji:"🐕",bpmRange:"90–108 BPM", bpmMin:90, bpmMax:108},
+  walk:    {label:"Normal Yürüyüş", label_en:"Walk",         color:"#22c55e",emoji:"🚶",bpmRange:"112–118 BPM",bpmMin:112,bpmMax:118},
+  brisk:   {label:"Tempolu Yürüyüş",label_en:"Brisk Walk",   color:"#a3e635",emoji:"🚶",bpmRange:"122–133 BPM",bpmMin:122,bpmMax:133},
+  jogging: {label:"Jogging",        label_en:"Jogging",      color:"#fbbf24",emoji:"🏃",bpmRange:"137–148 BPM",bpmMin:137,bpmMax:148},
+  run:     {label:"Koşu",           label_en:"Run",          color:"#f97316",emoji:"🏃",bpmRange:"152–173 BPM",bpmMin:152,bpmMax:173},
+  sprint:  {label:"Sprint",         label_en:"Sprint",       color:"#ef4444",emoji:"⚡",bpmRange:"177–200 BPM",bpmMin:177,bpmMax:200},
 };
 function zLabel(z){return lang==='en'?ZONES[z].label_en:ZONES[z].label;}
 
@@ -490,12 +490,12 @@ const ZONE_ORDER=['slowwalk','walk','brisk','jogging','run','sprint'];
 const plan={warmup:[],main:[],cooldown:[]};
 
 const ZONE_BPM_SAMPLES={
-  slowwalk:[92,96,100,104,108],
-  walk:    [112,115,117,119],
-  brisk:   [122,125,128,131,134],
-  jogging: [137,140,143,147,150],
-  run:     [152,156,160,165,170,174],
-  sprint:  [177,181,185,189,195]
+  slowwalk:[92,96,100,104,107],
+  walk:    [112,114,116,118],
+  brisk:   [122,125,128,131,133],
+  jogging: [137,140,143,146,148],
+  run:     [152,156,160,165,170,173],
+  sprint:  [177,181,185,190,196]
 };
 
 // State
